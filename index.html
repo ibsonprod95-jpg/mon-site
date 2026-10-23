@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ibrahima Ndiaye</title>
+  <style>
+    :root {
+      --fond: #f3efe6;
+      --texte: #1f2a30;
+      --accent: #1d5c63;
+      --discret: #5b6770;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fond: #14201f;
+        --texte: #eae6dc;
+        --accent: #7cc4c8;
+        --discret: #a3afb0;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 4rem 1.25rem;
+    }
+    h1 {
+      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      line-height: 1.1;
+      margin: 0 0 1rem;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin: 3rem 0 0.75rem;
+      color: var(--accent);
+    }
+    p { margin: 0 0 1rem; }
+    .intro { font-size: 1.2rem; color: var(--discret); }
+    ul { padding-left: 1.2rem; }
+    a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+    }
+    a:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    footer {
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: var(--discret);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Bienvenue sur mon site</h1>
+    <p class="intro">Je m'appelle Ibrahima Ndiaye. Ici, je partage ce que je fais et ce qui me passionne.</p>
+
+    <h2>À propos</h2>
+    <p>Bienvenue sur mon site. C'est ma toute première page web, et elle va grandir au fil de mes projets.</p>
+    <p>Reviens de temps en temps : j'y ajouterai régulièrement du nouveau. Si tu veux échanger ou collaborer, n'hésite pas à m'écrire.</p>
+
+    <h2>Mes projets</h2>
+    <p>Mes premiers projets seront présentés ici très bientôt.</p>
+
+    <h2>Me contacter</h2>
+    <p>Écris-moi à <a href="mailto:ibsonprod95@gmail.com">ibsonprod95@gmail.com</a>.</p>
+
+    <footer>© 2026 Ibrahima Ndiaye</footer>
+  </main>
+</body>
+</html>
