@@ -3,34 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ibrahima Ndiaye</title>
+  <title>Ibrahima Ndiaye – Étudiant en développement web et mobile</title>
+  <meta name="description" content="Site personnel d’Ibrahima Ndiaye, étudiant en développement web et mobile à Dakar. Projets, parcours et contact.">
+  <meta property="og:title" content="Ibrahima Ndiaye">
+  <meta property="og:description" content="Étudiant en développement web et mobile à Dakar. Découvre mes projets.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ibrahima-ndiaye.vercel.app/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231d5c63'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia,serif' font-weight='700' text-anchor='middle' fill='%23f3efe6'%3EI%3C/text%3E%3C/svg%3E">
+
+  <!-- Applique le thème mémorisé avant l’affichage pour éviter un flash -->
+  <script>
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+
   <style>
     :root {
       --fond: #f3efe6;
       --texte: #1f2a30;
       --accent: #1d5c63;
       --discret: #5b6770;
+      --trait: rgba(31, 42, 48, 0.18);
     }
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
         --fond: #14201f;
         --texte: #eae6dc;
         --accent: #7cc4c8;
         --discret: #a3afb0;
+        --trait: rgba(234, 230, 220, 0.22);
       }
     }
+    :root[data-theme="dark"] {
+      --fond: #14201f;
+      --texte: #eae6dc;
+      --accent: #7cc4c8;
+      --discret: #a3afb0;
+      --trait: rgba(234, 230, 220, 0.22);
+    }
+
     * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 4.5rem;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
     body {
       margin: 0;
       background: var(--fond);
       color: var(--texte);
       font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.6;
+      line-height: 1.65;
     }
+
+    /* En-tête et navigation */
+    .entete {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--fond);
+      border-bottom: 1px solid var(--trait);
+    }
+    .entete-contenu {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 1.25rem;
+    }
+    nav a { text-decoration: none; }
+    nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+    .theme {
+      font: inherit;
+      font-size: 0.9rem;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 0.25rem 0.9rem;
+      cursor: pointer;
+    }
+    .theme:hover { background: var(--accent); color: var(--fond); }
+
     main {
       max-width: 40rem;
       margin: 0 auto;
-      padding: 4rem 1.25rem;
+      padding: 3.5rem 1.25rem 4rem;
     }
     h1 {
       font-size: clamp(2.2rem, 8vw, 3.6rem);
@@ -39,20 +111,36 @@
     }
     h2 {
       font-size: 1.4rem;
-      margin: 3rem 0 0.75rem;
+      margin: 3.25rem 0 0.75rem;
       color: var(--accent);
     }
+    h3 { font-size: 1.15rem; margin: 0 0 0.4rem; }
     p { margin: 0 0 1rem; }
     .intro { font-size: 1.2rem; color: var(--discret); }
-    ul { padding-left: 1.2rem; }
-    a {
-      color: var(--accent);
-      text-underline-offset: 3px;
-    }
-    a:focus-visible {
+
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:focus-visible,
+    .theme:focus-visible {
       outline: 3px solid var(--accent);
       outline-offset: 3px;
     }
+
+    /* Projets */
+    .projets { display: grid; gap: 1rem; }
+    .projet {
+      border: 1px solid var(--trait);
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 1.1rem 1.25rem;
+    }
+    .projet p { margin-bottom: 0.6rem; }
+    .technos { font-size: 0.9rem; color: var(--discret); }
+    .liens { margin: 0; display: flex; gap: 1.25rem; flex-wrap: wrap; }
+
+    /* Contact */
+    .contact { list-style: none; padding: 0; margin: 0; }
+    .contact li { margin-bottom: 0.4rem; }
+
     footer {
       margin-top: 4rem;
       font-size: 0.9rem;
@@ -61,21 +149,83 @@
   </style>
 </head>
 <body>
+  <header class="entete">
+    <div class="entete-contenu">
+      <nav aria-label="Navigation principale">
+        <ul>
+          <li><a href="#a-propos">À propos</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme" id="theme" type="button">Mode sombre</button>
+    </div>
+  </header>
+
   <main>
-    <h1>Bienvenue sur mon site</h1>
-    <p class="intro">Je m'appelle Ibrahima Ndiaye. Ici, je partage ce que je fais et ce qui me passionne.</p>
+    <h1>Ibrahima Ndiaye</h1>
+    <p class="intro">Étudiant en développement web et mobile, à Dakar. Je partage ici ce que je construis et ce que j’apprends.</p>
 
-    <h2>À propos</h2>
-    <p>Bienvenue sur mon site. C'est ma toute première page web, et elle va grandir au fil de mes projets.</p>
-    <p>Reviens de temps en temps : j'y ajouterai régulièrement du nouveau. Si tu veux échanger ou collaborer, n'hésite pas à m'écrire.</p>
+    <section id="a-propos">
+      <h2>À propos</h2>
+      <p>Je suis en formation BT Développement Web et Mobile à l’IPG-ISTI, à Dakar. J’apprends en construisant : ce site est ma première page publiée, et il grandit au fil de mes projets.</p>
+      <p>Reviens de temps en temps, j’y ajoute régulièrement du nouveau. Si tu veux échanger ou collaborer, n’hésite pas à m’écrire.</p>
+    </section>
 
-    <h2>Mes projets</h2>
-    <p>Mes premiers projets seront présentés ici très bientôt.</p>
+    <section id="projets">
+      <h2>Mes projets</h2>
+      <div class="projets">
 
-    <h2>Me contacter</h2>
-    <p>Écris-moi à <a href="mailto:ibsonprod95@gmail.com">ibsonprod95@gmail.com</a>.</p>
+        <article class="projet">
+          <h3>Ce site personnel</h3>
+          <p>Ma première page web : une page unique, adaptée au mobile, avec un mode clair et un mode sombre. Elle est hébergée sur Vercel et se met à jour à chaque envoi sur GitHub.</p>
+          <p class="technos">Technologies : HTML, CSS, JavaScript</p>
+          <p class="liens">
+            <a href="https://github.com/ibsonprod95-jpg/mon-site">Voir le code</a>
+          </p>
+        </article>
+
+        <!-- Pour ajouter un projet : copie le bloc <article class="projet"> ci-dessus,
+             puis change le titre, la description, les technologies et le lien. -->
+
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Me contacter</h2>
+      <ul class="contact">
+        <li>Par e-mail : <a href="mailto:ibsonprod95@gmail.com">ibsonprod95@gmail.com</a></li>
+        <li>Mon code : <a href="https://github.com/ibsonprod95-jpg">github.com/ibsonprod95-jpg</a></li>
+      </ul>
+    </section>
 
     <footer>© 2026 Ibrahima Ndiaye</footer>
   </main>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var bouton = document.getElementById('theme');
+
+      function estSombre() {
+        var choix = root.getAttribute('data-theme');
+        if (choix) return choix === 'dark';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+
+      function majBouton() {
+        bouton.textContent = estSombre() ? 'Mode clair' : 'Mode sombre';
+      }
+
+      bouton.addEventListener('click', function () {
+        var suivant = estSombre() ? 'light' : 'dark';
+        root.setAttribute('data-theme', suivant);
+        try { localStorage.setItem('theme', suivant); } catch (e) {}
+        majBouton();
+      });
+
+      majBouton();
+    })();
+  </script>
 </body>
 </html>
