@@ -1,223 +1,412 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bagages perdus et trouvés</title>
-<style>
-:root{
-  --bg:#10142b; --panel:#181d3a; --line:#2c3260; --text:#eef0fb; --muted:#9aa2cf;
-  --lost:#f2b84b; --found:#7fd1c7; --done:#6c739e; --err:#ff8f8f;
-  color-scheme:dark;
-}
-@media (prefers-color-scheme: light){
-  :root:not([data-theme="dark"]){
-    --bg:#f3f4fb; --panel:#ffffff; --line:#d3d6ee; --text:#161a38; --muted:#586091;
-    --lost:#a86a00; --found:#0b7a6f; --done:#7b82aa; --err:#b42323; color-scheme:light;
-  }
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
-  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
-.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
-a{color:var(--found)}
-h1{font:700 2rem/1.15 Georgia,"Times New Roman",serif;margin:12px 0 6px}
-.logo{display:block;height:56px;width:auto;max-width:100%;margin:16px 0 0}
-.lead{color:var(--muted);margin:0 0 22px;max-width:60ch}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-nav button{flex:1 1 auto;padding:12px 14px;border:1px solid var(--line);background:transparent;color:var(--text);
-  border-radius:10px;font:inherit;cursor:pointer}
-nav button[aria-selected="true"]{background:var(--panel);border-color:var(--found);font-weight:600}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--found);outline-offset:2px}
-section[hidden]{display:none}
-form{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px}
-form h2,.listhead h2{font:700 1.3rem Georgia,serif;margin:0}
-label{display:grid;gap:5px;font-weight:600;font-size:.95rem}
-label small{font-weight:400;color:var(--muted)}
-input,select,textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
-textarea{min-height:90px;resize:vertical}
-.primary{background:var(--found);color:#08211e;border:0;border-radius:10px;padding:13px 16px;font:inherit;font-weight:700;cursor:pointer}
-.msg{min-height:1.4em;margin:0;font-weight:600;color:var(--found)}
-.msg.err{color:var(--err)}
-.tools{display:grid;gap:10px;grid-template-columns:1fr;margin:14px 0}
-@media(min-width:560px){.tools{grid-template-columns:2fr 1fr}}
-.card{background:var(--panel);border:1px solid var(--line);border-left-width:6px;border-radius:12px;padding:14px 16px;margin-bottom:12px}
-.card.perdu{border-left-color:var(--lost)}
-.card.trouve{border-left-color:var(--found)}
-.card.rendu{border-left-color:var(--done);opacity:.7}
-.card h3{margin:0 0 4px;font-size:1.05rem}
-.badge{font-weight:700;font-size:.85rem}
-.perdu .badge{color:var(--lost)} .trouve .badge{color:var(--found)} .rendu .badge{color:var(--muted)}
-.card p{margin:4px 0;overflow-wrap:anywhere}
-.meta{color:var(--muted);font-size:.9rem}
-.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.actions button{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:inherit;font-size:.9rem;cursor:pointer}
-.empty{color:var(--muted);padding:18px 0}
-.note{color:var(--muted);font-size:.85rem;margin-top:28px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Objets et bagages perdus – AIBD DEM DIKK SA</title>
+  <meta name="description" content="Objets et bagages perdus AIBD DEM DIKK SA : déclarer un objet ou un bagage perdu, suivre sa recherche et le remettre à son propriétaire.">
+  <style>
+    :root {
+      --fond: #f3efe6;
+      --carte: #fbf9f4;
+      --texte: #1f2a30;
+      --accent: #1d5c63;
+      --discret: #5b6770;
+      --trait: rgba(31, 42, 48, 0.2);
+      --alerte: #9a3b1f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fond: #14201f;
+        --carte: #1b2a29;
+        --texte: #eae6dc;
+        --accent: #7cc4c8;
+        --discret: #a3afb0;
+        --trait: rgba(234, 230, 220, 0.24);
+        --alerte: #f0a68a;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--fond);
+      color: var(--texte);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    h1 { font-size: clamp(1.9rem, 7vw, 2.8rem); line-height: 1.1; margin: 0 0 0.6rem; }
+    h2 { font-size: 1.3rem; margin: 2.5rem 0 0.75rem; color: var(--accent); }
+    h3 { font-size: 1.1rem; margin: 0 0 0.3rem; }
+    p { margin: 0 0 0.9rem; }
+    .intro { font-size: 1.1rem; color: var(--discret); }
+    .retour { font-size: 0.95rem; }
+    .marque { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .logo {
+      height: 5rem;
+      width: auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid var(--trait);
+    }
+    .organisation {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Formulaire */
+    form {
+      background: var(--carte);
+      border: 1px solid var(--trait);
+      border-radius: 6px;
+      padding: 1.25rem;
+      display: grid;
+      gap: 1rem;
+    }
+    .duo { display: grid; gap: 1rem; }
+    @media (min-width: 34rem) { .duo { grid-template-columns: 1fr 1fr; } }
+    label { display: block; font-size: 0.95rem; font-weight: bold; margin-bottom: 0.25rem; }
+    .facultatif { font-weight: normal; color: var(--discret); }
+    input, select, textarea {
+      width: 100%;
+      font: inherit;
+      color: var(--texte);
+      background: var(--fond);
+      border: 1px solid var(--trait);
+      border-radius: 4px;
+      padding: 0.55rem 0.7rem;
+    }
+    textarea { min-height: 5rem; resize: vertical; }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 0.6rem 1.1rem;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: var(--fond);
+    }
+    button.secondaire { background: transparent; color: var(--accent); }
+    button.danger { background: transparent; color: var(--alerte); border-color: var(--alerte); }
+    button:hover { opacity: 0.88; }
+
+    .message { min-height: 1.4rem; margin: 0.6rem 0 0; color: var(--accent); font-size: 0.95rem; }
+
+    /* Compteurs */
+    .compteurs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1rem; }
+    .compteur {
+      border: 1px solid var(--trait);
+      border-radius: 6px;
+      padding: 0.6rem 0.4rem;
+      text-align: center;
+      background: var(--carte);
+    }
+    .compteur strong { display: block; font-size: 1.5rem; line-height: 1.2; }
+    .compteur span { font-size: 0.8rem; color: var(--discret); }
+
+    /* Filtres */
+    .filtres { display: grid; gap: 0.75rem; margin-bottom: 1rem; }
+    @media (min-width: 34rem) { .filtres { grid-template-columns: 2fr 1fr; } }
+
+    /* Liste */
+    .liste { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+    .fiche {
+      background: var(--carte);
+      border: 1px solid var(--trait);
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 1rem 1.1rem;
+    }
+    .fiche-entete { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem; }
+    .pastille {
+      font-size: 0.8rem;
+      border: 1px solid var(--trait);
+      border-radius: 999px;
+      padding: 0.1rem 0.7rem;
+      color: var(--discret);
+    }
+    .pastille.statut { border-color: var(--accent); color: var(--accent); }
+    .meta { font-size: 0.92rem; color: var(--discret); margin: 0 0 0.2rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: end; margin-top: 0.8rem; }
+    .actions label { margin: 0; }
+    .actions select { width: auto; }
+    .vide { color: var(--discret); font-style: italic; }
+
+    .barre { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+    .note { font-size: 0.9rem; color: var(--discret); margin-top: 2rem; }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <a href="../index.html">Retour au site</a>
-  <img class="logo" src="logo-dem-dikk.png" alt="Dakar Dem Dikk" onerror="this.remove()">
-  <h1>Bagages perdus et trouvés</h1>
-  <p class="lead">Déclare un bagage que tu as perdu ou trouvé, puis cherche dans la liste pour retrouver son propriétaire.</p>
-
-  <nav role="tablist" aria-label="Sections">
-    <button role="tab" id="t-perdu" aria-selected="true" data-tab="perdu">J'ai perdu un bagage</button>
-    <button role="tab" id="t-trouve" aria-selected="false" data-tab="trouve">J'ai trouvé un bagage</button>
-    <button role="tab" id="t-liste" aria-selected="false" data-tab="liste">Voir la liste</button>
-  </nav>
-
-  <section id="s-form">
-    <form id="form" novalidate>
-      <h2 id="form-title">Déclarer un bagage perdu</h2>
-      <label>Ton nom
-        <input name="nom" required autocomplete="name">
-      </label>
-      <label>Numéro du bus <small>si tu le connais</small>
-        <input name="bus" placeholder="Exemple : 7 ou Dem Dikk 23">
-      </label>
-      <label>Date <small>le jour où le bagage a été perdu ou trouvé</small>
-        <input name="dateBagage" type="date" required>
-      </label>
-      <label>Lieu <small>arrêt, gare routière, quartier</small>
-        <input name="lieu" required>
-      </label>
-      <label>Description du bagage <small>couleur, marque, taille, signe distinctif</small>
-        <textarea name="description" required></textarea>
-      </label>
-      <label>Contact <small>téléphone ou e-mail</small>
-        <input name="contact" required autocomplete="off">
-      </label>
-      <button class="primary" type="submit" id="submit-btn">Enregistrer la déclaration</button>
-      <p class="msg" id="msg" role="status"></p>
-    </form>
-  </section>
-
-  <section id="s-liste" hidden>
-    <div class="listhead"><h2>Liste des déclarations</h2></div>
-    <div class="tools">
-      <label>Rechercher
-        <input id="q" type="search" placeholder="Couleur, bus, lieu, nom…">
-      </label>
-      <label>Afficher
-        <select id="f">
-          <option value="tous">Tous</option>
-          <option value="perdu">Perdus</option>
-          <option value="trouve">Trouvés</option>
-          <option value="rendu">Rendus</option>
-        </select>
-      </label>
+  <main>
+    <p class="retour"><a href="https://ibrahima-ndiaye.vercel.app/">← Retour au site d’Ibrahima</a></p>
+    <div class="marque">
+      <img class="logo" src="data:image/png;base64,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" alt="Logo Dem Dikk : Encore plus proche de vous" width="268" height="148">
+      <p class="organisation">AIBD DEM DIKK SA</p>
     </div>
-    <div id="list"></div>
-  </section>
+    <h1>Objets et bagages perdus</h1>
+    <p class="intro">Déclare un objet ou un bagage perdu, suis sa recherche et marque-le comme remis à son propriétaire.</p>
 
-  <p class="note">Pour l'instant, les déclarations sont enregistrées uniquement dans ce navigateur : les autres visiteurs ne les voient pas.</p>
-</div>
+    <h2>Nouvelle déclaration</h2>
+    <form id="formulaire">
+      <div class="duo">
+        <div>
+          <label for="type">Type</label>
+          <select id="type">
+            <option value="Bagage">Bagage</option>
+            <option value="Objet">Objet</option>
+          </select>
+        </div>
+        <div>
+          <label for="date">Date de la perte</label>
+          <input id="date" type="date" required>
+        </div>
+      </div>
 
-<script>
-(function(){
-  var KEY = "bagages-perdus:items";
-  var items = [];
-  var type = "perdu";
+      <div>
+        <label for="description">Description</label>
+        <textarea id="description" required placeholder="Ex. : valise noire à roulettes, ruban rouge sur la poignée"></textarea>
+      </div>
 
-  function load(){
-    try { var raw = localStorage.getItem(KEY); items = raw ? JSON.parse(raw) : []; if(!Array.isArray(items)) items = []; }
-    catch(e){ items = []; }
-  }
-  function save(){
-    try { localStorage.setItem(KEY, JSON.stringify(items)); return true; }
-    catch(e){ return false; }
-  }
+      <div class="duo">
+        <div>
+          <label for="lieu">Lieu</label>
+          <input id="lieu" type="text" required placeholder="Ex. : zone d’arrivée, porte 4">
+        </div>
+        <div>
+          <label for="reference">Référence <span class="facultatif">(facultatif)</span></label>
+          <input id="reference" type="text" placeholder="Étiquette, numéro de vol…">
+        </div>
+      </div>
 
-  var tabs = document.querySelectorAll("[data-tab]");
-  var sForm = document.getElementById("s-form");
-  var sList = document.getElementById("s-liste");
-  var title = document.getElementById("form-title");
-  var msg = document.getElementById("msg");
+      <div>
+        <label for="contact">Nom et téléphone du propriétaire <span class="facultatif">(facultatif)</span></label>
+        <input id="contact" type="text" placeholder="Ex. : Awa Diop, 77 000 00 00">
+      </div>
 
-  function show(tab){
-    tabs.forEach(function(b){ b.setAttribute("aria-selected", b.dataset.tab === tab ? "true" : "false"); });
-    msg.textContent = ""; msg.className = "msg";
-    if(tab === "liste"){ sForm.hidden = true; sList.hidden = false; render(); return; }
-    type = tab; sForm.hidden = false; sList.hidden = true;
-    title.textContent = tab === "perdu" ? "Déclarer un bagage perdu" : "Déclarer un bagage trouvé";
-  }
-  tabs.forEach(function(b){ b.addEventListener("click", function(){ show(b.dataset.tab); }); });
+      <div>
+        <button type="submit">Enregistrer la déclaration</button>
+        <p class="message" id="message" role="status" aria-live="polite"></p>
+      </div>
+    </form>
 
-  document.getElementById("form").addEventListener("submit", function(e){
-    e.preventDefault();
-    var f = e.target, d = {};
-    ["nom","bus","dateBagage","lieu","description","contact"].forEach(function(k){ d[k] = f.elements[k].value.trim(); });
-    if(!d.nom || !d.dateBagage || !d.lieu || !d.description || !d.contact){
-      msg.textContent = "Remplis le nom, la date, le lieu, la description et le contact."; msg.className = "msg err"; return;
-    }
-    d.id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-    d.type = type; d.date = new Date().toISOString();
-    items.unshift(d);
-    if(save()){ msg.textContent = "Déclaration enregistrée. Tu peux la retrouver dans la liste."; msg.className = "msg"; f.reset(); setToday(); }
-    else { msg.textContent = "Impossible d'enregistrer dans ce navigateur."; msg.className = "msg err"; items.shift(); }
-  });
+    <h2>Suivi</h2>
+    <div class="compteurs" aria-label="Résumé">
+      <div class="compteur"><strong id="n-perdu">0</strong><span>Déclarés perdus</span></div>
+      <div class="compteur"><strong id="n-retrouve">0</strong><span>Retrouvés</span></div>
+      <div class="compteur"><strong id="n-remis">0</strong><span>Remis</span></div>
+    </div>
 
-  function el(tag, cls, text){
-    var n = document.createElement(tag);
-    if(cls) n.className = cls;
-    if(text !== undefined) n.textContent = text;
-    return n;
-  }
+    <div class="filtres">
+      <div>
+        <label for="recherche">Rechercher</label>
+        <input id="recherche" type="search" placeholder="Description, lieu, référence, nom…">
+      </div>
+      <div>
+        <label for="filtre-statut">Statut</label>
+        <select id="filtre-statut">
+          <option value="">Tous</option>
+          <option value="perdu">Déclarés perdus</option>
+          <option value="retrouve">Retrouvés</option>
+          <option value="remis">Remis</option>
+        </select>
+      </div>
+    </div>
 
-  function render(){
-    var q = document.getElementById("q").value.trim().toLowerCase();
-    var f = document.getElementById("f").value;
-    var box = document.getElementById("list");
-    box.textContent = "";
-    var shown = items.filter(function(it){
-      var status = it.done ? "rendu" : it.type;
-      if(f !== "tous" && status !== f) return false;
-      if(!q) return true;
-      return [it.nom,it.bus,it.lieu,it.description].join(" ").toLowerCase().indexOf(q) !== -1;
-    });
-    if(!shown.length){
-      box.appendChild(el("p","empty", items.length ? "Aucun résultat pour cette recherche." : "Aucune déclaration pour le moment. Déclare un bagage perdu ou trouvé pour commencer."));
-      return;
-    }
-    shown.forEach(function(it){
-      var status = it.done ? "rendu" : it.type;
-      var card = el("article","card " + status);
-      card.appendChild(el("span","badge", it.done ? "Rendu" : (it.type === "perdu" ? "Perdu" : "Trouvé")));
-      card.appendChild(el("h3","", it.description));
-      card.appendChild(el("p","meta", it.lieu + (it.bus ? " – bus " + it.bus : "") + " – " + new Date(it.dateBagage || it.date).toLocaleDateString("fr-FR")));
-      card.appendChild(el("p","", "Déclaré par " + it.nom));
-      card.appendChild(el("p","", "Contact : " + it.contact));
-      var act = el("div","actions");
-      if(!it.done){
-        var r = el("button","", "Marquer comme rendu");
-        r.addEventListener("click", function(){ it.done = true; save(); render(); });
-        act.appendChild(r);
+    <ul class="liste" id="liste"></ul>
+
+    <div class="barre">
+      <button type="button" class="secondaire" id="export">Exporter en CSV</button>
+    </div>
+
+    <p class="note">Les déclarations sont enregistrées uniquement sur cet appareil, dans ce navigateur. Elles ne sont pas partagées avec les autres appareils de l’équipe.</p>
+  </main>
+
+  <script>
+    (function () {
+      var CLE = 'bagages-perdus-v1';
+      var STATUTS = { perdu: 'Déclaré perdu', retrouve: 'Retrouvé', remis: 'Remis au propriétaire' };
+
+      var formulaire = document.getElementById('formulaire');
+      var liste = document.getElementById('liste');
+      var message = document.getElementById('message');
+      var recherche = document.getElementById('recherche');
+      var filtreStatut = document.getElementById('filtre-statut');
+      var champDate = document.getElementById('date');
+
+      var fiches = charger();
+
+      function charger() {
+        try {
+          var brut = localStorage.getItem(CLE);
+          var donnees = brut ? JSON.parse(brut) : [];
+          return Array.isArray(donnees) ? donnees : [];
+        } catch (e) { return []; }
       }
-      var s = el("button","", "Supprimer");
-      s.addEventListener("click", function(){
-        if(confirm("Supprimer cette déclaration ?")){ items = items.filter(function(x){ return x.id !== it.id; }); save(); render(); }
-      });
-      act.appendChild(s);
-      card.appendChild(act);
-      box.appendChild(card);
-    });
-  }
-  document.getElementById("q").addEventListener("input", render);
-  document.getElementById("f").addEventListener("change", render);
 
-  function setToday(){
-    var i = document.querySelector('input[name="dateBagage"]');
-    var t = new Date(); t.setMinutes(t.getMinutes() - t.getTimezoneOffset());
-    var v = t.toISOString().slice(0,10);
-    i.max = v; i.value = v;
-  }
-  setToday();
-  load();
-})();
-</script>
+      function sauver() {
+        try { localStorage.setItem(CLE, JSON.stringify(fiches)); }
+        catch (e) { afficher('Impossible d’enregistrer sur cet appareil.'); }
+      }
+
+      function afficher(texte) { message.textContent = texte; }
+
+      function aujourdhui() {
+        try { return new Date().toLocaleDateString('sv-SE'); }
+        catch (e) { return new Date().toISOString().slice(0, 10); }
+      }
+
+      function dateFr(iso) {
+        var d = new Date(iso + 'T00:00:00');
+        return isNaN(d) ? iso : d.toLocaleDateString('fr-FR');
+      }
+
+      function el(balise, classe, texte) {
+        var e = document.createElement(balise);
+        if (classe) e.className = classe;
+        if (texte !== undefined) e.textContent = texte;
+        return e;
+      }
+
+      function correspond(f) {
+        var s = filtreStatut.value;
+        if (s && f.statut !== s) return false;
+        var q = recherche.value.trim().toLowerCase();
+        if (!q) return true;
+        return [f.description, f.lieu, f.reference, f.contact, f.type]
+          .join(' ').toLowerCase().indexOf(q) !== -1;
+      }
+
+      function carte(f) {
+        var li = el('li', 'fiche');
+
+        var tete = el('div', 'fiche-entete');
+        tete.appendChild(el('span', 'pastille', f.type));
+        tete.appendChild(el('span', 'pastille statut', STATUTS[f.statut] || f.statut));
+        li.appendChild(tete);
+
+        li.appendChild(el('h3', '', f.description));
+        li.appendChild(el('p', 'meta', 'Lieu : ' + f.lieu + ' · Perdu le ' + dateFr(f.date)));
+        if (f.reference) li.appendChild(el('p', 'meta', 'Référence : ' + f.reference));
+        if (f.contact) li.appendChild(el('p', 'meta', 'Propriétaire : ' + f.contact));
+
+        var actions = el('div', 'actions');
+        var bloc = el('div');
+        var idSel = 'statut-' + f.id;
+        var etiquette = el('label', '', 'Changer le statut');
+        etiquette.setAttribute('for', idSel);
+        var sel = el('select');
+        sel.id = idSel;
+        Object.keys(STATUTS).forEach(function (cle) {
+          var o = el('option', '', STATUTS[cle]);
+          o.value = cle;
+          if (cle === f.statut) o.selected = true;
+          sel.appendChild(o);
+        });
+        sel.addEventListener('change', function () {
+          f.statut = sel.value;
+          sauver();
+          rendre();
+        });
+        bloc.appendChild(etiquette);
+        bloc.appendChild(sel);
+        actions.appendChild(bloc);
+
+        var sup = el('button', 'danger', 'Supprimer');
+        sup.type = 'button';
+        sup.addEventListener('click', function () {
+          if (window.confirm('Supprimer cette déclaration ?')) {
+            fiches = fiches.filter(function (x) { return x.id !== f.id; });
+            sauver();
+            rendre();
+          }
+        });
+        actions.appendChild(sup);
+
+        li.appendChild(actions);
+        return li;
+      }
+
+      function rendre() {
+        ['perdu', 'retrouve', 'remis'].forEach(function (s) {
+          document.getElementById('n-' + s).textContent =
+            fiches.filter(function (f) { return f.statut === s; }).length;
+        });
+
+        liste.textContent = '';
+        var visibles = fiches.filter(correspond);
+        if (!visibles.length) {
+          var vide = el('li', 'vide',
+            fiches.length ? 'Aucune déclaration ne correspond à ta recherche.'
+                          : 'Aucune déclaration pour le moment.');
+          liste.appendChild(vide);
+          return;
+        }
+        visibles.forEach(function (f) { liste.appendChild(carte(f)); });
+      }
+
+      formulaire.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var fiche = {
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          type: document.getElementById('type').value,
+          description: document.getElementById('description').value.trim(),
+          lieu: document.getElementById('lieu').value.trim(),
+          date: champDate.value,
+          reference: document.getElementById('reference').value.trim(),
+          contact: document.getElementById('contact').value.trim(),
+          statut: 'perdu'
+        };
+        if (!fiche.description || !fiche.lieu) return;
+        fiches.unshift(fiche);
+        sauver();
+        formulaire.reset();
+        champDate.value = aujourdhui();
+        afficher('Déclaration enregistrée.');
+        rendre();
+      });
+
+      recherche.addEventListener('input', rendre);
+      filtreStatut.addEventListener('change', rendre);
+
+      document.getElementById('export').addEventListener('click', function () {
+        if (!fiches.length) { afficher('Il n’y a rien à exporter.'); return; }
+        function cellule(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+        var lignes = [['Type', 'Description', 'Lieu', 'Date', 'Référence', 'Propriétaire', 'Statut']];
+        fiches.forEach(function (f) {
+          lignes.push([f.type, f.description, f.lieu, f.date, f.reference, f.contact, STATUTS[f.statut] || f.statut]);
+        });
+        var csv = '\ufeff' + lignes.map(function (l) { return l.map(cellule).join(';'); }).join('\r\n');
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        var lien = document.createElement('a');
+        lien.href = URL.createObjectURL(blob);
+        lien.download = 'objets-bagages-perdus.csv';
+        document.body.appendChild(lien);
+        lien.click();
+        document.body.removeChild(lien);
+        setTimeout(function () { URL.revokeObjectURL(lien.href); }, 1000);
+      });
+
+      champDate.value = aujourdhui();
+      rendre();
+    })();
+  </script>
 </body>
 </html>
