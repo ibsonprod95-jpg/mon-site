@@ -55,6 +55,40 @@ function errorMessage(language, key) {
   return ERROR_MESSAGES[language][key] || ERROR_MESSAGES.fr[key];
 }
 
+function automaticReply(message, language) {
+  const normalized = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const asksAboutHoursOrPrices = /\b(horaire|horaires|heure|heures|prix|tarif|tarifs|depart|departure|schedule|fare|price|woor|waxtu)\b/.test(normalized);
+  const asksAboutForm = /\b(formulaire|form|fiche|declaration|declarer|pdf|report|declare|kayit|waajal)\b/.test(normalized);
+  const asksAboutStatus = /\b(suivi|retrouve|retrouver|trouve|trouver|statut|dossier|reclamation|follow.?up|found|track|status|objet|bagage|yekkatu)\b/.test(normalized);
+  const asksAboutContact = /\b(contact|whatsapp|appeler|appel|telephone|humain|service|jokkoo|woo)\b/.test(normalized);
+  const isGreeting = /^(bonjour|bonsoir|salut|hello|hi|salam|nanga def)[\s!.?]*$/.test(normalized);
+
+  if (language === 'en') {
+    if (isGreeting) return 'Hello! I am the website’s automatic assistant. I can guide you through preparing a lost-baggage report. What would you like help with?';
+    if (asksAboutHoursOrPrices) return 'I do not have confirmed, up-to-date information about schedules or fares. Please check with the service using the WhatsApp or call buttons on this page.';
+    if (asksAboutForm) return 'Complete the form on this page with the owner’s contact details, baggage description, colour, place and date of loss, and bus number if known. Select “Export form as PDF”. The PDF is saved on your device and is not sent automatically; contact the service using the buttons below.';
+    if (asksAboutStatus) return 'I cannot access lost-property records or confirm whether an item has been found. Please prepare the form on this page and contact the service using the WhatsApp or call buttons. Do not share personal details in this chat.';
+    if (asksAboutContact) return 'Use the “Message us on WhatsApp” or “Call us” buttons in the contact section below to reach the service. I cannot transfer this chat or send a message on your behalf.';
+    return 'I can explain how to prepare the lost-baggage form, but I cannot check a case or confirm that an item has been found. For a personal follow-up, contact the service with the WhatsApp or call buttons below. Please do not share personal details here.';
+  }
+
+  if (language === 'wo') {
+    if (isGreeting) return 'Nanga def! Dimbali bu otomatik laa ci site bi. Mën naa la dimbali nga waajal kayitu yëkkatu bi réer. Lan nga bëgg ma dimbali la ci?';
+    if (asksAboutHoursOrPrices) return 'Amuma xibaar bu wóor te bees ci waxtu walla njëg. Jokkoole ak sarwiis bi ci WhatsApp walla woo leen ci butoŋ yi ci xët wii.';
+    if (asksAboutForm) return 'Dugalal tur ak nimero telefon ci formileer bi, melokaanu yëkkatu bi, fu mu réer ak bés bi, ak nimero bas bi su fekkee xam nga ko. Tànnal « Génne kayit bi ci PDF ». Kayit bi du yónnee boppam ci sarwiis bi; jokkoole ak ñoom ci butoŋ yi ci suuf.';
+    if (asksAboutStatus) return 'Mëneesuma seet kayit yi walla xam ndax gis nañu yëkkatu bi. Waajal kayit bi ci xët wii te jokkoole ak sarwiis bi ci WhatsApp walla woo leen. Bul bind xibaaru bopp ci waxtaan wi.';
+    if (asksAboutContact) return 'Tànnal butoŋ « Bindal nu ci WhatsApp » walla « Woo nu » ci xët wii ngir jokkoo ak sarwiis bi. Mëneesuma yónnee bataaxal ci sa tur.';
+    return 'Mën naa la dimbali ci waajal kayitu yëkkatu bi, waaye mëneesuma seet sa dosiye walla xam ndax gis nañu ko. Ngir jokkoo ak sarwiis bi, tànnal WhatsApp walla woo nu ci butoŋ yi ci suuf. Bul bind xibaaru bopp ci fii.';
+  }
+
+  if (isGreeting) return 'Bonjour ! Je suis l’assistant automatique du site. Je peux vous guider pour préparer une déclaration de bagage perdu. Que souhaitez-vous savoir ?';
+  if (asksAboutHoursOrPrices) return 'Je n’ai pas d’information confirmée et à jour sur les horaires ou les tarifs. Pour les vérifier, contactez le service avec les boutons WhatsApp ou Appeler de cette page.';
+  if (asksAboutForm) return 'Remplissez le formulaire de cette page avec les coordonnées du propriétaire, la description et la couleur du bagage, le lieu et la date de perte, et le numéro du bus si vous le connaissez. Choisissez « Exporter la fiche en PDF ». Le PDF reste sur votre appareil et n’est pas envoyé automatiquement : contactez ensuite le service avec les boutons ci-dessous.';
+  if (asksAboutStatus) return 'Je ne peux pas consulter les objets retrouvés ni vérifier l’état d’un dossier. Préparez la fiche sur cette page, puis contactez le service avec les boutons WhatsApp ou Appeler. Ne partagez pas vos données personnelles dans ce chat.';
+  if (asksAboutContact) return 'Pour joindre le service, utilisez les boutons « Écrire sur WhatsApp » ou « Appeler » dans la rubrique de contact ci-dessous. Je ne peux pas transférer cette conversation ni envoyer un message à votre place.';
+  return 'Je peux expliquer comment préparer la fiche de bagage perdu, mais je ne peux pas vérifier un dossier ni confirmer qu’un objet a été retrouvé. Pour un suivi personnalisé, contactez le service avec les boutons WhatsApp ou Appeler ci-dessous. Ne partagez pas de données personnelles dans ce chat.';
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -67,11 +101,6 @@ module.exports = async function handler(req, res) {
   const language = body && body.language !== undefined ? body.language : 'fr';
   if (!Object.prototype.hasOwnProperty.call(ERROR_MESSAGES, language)) {
     return res.status(400).json({ error: errorMessage('fr', 'invalidLanguage') });
-  }
-
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return res.status(503).json({ error: errorMessage(language, 'notConfigured') });
   }
 
   const configuredOrigin = process.env.SITE_ORIGIN;
@@ -104,6 +133,14 @@ module.exports = async function handler(req, res) {
 
   if (messages[messages.length - 1].role !== 'user') {
     return res.status(400).json({ error: errorMessage(language, 'mustEndWithQuestion') });
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return res.status(200).json({
+      reply: automaticReply(messages[messages.length - 1].content, language),
+      mode: 'automatic'
+    });
   }
 
   let upstream;
