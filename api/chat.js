@@ -57,9 +57,9 @@ function errorMessage(language, key) {
 
 function automaticReply(message, language) {
   const normalized = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const asksAboutHoursOrPrices = /\b(horaire|horaires|heure|heures|prix|tarif|tarifs|depart|departure|schedule|fare|price|woor|waxtu)\b/.test(normalized);
+  const asksAboutHoursOrPrices = /\b(horaire|horaires|heure|heures|prix|tarif|tarifs|depart|departure|departures|schedule|schedules|timetable|times|fare|fares|price|prices|woor|waxtu|njeg)\b/.test(normalized);
   const asksAboutForm = /\b(formulaire|form|fiche|declaration|declarer|pdf|report|declare|kayit|waajal)\b/.test(normalized);
-  const asksAboutStatus = /\b(suivi|retrouve|retrouver|trouve|trouver|statut|dossier|reclamation|follow.?up|found|track|status|objet|bagage|yekkatu)\b/.test(normalized);
+  const asksAboutStatus = /\b(suivi|retrouve|retrouver|trouve|trouver|statut|dossier|reclamation|follow.?up|found|lost|track|status|item|object|bag|baggage|luggage|objet|bagage|yekkatu)\b/.test(normalized);
   const asksAboutContact = /\b(contact|whatsapp|appeler|appel|telephone|humain|service|jokkoo|woo)\b/.test(normalized);
   const isGreeting = /^(bonjour|bonsoir|salut|hello|hi|salam|nanga def)[\s!.?]*$/.test(normalized);
 
