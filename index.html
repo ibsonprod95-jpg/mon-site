@@ -252,6 +252,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <nav aria-label="Navigation principale" data-i18n-aria="mainNav">
       <a href="#service" data-i18n="navService">Le service</a>
       <a href="#declaration" data-i18n="navForm">Préparer ma fiche</a>
+      <a href="#suivi" data-track-key="navTracking">Suivre une déclaration</a>
       <a href="#contact" data-i18n="navContact">Nous contacter</a>
       <details class="site-settings">
         <summary data-i18n="settingsTitle">Paramètres</summary>
@@ -349,6 +350,17 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <label class="cam" for="ticket-cam" data-i18n="takeTicketPhoto">Prendre une photo du ticket</label>
     <input id="ticket-cam" class="sr" type="file" accept="image/*" capture="environment">
     <button type="button" id="exp" class="alt" data-i18n="exportPdf">Exporter la fiche en PDF</button>
+    <div class="online-submit">
+      <h3 data-track-key="submitTitle">Enregistrer ma déclaration en ligne</h3>
+      <p data-track-key="submitIntro">Pour obtenir un code de suivi, envoyez les renseignements ci-dessus au service. Les photos sont facultatives et seront envoyées avec la déclaration.</p>
+      <p><strong data-track-key="privacyHeading">Informations sur le traitement des données</strong><br><span id="declaration-privacy" role="status" aria-live="polite"></span></p>
+      <label class="consent-label"><input id="declaration-consent" type="checkbox">
+        <span data-track-key="consentText">J’accepte l’enregistrement de mes coordonnées et des renseignements de cette déclaration pour son traitement et son suivi. Je comprends que le code privé ne pourra pas être récupéré si je le perds.</span>
+      </label>
+      <button id="submit-declaration" type="button" disabled data-track-key="submitButton">Envoyer et créer mon suivi</button>
+      <p id="submit-status" class="tracking-status" role="status" aria-live="polite"></p>
+      <div id="created-tracking" class="tracking-result" hidden aria-live="polite"></div>
+    </div>
   </section>
 
   <section class="fiche-section">
@@ -371,6 +383,327 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     </div>
   </section>
 </main>
+<style>
+.tracking-section,.online-submit{margin:24px auto;padding:24px;width:min(880px,calc(100% - 32px));border:1px solid var(--line,#d9e2e1);border-radius:16px;background:var(--surface,#fff);color:var(--text,#1d2b2a)}
+.online-submit{margin:26px 0 0;padding:20px}
+.online-submit h3,.tracking-section h2{margin-top:0}
+.online-submit button,.tracking-section button{margin-top:12px}
+.consent-label{display:flex;align-items:flex-start;gap:10px;margin:16px 0}
+.consent-label input{width:auto;margin-top:5px}
+.tracking-result,.tracking-card{margin-top:16px;padding:16px;border:1px solid var(--line,#d9e2e1);border-radius:12px;background:var(--surface,#fff)}
+.tracking-result code{display:block;overflow-wrap:anywhere;margin:8px 0;padding:10px;background:var(--background,#f2f6f5);border-radius:8px}
+.tracking-status{min-height:1.5em}
+.tracking-history{padding-left:22px}
+.tracking-photos{display:flex;flex-wrap:wrap;gap:12px}
+.tracking-photos a{display:block}
+.tracking-photos img{width:min(220px,40vw);max-height:220px;object-fit:contain;border:1px solid var(--line,#d9e2e1);border-radius:8px}
+.tracking-section input,.tracking-section label{display:block}
+.tracking-section input{width:100%;margin:6px 0 14px;padding:11px;border:1px solid var(--line,#9baead);border-radius:8px;background:var(--surface,#fff);color:var(--text,#1d2b2a)}
+@media print{.online-submit,.tracking-section{display:none!important}}
+</style>
+<section class="tracking-section noprint" id="suivi" aria-labelledby="tracking-title">
+  <h2 id="tracking-title" data-track-key="trackTitle">Suivre ma déclaration</h2>
+  <p data-track-key="trackIntro">Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.</p>
+  <form id="track-form">
+    <label for="tracking-code" data-track-key="trackingCodeLabel">Code de suivi</label>
+    <input id="tracking-code" name="trackingCode" autocomplete="off" required maxlength="40">
+    <label for="tracking-secret" data-track-key="trackingSecretLabel">Code privé</label>
+    <input id="tracking-secret" name="accessSecret" type="password" autocomplete="off" required maxlength="100">
+    <button id="track-button" type="submit" disabled data-track-key="trackButton">Consulter le dossier</button>
+  </form>
+  <p id="track-status" class="tracking-status" role="status" aria-live="polite"></p>
+  <div id="track-result" aria-live="polite"></div>
+</section>
+<script>
+(function(){
+  var copy={
+    fr:{submitTitle:"Enregistrer ma déclaration en ligne",submitIntro:"Pour obtenir un code de suivi, envoyez les renseignements ci-dessus au service. Les photos sont facultatives et seront envoyées avec la déclaration.",consentText:"J’accepte l’enregistrement de mes coordonnées et des renseignements de cette déclaration pour son traitement et son suivi. Je comprends que le code privé ne pourra pas être récupéré si je le perds.",submitButton:"Envoyer et créer mon suivi",trackTitle:"Suivre ma déclaration",trackIntro:"Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.",trackingCodeLabel:"Code de suivi",trackingSecretLabel:"Code privé",trackButton:"Consulter le dossier",working:"Envoi en cours…",loading:"Recherche du dossier…",missingFields:"Veuillez remplir votre nom, téléphone, description, lieu et date de perte.",needConsent:"Veuillez accepter l’enregistrement des données avant l’envoi.",genericError:"Une erreur est survenue. Veuillez réessayer.",created:"Déclaration enregistrée. Conservez ces deux codes : ils ne seront affichés qu’une seule fois.",secretLabel:"Code privé (à garder secret)",trackingResult:"Dossier enregistré",status:"Statut",updated:"Dernière mise à jour",history:"Historique du dossier",noHistory:"Aucun historique pour le moment.",note:"Message du service",photos:"Photos jointes",baggagePhoto:"Photo du bagage",ticketPhoto:"Photo du ticket",badPhoto:"Impossible de lire la photo sélectionnée.",largePhoto:"Choisissez une image de moins de 15 Mo pour pouvoir la joindre.",submitError:"Impossible d’enregistrer la déclaration.",notFound:"Dossier introuvable ou codes incorrects.",received:"Reçu",searching:"Recherche en cours",found:"Bagage retrouvé",closed:"Dossier clôturé"},
+    en:{submitTitle:"Submit a report online",submitIntro:"Send the details above to the service to receive a tracking code. Photos are optional and will be sent with the report.",consentText:"I agree to storing my contact details and report information for processing and follow-up. I understand the private code cannot be recovered if I lose it.",submitButton:"Submit and create tracking",trackTitle:"Track my report",trackIntro:"Enter the tracking code and private code you received when submitting the report. Both are required to view it.",trackingCodeLabel:"Tracking code",trackingSecretLabel:"Private code",trackButton:"View report",working:"Submitting…",loading:"Looking up your report…",missingFields:"Enter your name, phone number, description, location and date of loss.",needConsent:"Please agree to data storage before submitting.",genericError:"Something went wrong. Please try again.",created:"Report saved. Keep both codes safe: they will only be shown once.",secretLabel:"Private code (keep it secret)",trackingResult:"Report saved",status:"Status",updated:"Last updated",history:"Report history",noHistory:"No history yet.",note:"Service message",photos:"Attached photos",baggagePhoto:"Baggage photo",ticketPhoto:"Ticket photo",badPhoto:"Could not read the selected photo.",largePhoto:"Choose an image smaller than 15 MB to attach it.",submitError:"Could not save your report.",notFound:"Report not found or codes are incorrect.",received:"Received",searching:"Search in progress",found:"Baggage found",closed:"Case closed"},
+    wo:{submitTitle:"Yónnee kayit ci internet",submitIntro:"Yónnee xibaar yi ci kaw ngir jot kodu toppandoo. Foto yi amul solo te ñu mën nañu leen yónnee ak kayit bi.",consentText:"Nangu naa ñu denc sama koont ak xibaar yi ci kayit bi ngir liggéey ak toppandoo ko. Xam naa ne mëneesula delloo kodu sir bi bu ma ko réeree.",submitButton:"Yónnee te sos toppandoo",trackTitle:"Toppandoo sama kayit",trackIntro:"Dugalal kodu toppandoo ak kodu sir bi nga jot bi nga yónnee kayit bi. Ñaar ñépp lañu soxla ngir gis dosiye bi.",trackingCodeLabel:"Kodu toppandoo",trackingSecretLabel:"Kodu sir",trackButton:"Seet dosiye bi",working:"Mi ngi yónnee…",loading:"Mi ngi seet dosiye bi…",missingFields:"Dugalal sa tur, nimero telefon, melokaan, fu mu réer ak bés bi.",needConsent:"Nangul denc xibaar yi bala ngay yónnee.",genericError:"Am na jafe-jafe. Jéemaatal.",created:"Kayit bi denc nañu ko. Dencal ñaar ñépp: kenn du la leen wone beneen yoon.",secretLabel:"Kodu sir (denc ko ci sir)",trackingResult:"Kayit bi denc nañu ko",status:"Taxawaay",updated:"Yeesal bu mujj",history:"Taarixu dosiye bi",noHistory:"Amagul taarix.",note:"Bataaxalu sarwiis bi",photos:"Foto yi",baggagePhoto:"Foto yëkkatu bi",ticketPhoto:"Foto tikke bi",badPhoto:"Mëneesula jàng foto bi.",largePhoto:"Tànnal nataal bu ndaw lu ëppul 15 Mo ngir yokk ko.",submitError:"Mëneesula denc kayit bi.",notFound:"Dosiye bi amul walla kode yi jubul.",received:"Jot nañu ko",searching:"Seet mi ngi dox",found:"Gis nañu yëkkatu bi",closed:"Dosiye bi tëj nañu ko"}
+  };
+  copy.fr.serviceNotReady="Le suivi doit être configuré dans Supabase avant utilisation.";
+  copy.en.serviceNotReady="Online tracking must be configured in Supabase before use.";
+  copy.wo.serviceNotReady="War nañu jëfandikoo Supabase ngir toppandoo bi dox.";
+  copy.fr.privacyHeading="Informations sur le traitement des données";
+  copy.en.privacyHeading="Information about personal data";
+  copy.wo.privacyHeading="Xibaar ci denc xibaar yi";
+  copy.fr.navTracking="Suivre une déclaration";
+  copy.en.navTracking="Track a report";
+  copy.wo.navTracking="Toppandoo kayit";
+  var statusNames={received:"received",searching:"searching",found:"found",closed:"closed"};
+  var submitButton=document.getElementById("submit-declaration");
+  var submitStatus=document.getElementById("submit-status");
+  var createdResult=document.getElementById("created-tracking");
+  var trackForm=document.getElementById("track-form");
+  var trackButton=document.getElementById("track-button");
+  var trackStatus=document.getElementById("track-status");
+  var trackResult=document.getElementById("track-result");
+
+  function text(key){
+    var language=window.siteLanguage||"fr";
+    return (copy[language]&&copy[language][key])||copy.fr[key]||key;
+  }
+  function applyLanguage(){
+    document.querySelectorAll("[data-track-key]").forEach(function(element){
+      element.textContent=text(element.getAttribute("data-track-key"));
+    });
+    document.getElementById("tracking-code").setAttribute("aria-label",text("trackingCodeLabel"));
+    document.getElementById("tracking-secret").setAttribute("aria-label",text("trackingSecretLabel"));
+  }
+  window.addEventListener("aibd-language-changed",applyLanguage);
+  applyLanguage();
+
+  function api(body){
+    return fetch("/api/declarations",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(body)
+    }).then(async function(response){
+      var result;
+      try{result=await response.json()}catch(error){throw new Error(text("genericError"))}
+      if(!response.ok)throw new Error(result&&result.error||text("genericError"));
+      return result;
+    });
+  }
+
+  var healthRequest=0;
+  function checkService(){
+    var requestId=++healthRequest;
+    api({action:"health",language:window.siteLanguage||"fr"}).then(function(result){
+      if(requestId!==healthRequest)return;
+      document.getElementById("declaration-privacy").textContent=result.privacyNotice;
+      submitButton.disabled=false;
+      trackButton.disabled=false;
+      submitStatus.textContent="";
+      trackStatus.textContent="";
+    }).catch(function(error){
+      if(requestId!==healthRequest)return;
+      submitButton.disabled=true;
+      trackButton.disabled=true;
+      document.getElementById("declaration-privacy").textContent="";
+      var message=error.message||text("serviceNotReady");
+      if(/configur|confidentialit/i.test(message))message=text("serviceNotReady");
+      submitStatus.textContent=message;
+      trackStatus.textContent=message;
+    });
+  }
+  checkService();
+  window.addEventListener("aibd-language-changed",checkService);
+
+  function encodeImage(file){
+    return new Promise(function(resolve,reject){
+      if(file.size>15*1024*1024){reject(new Error(text("largePhoto")));return}
+      var source=URL.createObjectURL(file);
+      var image=new Image();
+      image.onload=function(){
+        URL.revokeObjectURL(source);
+        if(!image.naturalWidth||!image.naturalHeight){reject(new Error(text("badPhoto")));return}
+        var canvas=document.createElement("canvas");
+        var context=canvas.getContext("2d");
+        if(!context){reject(new Error(text("badPhoto")));return}
+        var quality=0.82;
+        var maxDimension=1500;
+        function resize(){
+          var scale=Math.min(1,maxDimension/Math.max(image.naturalWidth,image.naturalHeight));
+          canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));
+          canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+          context.fillStyle="#ffffff";
+          context.fillRect(0,0,canvas.width,canvas.height);
+          context.drawImage(image,0,0,canvas.width,canvas.height);
+        }
+        resize();
+        function encode(){
+          canvas.toBlob(function(blob){
+            if(!blob){reject(new Error(text("badPhoto")));return}
+            if(blob.size>1024*1024){
+              if(quality>0.46){quality-=0.12;encode();return}
+              if(maxDimension>600){maxDimension=Math.max(600,Math.round(maxDimension*0.8));quality=0.78;resize();encode();return}
+              reject(new Error(text("largePhoto")));
+              return;
+            }
+            var reader=new FileReader();
+            reader.onload=function(){resolve(reader.result)};
+            reader.onerror=function(){reject(new Error(text("badPhoto")))};
+            reader.readAsDataURL(blob);
+          },"image/jpeg",quality);
+        }
+        encode();
+      };
+      image.onerror=function(){URL.revokeObjectURL(source);reject(new Error(text("badPhoto")))};
+      image.src=source;
+    });
+  }
+
+  function selectedFile(primary, camera){
+    return document.getElementById(primary).files[0]||document.getElementById(camera).files[0]||null;
+  }
+
+  [["photo","photo-cam"],["ticket","ticket-cam"]].forEach(function(pair){
+    pair.forEach(function(id,index){
+      document.getElementById(id).addEventListener("change",function(event){
+        if(event.target.files&&event.target.files.length){
+          document.getElementById(pair[index===0?1:0]).value="";
+        }
+      });
+    });
+  });
+
+  function statusName(value){
+    return text(statusNames[value]||"received");
+  }
+
+  function safeDate(value){
+    var date=new Date(value);
+    if(Number.isNaN(date.getTime()))return value||"";
+    var locale={fr:"fr-FR",en:"en-GB",wo:"wo-SN"}[window.siteLanguage]||"fr-FR";
+    return date.toLocaleString(locale);
+  }
+
+  function appendPhoto(container,url,label){
+    if(typeof url!=="string")return;
+    try{
+      if(new URL(url).protocol!=="https:")return;
+    }catch(error){return}
+    var link=document.createElement("a");
+    link.href=url;
+    link.target="_blank";
+    link.rel="noopener noreferrer";
+    link.setAttribute("aria-label",label);
+    var image=document.createElement("img");
+    image.src=url;
+    image.alt=label;
+    link.appendChild(image);
+    container.appendChild(link);
+  }
+
+  function renderTracking(result){
+    trackResult.replaceChildren();
+    var card=document.createElement("article");
+    card.className="tracking-card";
+    var heading=document.createElement("h3");
+    heading.textContent=text("trackingResult")+" — "+result.trackingCode;
+    card.appendChild(heading);
+    var current=document.createElement("p");
+    current.textContent=text("status")+": "+statusName(result.status);
+    card.appendChild(current);
+    var updated=document.createElement("p");
+    updated.textContent=text("updated")+": "+safeDate(result.updatedAt);
+    card.appendChild(updated);
+    var historyTitle=document.createElement("h4");
+    historyTitle.textContent=text("history");
+    card.appendChild(historyTitle);
+    var history=document.createElement("ol");
+    history.className="tracking-history";
+    if(!Array.isArray(result.history)||!result.history.length){
+      var empty=document.createElement("li");
+      empty.textContent=text("noHistory");
+      history.appendChild(empty);
+    }else{
+      result.history.forEach(function(entry){
+        var item=document.createElement("li");
+        item.appendChild(document.createTextNode(safeDate(entry.created_at)+" — "+statusName(entry.status)));
+        if(entry.note){
+          var note=document.createElement("p");
+          note.textContent=text("note")+": "+entry.note;
+          item.appendChild(note);
+        }
+        history.appendChild(item);
+      });
+    }
+    card.appendChild(history);
+    var photos=document.createElement("div");
+    photos.className="tracking-photos";
+    appendPhoto(photos,result.photos&&result.photos.baggage,text("baggagePhoto"));
+    appendPhoto(photos,result.photos&&result.photos.ticket,text("ticketPhoto"));
+    if(photos.childNodes.length){
+      var photoHeading=document.createElement("h4");
+      photoHeading.textContent=text("photos");
+      card.appendChild(photoHeading);
+      card.appendChild(photos);
+    }
+    trackResult.appendChild(card);
+  }
+
+  submitButton.addEventListener("click",async function(){
+    var consent=document.getElementById("declaration-consent").checked;
+    if(!consent){submitStatus.textContent=text("needConsent");return}
+    var fields={
+      ownerName:document.getElementById("nom").value.trim(),
+      phone:document.getElementById("tel").value.trim(),
+      description:document.getElementById("desc").value.trim(),
+      color:document.getElementById("couleur").value,
+      location:document.getElementById("lieu").value,
+      lostDate:document.getElementById("date-perte").value,
+      busNumber:document.getElementById("tkt").value.trim()
+    };
+    if(!fields.ownerName||!fields.phone||!fields.description||!fields.location||!fields.lostDate){
+      submitStatus.textContent=text("missingFields");return;
+    }
+    submitButton.disabled=true;
+    submitStatus.textContent=text("working");
+    createdResult.hidden=true;
+    try{
+      var baggage=selectedFile("photo","photo-cam");
+      var ticket=selectedFile("ticket","ticket-cam");
+      var result=await api({
+        action:"submit",
+        consent:consent,
+        ownerName:fields.ownerName,
+        phone:fields.phone,
+        description:fields.description,
+        color:fields.color,
+        location:fields.location,
+        lostDate:fields.lostDate,
+        busNumber:fields.busNumber,
+        photo:baggage?await encodeImage(baggage):null,
+        ticketPhoto:ticket?await encodeImage(ticket):null
+      });
+      createdResult.replaceChildren();
+      var heading=document.createElement("h3");
+      heading.textContent=text("created");
+      createdResult.appendChild(heading);
+      var code=document.createElement("code");
+      code.textContent=result.trackingCode;
+      code.setAttribute("aria-label",text("trackingCodeLabel"));
+      createdResult.appendChild(code);
+      var label=document.createElement("p");
+      label.textContent=text("secretLabel");
+      createdResult.appendChild(label);
+      var secret=document.createElement("code");
+      secret.textContent=result.accessSecret;
+      createdResult.appendChild(secret);
+      createdResult.hidden=false;
+      submitStatus.textContent="";
+      document.getElementById("declaration-consent").checked=false;
+    }catch(error){
+      submitStatus.textContent=error.message||text("submitError");
+    }finally{
+      submitButton.disabled=false;
+    }
+  });
+
+  trackForm.addEventListener("submit",async function(event){
+    event.preventDefault();
+    if(trackButton.disabled)return;
+    trackButton.disabled=true;
+    trackStatus.textContent=text("loading");
+    trackResult.replaceChildren();
+    try{
+      var result=await api({
+        action:"track",
+        trackingCode:document.getElementById("tracking-code").value.trim(),
+        accessSecret:document.getElementById("tracking-secret").value
+      });
+      renderTracking(result);
+      trackStatus.textContent="";
+    }catch(error){
+      trackStatus.textContent=error.message||text("genericError");
+    }finally{
+      trackButton.disabled=false;
+    }
+  });
+})();
+</script>
 <section class="assistant-widget noprint" aria-label="Assistant IA" data-i18n-aria="assistantRegion">
   <div class="assistant-panel" id="assistant-panel" hidden>
     <div class="assistant-header">
@@ -459,6 +792,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     document.getElementById("o-couleur").textContent=d.notSpecified;
     try{localStorage.setItem("aibd-language",language)}catch(error){}
     if(window.updateBagPreview)window.updateBagPreview();
+    window.dispatchEvent(new CustomEvent("aibd-language-changed"));
   }
   select.addEventListener("change",applyLanguage);
   themeSelect.addEventListener("change",function(){
