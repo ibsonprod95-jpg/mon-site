@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr" data-theme="system">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -15,6 +15,7 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--bg:#0e1a13;--surface:#16271c;--text:#e8f2eb;--muted:#9bb2a3;--line:#274433;--brand:#1fb5ae;--brand-dark:#14948e;color-scheme:dark}
 }
+:root[data-theme="dark"]{--bg:#0e1a13;--surface:#16271c;--text:#e8f2eb;--muted:#9bb2a3;--line:#274433;--brand:#1fb5ae;--brand-dark:#14948e;--grey:#9bb2a3;color-scheme:dark}
 *{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -111,6 +112,22 @@ label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offse
 .assistant-form button{justify-self:end;width:auto;margin:0;padding:9px 14px}
 .assistant-privacy{margin:0;color:var(--grey);font:.75rem/1.4 Arial,sans-serif}
 @media(max-width:34rem){.assistant-widget{right:max(.75rem,env(safe-area-inset-right));bottom:max(.75rem,env(safe-area-inset-bottom))}.assistant-panel{position:fixed;right:.5rem;bottom:4.5rem;height:min(34rem,calc(100dvh - 6rem))}}
+.site-settings{position:relative}
+.site-settings summary{list-style:none;padding:9px 12px;border-radius:6px;color:#fff;font-weight:700;cursor:pointer}
+.site-settings summary::-webkit-details-marker{display:none}
+.site-settings summary:hover,.site-settings[open] summary{background:rgba(255,255,255,.14)}
+.settings-panel{position:absolute;z-index:20;right:0;top:calc(100% + .65rem);display:grid;gap:12px;width:min(22rem,calc(100vw - 2rem));padding:16px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.settings-panel label{display:grid;gap:5px;margin:0;font-size:.9rem}
+.settings-panel select{width:100%;margin:0;background:var(--surface);color:var(--text)}
+.settings-panel .settings-check{display:flex;align-items:flex-start;gap:9px;font-weight:600}
+.settings-panel .settings-check input{flex:0 0 auto;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand)}
+.settings-panel .settings-help{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
+html[data-text-size="large"]{font-size:112.5%}
+html[data-text-size="xlarge"]{font-size:125%}
+html.reading-comfort body{letter-spacing:.015em}
+html.reading-comfort p,html.reading-comfort li,html.reading-comfort dd,html.reading-comfort .assistant-message{line-height:1.9}
+html.reading-comfort p{margin-bottom:1em}
+html.reading-comfort .presentation-intro,html.reading-comfort .service-card p,html.reading-comfort main p,html.reading-comfort .contact-section p{max-width:70ch}
 :root[data-theme="light"]{
   --bg:#f3f7f5;
   --surface:#fff;
@@ -122,6 +139,10 @@ label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offse
   --accent:#f5ca45;
   --grey:#637773;
   color-scheme:light;
+}
+:root[data-theme="dark"] body{background:linear-gradient(180deg,#0e1a13 0,#101f17 450px,var(--bg) 100%)}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) body{background:linear-gradient(180deg,#0e1a13 0,#101f17 450px,var(--bg) 100%)}
 }
 html{scroll-behavior:smooth;scroll-padding-top:18px}
 body{background:linear-gradient(180deg,#edf5f2 0,#f7f9f8 450px,var(--bg) 100%);color:var(--text)}
@@ -198,10 +219,25 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   main>section{padding:20px}
   .contact-section{margin:0 16px 24px;padding:22px;border-radius:12px}
   .contact-actions{display:grid;grid-template-columns:1fr}
+  .site-settings{width:100%}
+  .site-settings summary{display:inline-block}
+  .settings-panel{left:0;right:auto}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*:before,*:after{scroll-behavior:auto!important;transition:none!important}
+}
+:root[data-theme="dark"] .assistant-panel,:root[data-theme="dark"] .assistant-message{background:var(--surface);color:var(--text)}
+:root[data-theme="dark"] .assistant-message.user{background:var(--brand);color:#fff}
+:root[data-theme="dark"] .hero-kicker{background:#18352d;border-color:#274433}
+:root[data-theme="dark"] .form-note{background:#282719;border-color:#4b4427;color:var(--text)}
+:root[data-theme="dark"] .hero-actions a.secondary{background:var(--surface);color:var(--text)}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .assistant-panel,:root:not([data-theme="light"]) .assistant-message{background:var(--surface);color:var(--text)}
+  :root:not([data-theme="light"]) .assistant-message.user{background:var(--brand);color:#fff}
+  :root:not([data-theme="light"]) .hero-kicker{background:#18352d;border-color:#274433}
+  :root:not([data-theme="light"]) .form-note{background:#282719;border-color:#4b4427;color:var(--text)}
+  :root:not([data-theme="light"]) .hero-actions a.secondary{background:var(--surface);color:var(--text)}
 }
 </style>
 </head>
@@ -217,13 +253,35 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       <a href="#service" data-i18n="navService">Le service</a>
       <a href="#declaration" data-i18n="navForm">Préparer ma fiche</a>
       <a href="#contact" data-i18n="navContact">Nous contacter</a>
-      <label class="language-picker" for="language-select"><span data-i18n="languageLabel">Langue</span>
-        <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-          <option value="wo">Wolof</option>
-        </select>
-      </label>
+      <details class="site-settings">
+        <summary data-i18n="settingsTitle">Paramètres</summary>
+        <div class="settings-panel" aria-label="Paramètres du site" data-i18n-aria="settingsTitle">
+          <label for="language-select"><span data-i18n="languageLabel">Langue</span>
+            <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
+              <option value="fr">Français</option>
+              <option value="en">English</option>
+              <option value="wo">Wolof</option>
+            </select>
+          </label>
+          <label for="theme-select"><span data-i18n="themeLabel">Thème</span>
+            <select id="theme-select">
+              <option value="system" data-i18n="themeSystem">Automatique</option>
+              <option value="light" data-i18n="themeLight">Clair</option>
+              <option value="dark" data-i18n="themeDark">Sombre</option>
+            </select>
+          </label>
+          <label for="text-size-select"><span data-i18n="textSizeLabel">Taille du texte</span>
+            <select id="text-size-select">
+              <option value="normal" data-i18n="textSizeNormal">Normale</option>
+              <option value="large" data-i18n="textSizeLarge">Grande</option>
+              <option value="xlarge" data-i18n="textSizeExtraLarge">Très grande</option>
+            </select>
+          </label>
+          <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
+          <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
+          <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
+        </div>
+      </details>
     </nav>
   </div>
 </header>
@@ -342,9 +400,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     en:{pageTitle:"Lost property and baggage – AIBD DEM DIKK",metaDescription:"Discover the AIBD DEM DIKK lost property service and prepare an information sheet for your baggage.",brandSubtitle:"Lost property and baggage",mainNav:"Main navigation",navService:"The service",navForm:"Prepare my form",navContact:"Contact us",languageLabel:"Language",heroTitle:"Travel with greater peace of mind.",heroText:"Lost a bag during your journey? Find useful information about the lost property service and prepare a form with your baggage details.",heroForm:"Prepare my form",heroService:"Discover the service",heroMark:"Lost property and baggage service",serviceTitle:"Here to support your journey",serviceText:"Dem Dikk accompanies passengers on their journeys. This page helps you prepare the information needed if your baggage goes missing.",cardDescribeTitle:"Describe your baggage",cardDescribeText:"Add identifying features and its colour, and, if possible, a photo to help identify it.",cardJourneyTitle:"Add your journey details",cardJourneyText:"Choose where and when it was lost, then add the bus number if you know it.",cardFormTitle:"Prepare your form",cardFormText:"Enter your contact details and export a summary sheet as a PDF using the form.",formTitle:"Prepare a lost baggage form",formNote:"Fill in the information you have, then select “Export form as PDF”. This page prepares a form on your device; it does not automatically send your report to the service.",ownerLabel:"Owner’s name",phoneLabel:"Phone number",descriptionLabel:"Baggage description",descriptionPlaceholder:"Colour, size, brand and identifying features",colorLabel:"Baggage colour",colorHelp:"Choose a colour using the picker. Any colour can be selected.",locationLabel:"Place where it was lost",chooseLocation:"Choose a location",dateLabel:"Date it was lost",busLabel:"Bus number",busPlaceholder:"E.g. bus route 1",photoLabel:"Baggage photo",takePhoto:"Take a photo of the baggage",ticketLabel:"Upload the bus ticket",takeTicketPhoto:"Take a photo of the ticket",exportPdf:"Export form as PDF",ownerSheet:"Owner’s information sheet",noPhoto:"No photo added",noTicket:"No ticket uploaded",baggageLabel:"Baggage",locationDate:"Place and date",busNumber:"Bus number",assistantRegion:"AI assistant",assistantTitle:"Lost property assistant",close:"Close",assistantWelcome:"Hello! I can answer questions about this page and help you prepare a report. Please do not enter a name, phone number or ticket number in the chat.",questionLabel:"Your question",questionPlaceholder:"E.g. how do I prepare my report?",send:"Send",assistantPrivacy:"Only chat messages are sent to an AI service to generate a reply. Do not share personal information here.",needHelp:"Need help?",contactTitle:"Need help? Contact us.",contactText:"If you have a question about your baggage, message us on WhatsApp or call us directly.",whatsapp:"Message us on WhatsApp",call:"Call 77 552 12 91",whatsappAria:"Contact us on WhatsApp at 77 552 12 91",callAria:"Call 77 552 12 91",footerText:"AIBD DEM DIKK — Information and form preparation for lost property and baggage.",footerContact:"Contact the service",notSpecified:"Not specified",photoAlt:"Baggage photo",cameraAlt:"Photo taken with the camera",ticketAlt:"Bus ticket",refPrefix:"Form no. ",refEdited:" · issued on ",thinking:"Preparing a reply…",invalidResponse:"The service returned an invalid response. Please try again.",unavailable:"The assistant is unavailable here. Open the published website and try again.",serviceUnavailable:"The service is temporarily unavailable.",connectionError:"Could not contact the assistant. Check your connection and try again.",serverErrors:{notConfigured:"The assistant has not been configured yet.",invalidConversation:"Invalid conversation format.",invalidMessage:"A message is empty or too long.",mustEndWithQuestion:"The conversation must end with a question.",invalidOrigin:"Invalid request origin.",notAllowed:"Method not allowed.",originNotAllowed:"Request origin not allowed.",aiConnectionError:"Could not reach the AI service. Please try again later.",aiError:"The AI service encountered an error. Please try again later.",aiInvalidJson:"The AI service returned an invalid response.",aiNoReply:"The AI service did not provide a reply."},exportedOn:"issued on "},
     wo:{pageTitle:"Yëkkatu yi ñu réer – AIBD DEM DIKK",metaDescription:"Xamleel sa bopp ci yëkkatu yi ñu réer ak defar kayitu sa yëkkatu ci AIBD DEM DIKK.",brandSubtitle:"Yëkkatu yi ñu réer",mainNav:"Toppatoo bu njëkk",navService:"Liñuy joxe",navForm:"Defar sama kayit",navContact:"Jokkoo ak nun",languageLabel:"Làkk",heroTitle:"Tukki ak xel mu dal.",heroText:"Sa yëkkatu réer na ci sa tukki ? Fi nga nekk, man nga am xibaar ci yëkkatu yi ñu réer te defar kayit bu am leeral yi ci sa yëkkatu.",heroForm:"Defar sama kayit",heroService:"Xool liñuy joxe",heroMark:"Sarwiis yëkkatu yi ñu réer",serviceTitle:"Nun ngi ci sa wet ci sa tukki",serviceText:"Dem Dikk ngi ànd ak tukkiy yi. Xët wii dina la dimbali nga waajal xibaar yi ñuy soxla bu yëkkatu réer.",cardDescribeTitle:"Waxal ni sa yëkkatu mel",cardDescribeText:"Waxal melokaanam ak meloom, te su fekkee mënees na, yokk nataal ngir ñu mën ko ràññee.",cardJourneyTitle:"Waxal sa yoon",cardJourneyText:"Tànnal fu mu réer ak bés bi, te yokk nimero bas bi su fekkee xam nga ko.",cardFormTitle:"Waajal sa kayit",cardFormText:"Dugalal sa xibaaru jokkoo te génne kayit bu gàtt ci PDF ci formileer bi.",formTitle:"Waajal kayitu yëkkatu bi réer",formNote:"Dugalal xibaar yi nga am, te tànn « Génne kayit bi ci PDF ». Xët wii dafay defar kayit ci sa aparey; du yónnee sa xibaar ci sarwiis bi.",ownerLabel:"Tur wu boroom bi",phoneLabel:"Nimero telefon",descriptionLabel:"Ni yëkkatu bi mel",descriptionPlaceholder:"Melo, rëyaay, marka ak misaal yu koy ràññee",colorLabel:"Melo wu yëkkatu bi",colorHelp:"Tànnal benn melo ci palet bi. Mën nga tànn bépp melo.",locationLabel:"Fu mu réer",chooseLocation:"Tànnal fu mu réer",dateLabel:"Bés bi mu réer",busLabel:"Nimero bas bi",busPlaceholder:"Misaal: bas ligne 1",photoLabel:"Nataalu yëkkatu bi",takePhoto:"Jëlal nataal bu yëkkatu bi",ticketLabel:"Yebbi tikke bu bas bi",takeTicketPhoto:"Jëlal nataal bu tikke bi",exportPdf:"Génne kayit bi ci PDF",ownerSheet:"Kayitu boroom bi",noPhoto:"Amul nataal",noTicket:"Amul tikke bu ñu yebbi",baggageLabel:"Yëkkatu",locationDate:"Fu mu réer ak bés bi",busNumber:"Nimero bas bi",assistantRegion:"Dimbali bu IA",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",close:"Tëj",assistantWelcome:"Nanga def ! Mën naa tontu la ci laaj yi jëm ci xët wii te dimbali la nga waajal sa xibaar. Bul bind tur, nimero telefon walla nimero tikke ci waxtaan wi.",questionLabel:"Sa laaj",questionPlaceholder:"Misaal: naka laay waajee sama xibaar?",send:"Yónnee",assistantPrivacy:"Waxtaan bi rekk lañuy yónnee ci sarwiisu IA ngir mu tontu. Bul séddoo xibaaru bopp ci fii.",needHelp:"Soxla nga dimbali?",contactTitle:"Soxla nga dimbali? Jokkoo ak nun.",contactText:"Su amee laaj ci sa yëkkatu, bindal nu ci WhatsApp walla woo nu.",whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu ci 77 552 12 91",whatsappAria:"Jokkoo ak nun ci WhatsApp: 77 552 12 91",callAria:"Woo 77 552 12 91",footerText:"AIBD DEM DIKK — Xibaar ak waajal kayit ci yëkkatu yi ñu réer.",footerContact:"Jokkoo ak sarwiis bi",notSpecified:"Ñu waxul",photoAlt:"Nataalu yëkkatu bi",cameraAlt:"Nataal bu kamera bi jël",ticketAlt:"Tikke bu bas bi",refPrefix:"Kayit nimero ",refEdited:" · bindees ko ci ",thinking:"Maa ngi waajal tontu…",invalidResponse:"Sarwiis bi delloo tontu bu baaxul. Jéemaatal.",unavailable:"Dimbali bi doxul fii. Ubbi site bi ñu siiwal te jéemaatal.",serviceUnavailable:"Sarwiis bi doxul léegi. Jéemaatal ci kanam.",connectionError:"Mëneesula jokkoo ak dimbali bi. Seetal sa internet te jéemaatal.",serverErrors:{notConfigured:"Dimbali bi ñu paregul.",invalidConversation:"Melokaanu waxtaan wi baaxul.",invalidMessage:"Benn bataaxal dafa féex walla dafa gudd lool.",mustEndWithQuestion:"Waxtaan wi war na jeex ak laaj.",invalidOrigin:"Bunt bu ñu yónnee laaj bi baaxul.",notAllowed:"Jëf ji kenn mayuko.",originNotAllowed:"Bunt bii kenn mayuko.",aiConnectionError:"Mëneesula jot ci sarwiisu IA. Jéemaatal ci kanam.",aiError:"Sarwiisu IA am na jafe-jafe. Jéemaatal ci kanam.",aiInvalidJson:"Sarwiisu IA delloo tontu bu baaxul.",aiNoReply:"Sarwiisu IA tontuwul."},exportedOn:"bindees ko ci "}
   };
-  Object.assign(t.fr,{assistantRegion:"Assistant en ligne",assistantTitle:"Assistant objets perdus",assistantWelcome:"Bonjour ! Je suis l’assistant automatique du site. Je peux vous guider pour préparer une déclaration et répondre aux questions fréquentes. Pour une vérification personnelle, contactez le service avec les boutons ci-dessous. Ne partagez pas de données personnelles dans le chat.",assistantPrivacy:"Selon la configuration du site, vos messages peuvent être traités par un service d’IA. Ne partagez aucune donnée personnelle dans le chat.",automaticReply:"Réponse automatique du site."});
-  Object.assign(t.en,{assistantRegion:"Online assistant",assistantTitle:"Lost property assistant",assistantWelcome:"Hello! I am the website’s automatic assistant. I can guide you through preparing a report and answer common questions. For a personal follow-up, contact the service using the buttons below. Do not share personal information in the chat.",assistantPrivacy:"Depending on the site configuration, your messages may be processed by an AI service. Do not share personal information in the chat.",automaticReply:"Automatic website reply."});
-  Object.assign(t.wo,{assistantRegion:"Dimbali ci internet",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",assistantWelcome:"Nanga def! Dimbali bu otomatik laa ci site bi. Mën naa la dimbali nga waajal kayit te tontu laaj yi ñu faral di laaj. Ngir jokkoo ak sarwiis bi, tànnal butoŋ yi ci suuf. Bul bind xibaaru bopp ci waxtaan wi.",assistantPrivacy:"Ci ni site bi ñu sampare, mën nañu jëfandikoo sa bataaxal ci sarwiisu IA. Bul bind xibaaru bopp ci waxtaan wi.",automaticReply:"Tontu bu otomatik ci site bi."});
+  Object.assign(t.fr,{settingsTitle:"Paramètres",themeLabel:"Thème",themeSystem:"Automatique",themeLight:"Clair",themeDark:"Sombre",textSizeLabel:"Taille du texte",textSizeNormal:"Normale",textSizeLarge:"Grande",textSizeExtraLarge:"Très grande",voiceSetting:"Autoriser la dictée vocale",readingComfort:"Confort de lecture (espacement accru)",settingsSaved:"Ces préférences sont enregistrées uniquement dans ce navigateur.",assistantRegion:"Assistant en ligne",assistantTitle:"Assistant objets perdus",assistantWelcome:"Bonjour ! Je suis l’assistant automatique du site. Je peux vous guider pour préparer une déclaration et répondre aux questions fréquentes. Pour une vérification personnelle, contactez le service avec les boutons ci-dessous. Ne partagez pas de données personnelles dans le chat.",assistantPrivacy:"Selon la configuration du site, vos messages peuvent être traités par un service d’IA. Ne partagez aucune donnée personnelle dans le chat.",automaticReply:"Réponse automatique du site."});
+  Object.assign(t.en,{settingsTitle:"Settings",themeLabel:"Theme",themeSystem:"System default",themeLight:"Light",themeDark:"Dark",textSizeLabel:"Text size",textSizeNormal:"Normal",textSizeLarge:"Large",textSizeExtraLarge:"Extra large",voiceSetting:"Allow voice dictation",readingComfort:"Reading comfort (more spacing)",settingsSaved:"These preferences are saved only in this browser.",assistantRegion:"Online assistant",assistantTitle:"Lost property assistant",assistantWelcome:"Hello! I am the website’s automatic assistant. I can guide you through preparing a report and answer common questions. For a personal follow-up, contact the service using the buttons below. Do not share personal information in the chat.",assistantPrivacy:"Depending on the site configuration, your messages may be processed by an AI service. Do not share personal information in the chat.",automaticReply:"Automatic website reply."});
+  Object.assign(t.wo,{settingsTitle:"Toppatoo",themeLabel:"Melokaan",themeSystem:"Ni aparey bi bëgge",themeLight:"Leer",themeDark:"Lëndëm",textSizeLabel:"Rëyaayu mbind mi",textSizeNormal:"Dëkkandoo",textSizeLarge:"Mag",textSizeExtraLarge:"Mag lool",voiceSetting:"May wax ci mikóro",readingComfort:"Jàng bu yomb (dend bi gën a yaatu)",settingsSaved:"Toppatoo yii dañu leen denc rekk ci navigateur bii.",assistantRegion:"Dimbali ci internet",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",assistantWelcome:"Nanga def! Dimbali bu otomatik laa ci site bi. Mën naa la dimbali nga waajal kayit te tontu laaj yi ñu faral di laaj. Ngir jokkoo ak sarwiis bi, tànnal butoŋ yi ci suuf. Bul bind xibaaru bopp ci waxtaan wi.",assistantPrivacy:"Ci ni site bi ñu sampare, mën nañu jëfandikoo sa bataaxal ci sarwiisu IA. Bul bind xibaaru bopp ci waxtaan wi.",automaticReply:"Tontu bu otomatik ci site bi."});
   Object.assign(t.fr,{voiceInput:"Parler",voiceInputAria:"Dicter votre question",stopVoice:"Arrêter",voiceListening:"Je vous écoute… Parlez maintenant.",voiceReady:"Dictée terminée. Vous pouvez relire puis envoyer votre question.",voiceUnsupported:"La dictée vocale n’est pas prise en charge par ce navigateur. Vous pouvez écrire votre question.",voiceDenied:"L’accès au microphone a été refusé. Autorisez-le dans les paramètres du navigateur.",voiceNoSpeech:"Aucune parole détectée. Réessayez ou écrivez votre question.",voiceNetwork:"La dictée vocale est indisponible. Vérifiez votre connexion et réessayez.",voiceError:"La dictée vocale n’a pas fonctionné. Réessayez ou écrivez votre question.",assistantPrivacy:"La dictée utilise le service de reconnaissance vocale du navigateur, qui peut traiter l’audio. Le texte reconnu est envoyé au chat et peut être traité par un service d’IA. Ne partagez aucune donnée personnelle."});
   Object.assign(t.en,{voiceInput:"Speak",voiceInputAria:"Dictate your question",stopVoice:"Stop",voiceListening:"Listening… Speak now.",voiceReady:"Dictation finished. Review your question and send it when ready.",voiceUnsupported:"Voice dictation is not supported by this browser. You can type your question instead.",voiceDenied:"Microphone access was denied. Allow it in your browser settings.",voiceNoSpeech:"No speech was detected. Try again or type your question.",voiceNetwork:"Voice dictation is unavailable. Check your connection and try again.",voiceError:"Voice dictation did not work. Try again or type your question.",assistantPrivacy:"Dictation uses your browser’s speech recognition service, which may process audio. Recognized text is sent to the chat and may be processed by an AI service. Do not share personal information."});
   Object.assign(t.wo,{voiceInput:"Waxal",voiceInputAria:"Waxal sa laaj",stopVoice:"Taxawal",voiceListening:"Maa ngi déglu… Waxal léegi.",voiceReady:"Wax bi jeex na. Seetal sa laaj te yónnee ko.",voiceUnsupported:"Mëneesula jëfandikoo wax ci navigateur bii. Mën nga bind sa laaj.",voiceDenied:"Ñu mayul jot ci mikóro bi. Mayal ko ci réglage navigateur bi.",voiceNoSpeech:"Déggunu wax. Jéemaatal walla bind sa laaj.",voiceNetwork:"Wax ci mikóro doxul. Seetal internet bi te jéemaatal.",voiceError:"Wax ci mikóro bi doxul. Jéemaatal walla bind sa laaj.",assistantPrivacy:"Wax ci mikóro dafay jëfandikoo sarwiisu navigateur bi, te mën nañu jëfandikoo awdio bi. Bataaxal bu ñu dégg lañuy yónnee ci waxtaan wi, te sarwiisu IA mën na ko jëfandikoo. Bul bind xibaaru bopp."});
@@ -354,11 +412,31 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   t.en.pdfBrandTitle="AIBD DEM DIKK — Lost property and baggage";
   t.wo.pdfBrandTitle="AIBD DEM DIKK — Yëkkatu yi ñu réer";
   var select=document.getElementById("language-select");
+  var themeSelect=document.getElementById("theme-select");
+  var textSizeSelect=document.getElementById("text-size-select");
+  var voiceSetting=document.getElementById("voice-setting");
+  var readingComfortSetting=document.getElementById("reading-comfort-setting");
   var language="fr";
   try{
     var saved=localStorage.getItem("aibd-language");
     if(saved&&t[saved])language=saved;
   }catch(error){}
+  function readPreference(key,fallback,allowed){
+    try{
+      var value=localStorage.getItem("aibd-"+key);
+      return allowed.indexOf(value)!==-1?value:fallback;
+    }catch(error){return fallback}
+  }
+  function savePreference(key,value){
+    try{localStorage.setItem("aibd-"+key,value)}catch(error){}
+  }
+  themeSelect.value=readPreference("theme","system",["system","light","dark"]);
+  textSizeSelect.value=readPreference("text-size","normal",["normal","large","xlarge"]);
+  voiceSetting.checked=readPreference("voice-input","on",["on","off"])==="on";
+  readingComfortSetting.checked=readPreference("reading-comfort","off",["on","off"])==="on";
+  document.documentElement.setAttribute("data-theme",themeSelect.value);
+  document.documentElement.setAttribute("data-text-size",textSizeSelect.value);
+  document.documentElement.classList.toggle("reading-comfort",readingComfortSetting.checked);
   select.value=language;
   window.siteLanguage=language;
   window.siteTranslations=t;
@@ -383,6 +461,22 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     if(window.updateBagPreview)window.updateBagPreview();
   }
   select.addEventListener("change",applyLanguage);
+  themeSelect.addEventListener("change",function(){
+    document.documentElement.setAttribute("data-theme",themeSelect.value);
+    savePreference("theme",themeSelect.value);
+  });
+  textSizeSelect.addEventListener("change",function(){
+    document.documentElement.setAttribute("data-text-size",textSizeSelect.value);
+    savePreference("text-size",textSizeSelect.value);
+  });
+  voiceSetting.addEventListener("change",function(){
+    savePreference("voice-input",voiceSetting.checked?"on":"off");
+    window.dispatchEvent(new CustomEvent("aibd-voice-setting",{detail:{enabled:voiceSetting.checked}}));
+  });
+  readingComfortSetting.addEventListener("change",function(){
+    document.documentElement.classList.toggle("reading-comfort",readingComfortSetting.checked);
+    savePreference("reading-comfort",readingComfortSetting.checked?"on":"off");
+  });
   document.addEventListener("DOMContentLoaded",applyLanguage);
 })();
 </script>
@@ -462,7 +556,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   var recognition=SpeechRecognition?new SpeechRecognition():null;
   var isListening=false;
   var isSending=false;
+  var voiceEnabled=document.getElementById("voice-setting").checked;
   var voicePrefix="";
+  voiceButton.disabled=!voiceEnabled;
 
   if(recognition){
     recognition.continuous=false;
@@ -498,7 +594,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       isListening=false;
       voiceButton.textContent=window.siteText("voiceInput");
       voiceButton.setAttribute("aria-label",window.siteText("voiceInputAria"));
-      voiceButton.disabled=isSending;
+      voiceButton.disabled=isSending||!voiceEnabled;
       send.disabled=isSending;
       if(status.textContent===window.siteText("voiceListening")){
         status.textContent=input.value.trim()?window.siteText("voiceReady"):"";
@@ -523,7 +619,13 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 
   toggle.addEventListener("click",function(){setOpen(panel.hidden)});
   close.addEventListener("click",function(){setOpen(false)});
+  window.addEventListener("aibd-voice-setting",function(event){
+    voiceEnabled=event.detail.enabled;
+    voiceButton.disabled=!voiceEnabled||isSending;
+    if(!voiceEnabled&&isListening)recognition.stop();
+  });
   voiceButton.addEventListener("click",function(){
+    if(!voiceEnabled)return;
     if(!recognition){
       status.textContent=window.siteText("voiceUnsupported");
       return;
@@ -579,7 +681,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       input.disabled=false;
       isSending=false;
       send.disabled=isListening;
-      voiceButton.disabled=false;
+      voiceButton.disabled=!voiceEnabled;
       input.focus();
     }
   });
