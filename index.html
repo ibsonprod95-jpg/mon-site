@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Objets et bagages perdus – AIBD Dem Dikk SA</title>
+<title>Objets et bagages perdus – AIBD DEM DIKK</title>
+<meta name="description" content="Découvrez le service objets et bagages perdus AIBD DEM DIKK et préparez une fiche de renseignements pour votre bagage.">
 <style>
 :root{
   /* Couleurs tirées du logo Dem Dikk */
@@ -51,7 +52,38 @@ dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
 .logo{display:inline-block;width:52px;height:52px;flex:none;background:var(--logo) center/contain no-repeat;border-radius:10px}
 .logo.sm{width:34px;height:34px;border-radius:7px}
-header .bar{display:flex;align-items:center;gap:14px;max-width:1000px;margin:0 auto}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1000px;margin:0 auto}
+header .brand{display:flex;align-items:center;gap:14px}
+header nav{display:flex;flex-wrap:wrap;gap:8px 18px}
+header nav a{color:#fff;font-weight:700;text-decoration:none}
+header nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.language-picker{display:flex;align-items:center;gap:7px;margin:0;color:#fff;font-size:.85rem;font-weight:700}
+.language-picker select{width:auto;min-width:108px;padding:7px 9px;border-color:rgba(255,255,255,.55);background:rgba(0,0,0,.12);color:#fff}
+.language-picker select option{background:#fff;color:#19332f}
+select{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px}
+.hero,.presentation{max-width:1000px;margin:24px auto;padding:clamp(22px,5vw,48px)}
+.hero{display:grid;grid-template-columns:1.5fr 1fr;align-items:center;gap:28px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--accent);border-radius:12px}
+.hero-kicker{margin:0 0 8px;color:var(--brand);font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
+.hero h2{margin:0 0 14px;color:var(--text);font-size:clamp(2rem,5vw,3.3rem);line-height:1.08}
+.hero p{max-width:55ch;color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero-actions a{display:inline-block;width:auto;margin:0;padding:12px 18px;border-radius:6px;background:var(--brand);color:#fff;text-decoration:none;font-weight:700}
+.hero-actions a.secondary{border:1px solid var(--brand);background:transparent;color:var(--brand)}
+.hero-mark{display:grid;place-items:center;min-height:190px;border-radius:10px;background:linear-gradient(145deg,var(--brand),var(--brand-dark));color:#fff;text-align:center;padding:24px}
+.hero-mark strong{display:block;color:var(--accent);font-size:clamp(2rem,5vw,3rem);line-height:1}
+.hero-mark span{display:block;margin-top:10px;font-weight:700}
+.presentation{padding:0;background:transparent;border:0}
+.presentation h2{margin:0 0 14px;font-size:1.5rem;color:var(--text)}
+.presentation-intro{max-width:65ch;color:var(--muted)}
+.service-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.service-card{padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.service-card strong{display:block;margin-bottom:6px;color:var(--brand)}
+.service-card p{margin:0;color:var(--muted);font-size:.94rem}
+main{scroll-margin-top:16px}
+.form-note{padding:12px 14px;background:var(--bg);border-left:4px solid var(--accent);border-radius:4px;color:var(--muted);font-size:.9rem}
+footer{max-width:1000px;margin:0 auto;padding:12px 20px 36px;color:var(--muted);font-size:.85rem}
+footer p{margin:0}
+@media(max-width:760px){header .bar{align-items:flex-start;flex-direction:column}header nav{padding-left:0;gap:8px}.hero{grid-template-columns:1fr;margin:16px}.hero-mark{min-height:120px}.presentation{margin:24px 16px}.service-cards{grid-template-columns:1fr}main{grid-template-columns:1fr}}
 .fiche-head{display:flex;align-items:center;gap:10px}
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--logo) 0 0/110px 110px repeat;opacity:.06;pointer-events:none}
 @media print{body::before{display:none}}
@@ -61,71 +93,322 @@ label.cam:hover{background:var(--brand);color:#fff}
 label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offset:1px}
 .photo.ticket{aspect-ratio:auto;min-height:70px;max-height:260px}
 .photo.ticket img{height:auto;max-height:260px}
+.assistant-widget{position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));z-index:10;font-family:Arial,sans-serif}
+.assistant-toggle{width:auto;margin:0;box-shadow:0 3px 14px rgba(0,0,0,.2)}
+.assistant-panel{position:absolute;right:0;bottom:calc(100% + .75rem);display:grid;grid-template-rows:auto minmax(10rem,1fr) auto auto;gap:.75rem;width:min(23rem,calc(100vw - 2rem));height:min(34rem,calc(100dvh - 7rem));padding:1rem;background:#fff;color:#243238;border:1px solid #cbd4d2;border-radius:8px;box-shadow:0 5px 24px rgba(0,0,0,.2)}
+.assistant-panel[hidden]{display:none}
+.assistant-header{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.assistant-header h2{margin:0;font:700 1.1rem Arial,sans-serif;color:var(--brand)}
+.assistant-close{width:auto;margin:0;padding:.3rem .6rem;background:transparent;color:var(--brand);border:1px solid var(--brand)}
+.assistant-messages{overflow-y:auto;display:flex;flex-direction:column;align-items:flex-start;gap:.6rem;padding:.25rem}
+.assistant-message{max-width:90%;margin:0;padding:.55rem .7rem;border-radius:8px;background:#f1f5f4;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem}
+.assistant-message.user{align-self:flex-end;background:var(--brand);color:#fff}
+.assistant-status{min-height:1.2em;margin:0;color:var(--grey);font:.82rem Arial,sans-serif}
+.assistant-form{display:grid;gap:.5rem}
+.assistant-form label{margin:0}
+.assistant-form textarea{min-height:4.5rem;max-height:8rem;margin:0;font:.92rem Arial,sans-serif}
+.assistant-form button{justify-self:end;width:auto;margin:0;padding:9px 14px}
+.assistant-privacy{margin:0;color:var(--grey);font:.75rem/1.4 Arial,sans-serif}
+@media(max-width:34rem){.assistant-widget{right:max(.75rem,env(safe-area-inset-right));bottom:max(.75rem,env(safe-area-inset-bottom))}.assistant-panel{position:fixed;right:.5rem;bottom:4.5rem;height:min(34rem,calc(100dvh - 6rem))}}
+:root[data-theme="light"]{
+  --bg:#f3f7f5;
+  --surface:#fff;
+  --text:#19332f;
+  --muted:#637773;
+  --line:#dce7e3;
+  --brand:#08766f;
+  --brand-dark:#055b56;
+  --accent:#f5ca45;
+  --grey:#637773;
+  color-scheme:light;
+}
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+body{background:linear-gradient(180deg,#edf5f2 0,#f7f9f8 450px,var(--bg) 100%);color:var(--text)}
+header{position:relative;background:linear-gradient(115deg,#075e59,#0b8178);border-bottom:4px solid var(--accent);padding:16px 24px;box-shadow:0 5px 20px rgba(13,54,49,.12)}
+header .bar{min-height:54px}
+header .logo{background-color:#fff;padding:3px}
+header nav a{padding:9px 12px;border-radius:6px;transition:background .18s ease}
+header nav a:hover{background:rgba(255,255,255,.14);text-decoration:none}
+.contact-section{max-width:1000px;margin:0 auto 30px;padding:clamp(22px,4vw,36px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(23,66,59,.055)}
+.contact-section h2{margin:0 0 8px;color:var(--text);font-size:1.5rem}
+.contact-section p{margin:0;color:var(--muted)}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.contact-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border:1px solid var(--brand);border-radius:8px;background:var(--brand);color:#fff;font-weight:700;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.contact-actions a.whatsapp{border-color:#16834a;background:#16834a}
+.contact-actions a:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(19,54,49,.16)}
+.hero{position:relative;overflow:hidden;margin:34px auto 28px;padding:clamp(28px,5vw,58px);border:1px solid #dfeae6;border-top:4px solid var(--accent);border-radius:18px;box-shadow:0 18px 48px rgba(23,66,59,.09)}
+.hero-kicker{display:inline-block;padding:6px 11px;background:#e8f4f0;border:1px solid #d7eae3;border-radius:999px;font-size:.76rem}
+.hero h2{max-width:14ch;font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-.045em}
+.hero>div:first-child>p:not(.hero-kicker){font-size:1.08rem;line-height:1.75}
+.hero-mark{position:relative;overflow:hidden;min-height:260px;border-radius:14px;background:radial-gradient(circle at 82% 18%,rgba(245,202,69,.38),transparent 25%),linear-gradient(145deg,#075d58,#0b8b80);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.hero-mark:before,.hero-mark:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.15);border-radius:50%;width:260px;height:260px}
+.hero-mark:before{right:-90px;top:-105px}
+.hero-mark:after{left:-160px;bottom:-205px;width:340px;height:340px}
+.hero-mark strong{font-size:clamp(1.7rem,3.2vw,2.5rem);letter-spacing:.08em;line-height:1.2;text-wrap:balance}
+.hero-mark span{font-size:1.06rem}
+.hero-mark{min-height:0;padding:0;aspect-ratio:1323 / 1600}
+.hero-mark:before,.hero-mark:after{display:none}
+.hero-mark img{display:block;width:100%;height:100%;border-radius:inherit;object-fit:cover}
+.hero-image-credit{position:absolute;right:12px;bottom:12px;z-index:1;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.94);color:var(--brand-dark);font-size:.75rem;font-weight:700;text-decoration:none}
+.hero-actions{gap:12px}
+.hero-actions a{box-shadow:0 5px 12px rgba(8,118,111,.15);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.hero-actions a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(8,118,111,.2)}
+.hero-actions a.secondary{box-shadow:none;background:#fff}
+.presentation{margin:0 auto 34px}
+.presentation h2{font-size:1.7rem;letter-spacing:-.02em}
+.presentation-intro{font-size:1.02rem;line-height:1.7}
+.service-cards{gap:16px;margin-top:24px}
+.service-card{position:relative;overflow:hidden;padding:22px;border-radius:12px;box-shadow:0 7px 22px rgba(23,66,59,.045);transition:transform .18s ease,box-shadow .18s ease}
+.service-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--accent)}
+.service-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(23,66,59,.09)}
+.service-card strong{font-size:1.03rem}
+main{gap:18px;padding-top:8px;padding-bottom:30px}
+main>section{padding:clamp(20px,3vw,30px);border-radius:14px;box-shadow:0 10px 30px rgba(23,66,59,.055)}
+main h2{font-size:1.28rem;letter-spacing:-.02em}
+.form-note{margin:0 0 18px;border:1px solid #e5e9d8;border-left:4px solid var(--accent);background:#fffaf0;color:#586b67}
+label{margin-top:15px}
+input,textarea,select{border-color:#d6e2de;border-radius:8px;transition:border-color .16s ease,box-shadow .16s ease}
+input:hover,textarea:hover,select:hover{border-color:#9bbcb3}
+input:focus,textarea:focus,select:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px rgba(8,118,111,.13)}
+input[type="color"]{height:48px;padding:5px;cursor:pointer}
+input[type="file"]{font-size:.88rem}
+small{display:block;margin-top:5px;color:var(--muted);font-size:.82rem}
+button{border-radius:8px;transition:background .18s ease,transform .18s ease,box-shadow .18s ease}
+button:not(:disabled):hover{transform:translateY(-1px)}
+button:focus-visible,a:focus-visible{outline:3px solid #d5a900;outline-offset:3px}
+.fiche{border:1px solid #cfe0da;border-radius:12px;box-shadow:0 8px 22px rgba(23,66,59,.06)}
+.fiche-head{padding:13px 16px}
+.fiche-body{padding:18px}
+.photo{border-color:#cfddd8;border-radius:9px}
+body::before{opacity:.018;background-size:150px 150px}
+.assistant-widget{padding:0;border:0;border-radius:0;background:transparent}
+.assistant-toggle{box-shadow:0 8px 24px rgba(0,78,72,.25)}
+.assistant-panel{border-color:var(--line);box-shadow:0 18px 50px rgba(19,54,49,.2)}
+footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
+@media(max-width:760px){
+  header{padding:14px 16px}
+  header nav{padding-left:0}
+  .hero{margin:20px 16px 24px;padding:24px;border-radius:14px}
+  .hero h2{max-width:16ch}
+  .hero-mark{min-height:0}
+  .presentation{margin:0 16px 26px}
+  .service-cards{gap:12px}
+  main{padding:0 16px 28px}
+  main>section{padding:20px}
+  .contact-section{margin:0 16px 24px;padding:22px;border-radius:12px}
+  .contact-actions{display:grid;grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{scroll-behavior:auto!important;transition:none!important}
+}
 </style>
 </head>
 <body>
 <header>
-  <div class="bar"><span class="logo" role="img" aria-label="Logo Dem Dikk"></span>
-  <div><h1>Objets et bagages perdus</h1>
-  <p>AIBD · Dem Dikk SA</p></div></div>
+  <div class="bar">
+    <div class="brand">
+      <span class="logo" role="img" aria-label="Logo Dem Dikk"></span>
+      <div><h1>AIBD DEM DIKK</h1>
+      <p data-i18n="brandSubtitle">Objets et bagages perdus</p></div>
+    </div>
+    <nav aria-label="Navigation principale" data-i18n-aria="mainNav">
+      <a href="#service" data-i18n="navService">Le service</a>
+      <a href="#declaration" data-i18n="navForm">Préparer ma fiche</a>
+      <a href="#contact" data-i18n="navContact">Nous contacter</a>
+      <label class="language-picker" for="language-select"><span data-i18n="languageLabel">Langue</span>
+        <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+          <option value="wo">Wolof</option>
+        </select>
+      </label>
+    </nav>
+  </div>
 </header>
-<main>
+<section class="hero" aria-labelledby="titre-vitrine">
+  <div>
+    <p class="hero-kicker">AIBD DEM DIKK</p>
+    <h2 id="titre-vitrine" data-i18n="heroTitle">Voyagez l’esprit plus tranquille.</h2>
+    <p data-i18n="heroText">Un bagage égaré pendant votre trajet ? Retrouvez ici les informations utiles sur le service objets et bagages perdus et préparez une fiche avec les détails de votre bagage.</p>
+    <div class="hero-actions">
+      <a href="#declaration" data-i18n="heroForm">Préparer ma fiche</a>
+      <a class="secondary" href="#service" data-i18n="heroService">Découvrir le service</a>
+    </div>
+  </div>
+  <div class="hero-mark" aria-label="Service objets et bagages perdus" data-i18n-aria="heroMark">
+    <img src="assets/dem-dikk-express-aibd.jpg" alt="Affiche officielle de la navette Express AIBD de Dem Dikk, entre Dakar et l’aéroport Blaise-Diagne" fetchpriority="high">
+  </div>
+</section>
+<section class="presentation" id="service" aria-labelledby="titre-service">
+  <h2 id="titre-service" data-i18n="serviceTitle">À vos côtés pour vos déplacements</h2>
+  <p class="presentation-intro" data-i18n="serviceText">Dem Dikk accompagne les voyageurs dans leurs déplacements. Cette page vous aide à préparer les renseignements utiles lorsqu’un bagage est égaré.</p>
+  <div class="service-cards">
+    <article class="service-card">
+      <strong data-i18n="cardDescribeTitle">Décrivez le bagage</strong>
+      <p data-i18n="cardDescribeText">Indiquez ses signes distinctifs, sa couleur et, si possible, ajoutez une photo pour faciliter son identification.</p>
+    </article>
+    <article class="service-card">
+      <strong data-i18n="cardJourneyTitle">Précisez le trajet</strong>
+      <p data-i18n="cardJourneyText">Choisissez le lieu et la date de la perte, puis ajoutez le numéro du bus si vous le connaissez.</p>
+    </article>
+    <article class="service-card">
+      <strong data-i18n="cardFormTitle">Préparez votre fiche</strong>
+      <p data-i18n="cardFormText">Renseignez vos coordonnées et exportez une fiche récapitulative en PDF depuis le formulaire.</p>
+    </article>
+  </div>
+</section>
+<main id="declaration">
   <section class="noprint">
-    <h2>Déclarer un bagage</h2>
-    <label for="nom">Nom du propriétaire</label>
+    <h2 data-i18n="formTitle">Préparer ma fiche de déclaration</h2>
+    <p class="form-note" data-i18n="formNote">Remplissez les informations disponibles, puis choisissez « Exporter la fiche en PDF ». Cette page prépare une fiche sur votre appareil ; elle ne transmet pas automatiquement votre déclaration au service.</p>
+    <label for="nom" data-i18n="ownerLabel">Nom du propriétaire</label>
     <input id="nom" autocomplete="name">
-    <label for="tel">Téléphone</label>
+    <label for="tel" data-i18n="phoneLabel">Téléphone</label>
     <input id="tel" type="tel" autocomplete="tel">
-    <label for="desc">Description du bagage</label>
-    <textarea id="desc" placeholder="Couleur, taille, marque, signes distinctifs"></textarea>
-    <label for="lieu">Lieu et date de la perte</label>
-    <input id="lieu" placeholder="Ex. : Terminal AIBD, bus ligne 1, 27/10/2026">
-    <label for="tkt">Numéro du ticket de bus</label>
-    <input id="tkt" inputmode="text" placeholder="Ex. : DD-123456">
-    <label for="photo">Photo du bagage</label>
+    <label for="desc" data-i18n="descriptionLabel">Description du bagage</label>
+    <textarea id="desc" placeholder="Couleur, taille, marque, signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
+    <label for="couleur" data-i18n="colorLabel">Couleur du bagage</label>
+    <input id="couleur" type="color" value="#000000" aria-describedby="aide-couleur">
+    <small id="aide-couleur" data-i18n="colorHelp">Choisissez une couleur dans le sélecteur. Vous pouvez sélectionner toutes les couleurs.</small>
+    <label for="lieu" data-i18n="locationLabel">Lieu de la perte</label>
+    <select id="lieu">
+      <option value="" data-i18n="chooseLocation">Choisir un lieu</option>
+      <option value="AIBD">AIBD</option>
+      <option value="HLM GRAND YOFF">HLM GRAND YOFF</option>
+    </select>
+    <label for="date-perte" data-i18n="dateLabel">Date de la perte</label>
+    <input id="date-perte" type="date">
+    <label for="tkt" data-i18n="busLabel">Numéro du bus</label>
+    <input id="tkt" inputmode="text" placeholder="Ex. : bus ligne 1" data-i18n-placeholder="busPlaceholder">
+    <label for="photo" data-i18n="photoLabel">Photo du bagage</label>
     <input id="photo" type="file" accept="image/*">
-    <label class="cam" for="photo-cam">Prendre une photo du bagage</label>
+    <label class="cam" for="photo-cam" data-i18n="takePhoto">Prendre une photo du bagage</label>
     <input id="photo-cam" class="sr" type="file" accept="image/*" capture="environment">
-    <label for="ticket">Importer le ticket de bus acheté</label>
+    <label for="ticket" data-i18n="ticketLabel">Importer le ticket de bus acheté</label>
     <input id="ticket" type="file" accept="image/*">
-    <label class="cam" for="ticket-cam">Prendre une photo du ticket</label>
+    <label class="cam" for="ticket-cam" data-i18n="takeTicketPhoto">Prendre une photo du ticket</label>
     <input id="ticket-cam" class="sr" type="file" accept="image/*" capture="environment">
-    <button type="button" id="exp" class="alt">Exporter la fiche en PDF</button>
+    <button type="button" id="exp" class="alt" data-i18n="exportPdf">Exporter la fiche en PDF</button>
   </section>
 
   <section class="fiche-section">
-    <h2>Fiche du propriétaire</h2>
+    <h2 data-i18n="ownerSheet">Fiche du propriétaire</h2>
     <div class="fiche">
-      <div class="fiche-head"><span class="logo sm" role="img" aria-label="Logo Dem Dikk"></span>Objets et bagages perdus – AIBD Dem Dikk SA</div>
+      <div class="fiche-head"><span class="logo sm" role="img" aria-label="Logo Dem Dikk"></span><span data-i18n="pdfBrandTitle">AIBD DEM DIKK — Objets et bagages perdus</span></div>
       <div class="fiche-body">
-        <div class="photo" id="ph">Aucune photo ajoutée</div>
-        <div class="photo ticket" id="ph2">Aucun ticket importé</div>
+        <div class="photo" id="ph" data-i18n="noPhoto">Aucune photo ajoutée</div>
+        <div class="photo ticket" id="ph2" data-i18n="noTicket">Aucun ticket importé</div>
         <dl>
-          <dt>Propriétaire</dt><dd id="o-nom">—</dd>
-          <dt>Téléphone</dt><dd id="o-tel">—</dd>
-          <dt>Bagage</dt><dd id="o-desc">—</dd>
-          <dt>Lieu et date</dt><dd id="o-lieu">—</dd>
-          <dt>N° du ticket</dt><dd id="o-tkt">—</dd>
+          <dt data-i18n="ownerLabel">Propriétaire</dt><dd id="o-nom">—</dd>
+          <dt data-i18n="phoneLabel">Téléphone</dt><dd id="o-tel">—</dd>
+          <dt data-i18n="baggageLabel">Bagage</dt><dd id="o-desc">—</dd>
+          <dt data-i18n="colorLabel">Couleur du bagage</dt><dd id="o-couleur">Non précisée</dd>
+          <dt data-i18n="locationDate">Lieu et date</dt><dd id="o-lieu">—</dd>
+          <dt data-i18n="busNumber">N° du bus</dt><dd id="o-tkt">—</dd>
         </dl>
         <div class="ref" id="ref"></div>
       </div>
     </div>
   </section>
 </main>
+<section class="assistant-widget noprint" aria-label="Assistant IA" data-i18n-aria="assistantRegion">
+  <div class="assistant-panel" id="assistant-panel" hidden>
+    <div class="assistant-header">
+      <h2 id="assistant-title" data-i18n="assistantTitle">Assistant objets perdus</h2>
+      <button class="assistant-close" id="assistant-close" type="button" aria-label="Fermer l’assistant" data-i18n="close">Fermer</button>
+    </div>
+    <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
+      <p class="assistant-message" data-i18n="assistantWelcome">Bonjour ! Je peux répondre aux questions sur cette page et vous guider pour préparer une déclaration. N’écrivez pas de nom, de numéro de téléphone ni de numéro de ticket dans le chat.</p>
+    </div>
+    <p class="assistant-status" id="assistant-status" role="status" aria-live="polite"></p>
+    <form class="assistant-form" id="assistant-form">
+      <label for="assistant-input" data-i18n="questionLabel">Votre question</label>
+      <textarea id="assistant-input" maxlength="1200" required placeholder="Ex. : comment préparer ma déclaration ?" data-i18n-placeholder="questionPlaceholder"></textarea>
+      <button id="assistant-send" type="submit" data-i18n="send">Envoyer</button>
+    </form>
+    <p class="assistant-privacy" data-i18n="assistantPrivacy">Seuls les messages du chat sont envoyés à un service d’IA pour générer une réponse. N’y partagez aucune donnée personnelle.</p>
+  </div>
+  <button class="assistant-toggle" id="assistant-toggle" type="button" aria-expanded="false" aria-controls="assistant-panel" data-i18n="needHelp">Besoin d’aide ?</button>
+</section>
 <script>
 (function(){
-  var ids=["nom","tel","desc","lieu","tkt"];
+  var t={
+    fr:{pageTitle:"Objets et bagages perdus – AIBD DEM DIKK",metaDescription:"Découvrez le service objets et bagages perdus AIBD DEM DIKK et préparez une fiche de renseignements pour votre bagage.",brandSubtitle:"Objets et bagages perdus",pdfBrandTitle:"AIBD DEM DIKK — Objets et bagages perdus",mainNav:"Navigation principale",navService:"Le service",navForm:"Préparer ma fiche",navContact:"Nous contacter",languageLabel:"Langue",heroTitle:"Voyagez l’esprit plus tranquille.",heroText:"Un bagage égaré pendant votre trajet ? Retrouvez ici les informations utiles sur le service objets et bagages perdus et préparez une fiche avec les détails de votre bagage.",heroForm:"Préparer ma fiche",heroService:"Découvrir le service",heroMark:"Service objets et bagages perdus",serviceTitle:"À vos côtés pour vos déplacements",serviceText:"Dem Dikk accompagne les voyageurs dans leurs déplacements. Cette page vous aide à préparer les renseignements utiles lorsqu’un bagage est égaré.",cardDescribeTitle:"Décrivez le bagage",cardDescribeText:"Indiquez ses signes distinctifs, sa couleur et, si possible, ajoutez une photo pour faciliter son identification.",cardJourneyTitle:"Précisez le trajet",cardJourneyText:"Choisissez le lieu et la date de la perte, puis ajoutez le numéro du bus si vous le connaissez.",cardFormTitle:"Préparez votre fiche",cardFormText:"Renseignez vos coordonnées et exportez une fiche récapitulative en PDF depuis le formulaire.",formTitle:"Préparer ma fiche de déclaration",formNote:"Remplissez les informations disponibles, puis choisissez « Exporter la fiche en PDF ». Cette page prépare une fiche sur votre appareil ; elle ne transmet pas automatiquement votre déclaration au service.",ownerLabel:"Nom du propriétaire",phoneLabel:"Téléphone",descriptionLabel:"Description du bagage",descriptionPlaceholder:"Couleur, taille, marque, signes distinctifs",colorLabel:"Couleur du bagage",colorHelp:"Choisissez une couleur dans le sélecteur. Vous pouvez sélectionner toutes les couleurs.",locationLabel:"Lieu de la perte",chooseLocation:"Choisir un lieu",dateLabel:"Date de la perte",busLabel:"Numéro du bus",busPlaceholder:"Ex. : bus ligne 1",photoLabel:"Photo du bagage",takePhoto:"Prendre une photo du bagage",ticketLabel:"Importer le ticket de bus acheté",takeTicketPhoto:"Prendre une photo du ticket",exportPdf:"Exporter la fiche en PDF",ownerSheet:"Fiche du propriétaire",noPhoto:"Aucune photo ajoutée",noTicket:"Aucun ticket importé",baggageLabel:"Bagage",locationDate:"Lieu et date",busNumber:"N° du bus",assistantRegion:"Assistant IA",assistantTitle:"Assistant objets perdus",close:"Fermer",assistantWelcome:"Bonjour ! Je peux répondre aux questions sur cette page et vous guider pour préparer une déclaration. N’écrivez pas de nom, de numéro de téléphone ni de numéro de ticket dans le chat.",questionLabel:"Votre question",questionPlaceholder:"Ex. : comment préparer ma déclaration ?",send:"Envoyer",assistantPrivacy:"Seuls les messages du chat sont envoyés à un service d’IA pour générer une réponse. N’y partagez aucune donnée personnelle.",needHelp:"Besoin d’aide ?",contactTitle:"Besoin d’aide ? Contactez-nous.",contactText:"Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.",whatsapp:"Écrire sur WhatsApp",call:"Appeler le 77 552 12 91",whatsappAria:"Nous contacter sur WhatsApp au 77 552 12 91",callAria:"Appeler le 77 552 12 91",footerText:"AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.",footerContact:"Contacter le service",notSpecified:"Non précisée",photoAlt:"Photo du bagage",cameraAlt:"Photo prise avec l’appareil",ticketAlt:"Ticket de bus",refPrefix:"Fiche n° ",refEdited:" · éditée le ",thinking:"Je prépare une réponse…",invalidResponse:"Le service a renvoyé une réponse invalide. Réessayez.",unavailable:"L’assistant est indisponible ici. Ouvrez le site publié et réessayez.",serviceUnavailable:"Le service est momentanément indisponible.",connectionError:"Impossible de contacter l’assistant. Vérifiez votre connexion et réessayez.",serverErrors:{notConfigured:"L’assistant n’est pas encore configuré.",invalidConversation:"Format de conversation invalide.",invalidMessage:"Un message est vide ou trop long.",mustEndWithQuestion:"La conversation doit se terminer par une question.",invalidOrigin:"Origine de requête invalide.",notAllowed:"Méthode non autorisée.",originNotAllowed:"Origine de requête non autorisée.",aiConnectionError:"Impossible de joindre le service IA pour le moment.",aiError:"Le service IA a rencontré une erreur. Réessayez plus tard.",aiInvalidJson:"Le service IA a renvoyé une réponse invalide.",aiNoReply:"Le service IA n’a pas fourni de réponse."},exportedOn:"éditée le "},
+    en:{pageTitle:"Lost property and baggage – AIBD DEM DIKK",metaDescription:"Discover the AIBD DEM DIKK lost property service and prepare an information sheet for your baggage.",brandSubtitle:"Lost property and baggage",mainNav:"Main navigation",navService:"The service",navForm:"Prepare my form",navContact:"Contact us",languageLabel:"Language",heroTitle:"Travel with greater peace of mind.",heroText:"Lost a bag during your journey? Find useful information about the lost property service and prepare a form with your baggage details.",heroForm:"Prepare my form",heroService:"Discover the service",heroMark:"Lost property and baggage service",serviceTitle:"Here to support your journey",serviceText:"Dem Dikk accompanies passengers on their journeys. This page helps you prepare the information needed if your baggage goes missing.",cardDescribeTitle:"Describe your baggage",cardDescribeText:"Add identifying features and its colour, and, if possible, a photo to help identify it.",cardJourneyTitle:"Add your journey details",cardJourneyText:"Choose where and when it was lost, then add the bus number if you know it.",cardFormTitle:"Prepare your form",cardFormText:"Enter your contact details and export a summary sheet as a PDF using the form.",formTitle:"Prepare a lost baggage form",formNote:"Fill in the information you have, then select “Export form as PDF”. This page prepares a form on your device; it does not automatically send your report to the service.",ownerLabel:"Owner’s name",phoneLabel:"Phone number",descriptionLabel:"Baggage description",descriptionPlaceholder:"Colour, size, brand and identifying features",colorLabel:"Baggage colour",colorHelp:"Choose a colour using the picker. Any colour can be selected.",locationLabel:"Place where it was lost",chooseLocation:"Choose a location",dateLabel:"Date it was lost",busLabel:"Bus number",busPlaceholder:"E.g. bus route 1",photoLabel:"Baggage photo",takePhoto:"Take a photo of the baggage",ticketLabel:"Upload the bus ticket",takeTicketPhoto:"Take a photo of the ticket",exportPdf:"Export form as PDF",ownerSheet:"Owner’s information sheet",noPhoto:"No photo added",noTicket:"No ticket uploaded",baggageLabel:"Baggage",locationDate:"Place and date",busNumber:"Bus number",assistantRegion:"AI assistant",assistantTitle:"Lost property assistant",close:"Close",assistantWelcome:"Hello! I can answer questions about this page and help you prepare a report. Please do not enter a name, phone number or ticket number in the chat.",questionLabel:"Your question",questionPlaceholder:"E.g. how do I prepare my report?",send:"Send",assistantPrivacy:"Only chat messages are sent to an AI service to generate a reply. Do not share personal information here.",needHelp:"Need help?",contactTitle:"Need help? Contact us.",contactText:"If you have a question about your baggage, message us on WhatsApp or call us directly.",whatsapp:"Message us on WhatsApp",call:"Call 77 552 12 91",whatsappAria:"Contact us on WhatsApp at 77 552 12 91",callAria:"Call 77 552 12 91",footerText:"AIBD DEM DIKK — Information and form preparation for lost property and baggage.",footerContact:"Contact the service",notSpecified:"Not specified",photoAlt:"Baggage photo",cameraAlt:"Photo taken with the camera",ticketAlt:"Bus ticket",refPrefix:"Form no. ",refEdited:" · issued on ",thinking:"Preparing a reply…",invalidResponse:"The service returned an invalid response. Please try again.",unavailable:"The assistant is unavailable here. Open the published website and try again.",serviceUnavailable:"The service is temporarily unavailable.",connectionError:"Could not contact the assistant. Check your connection and try again.",serverErrors:{notConfigured:"The assistant has not been configured yet.",invalidConversation:"Invalid conversation format.",invalidMessage:"A message is empty or too long.",mustEndWithQuestion:"The conversation must end with a question.",invalidOrigin:"Invalid request origin.",notAllowed:"Method not allowed.",originNotAllowed:"Request origin not allowed.",aiConnectionError:"Could not reach the AI service. Please try again later.",aiError:"The AI service encountered an error. Please try again later.",aiInvalidJson:"The AI service returned an invalid response.",aiNoReply:"The AI service did not provide a reply."},exportedOn:"issued on "},
+    wo:{pageTitle:"Yëkkatu yi ñu réer – AIBD DEM DIKK",metaDescription:"Xamleel sa bopp ci yëkkatu yi ñu réer ak defar kayitu sa yëkkatu ci AIBD DEM DIKK.",brandSubtitle:"Yëkkatu yi ñu réer",mainNav:"Toppatoo bu njëkk",navService:"Liñuy joxe",navForm:"Defar sama kayit",navContact:"Jokkoo ak nun",languageLabel:"Làkk",heroTitle:"Tukki ak xel mu dal.",heroText:"Sa yëkkatu réer na ci sa tukki ? Fi nga nekk, man nga am xibaar ci yëkkatu yi ñu réer te defar kayit bu am leeral yi ci sa yëkkatu.",heroForm:"Defar sama kayit",heroService:"Xool liñuy joxe",heroMark:"Sarwiis yëkkatu yi ñu réer",serviceTitle:"Nun ngi ci sa wet ci sa tukki",serviceText:"Dem Dikk ngi ànd ak tukkiy yi. Xët wii dina la dimbali nga waajal xibaar yi ñuy soxla bu yëkkatu réer.",cardDescribeTitle:"Waxal ni sa yëkkatu mel",cardDescribeText:"Waxal melokaanam ak meloom, te su fekkee mënees na, yokk nataal ngir ñu mën ko ràññee.",cardJourneyTitle:"Waxal sa yoon",cardJourneyText:"Tànnal fu mu réer ak bés bi, te yokk nimero bas bi su fekkee xam nga ko.",cardFormTitle:"Waajal sa kayit",cardFormText:"Dugalal sa xibaaru jokkoo te génne kayit bu gàtt ci PDF ci formileer bi.",formTitle:"Waajal kayitu yëkkatu bi réer",formNote:"Dugalal xibaar yi nga am, te tànn « Génne kayit bi ci PDF ». Xët wii dafay defar kayit ci sa aparey; du yónnee sa xibaar ci sarwiis bi.",ownerLabel:"Tur wu boroom bi",phoneLabel:"Nimero telefon",descriptionLabel:"Ni yëkkatu bi mel",descriptionPlaceholder:"Melo, rëyaay, marka ak misaal yu koy ràññee",colorLabel:"Melo wu yëkkatu bi",colorHelp:"Tànnal benn melo ci palet bi. Mën nga tànn bépp melo.",locationLabel:"Fu mu réer",chooseLocation:"Tànnal fu mu réer",dateLabel:"Bés bi mu réer",busLabel:"Nimero bas bi",busPlaceholder:"Misaal: bas ligne 1",photoLabel:"Nataalu yëkkatu bi",takePhoto:"Jëlal nataal bu yëkkatu bi",ticketLabel:"Yebbi tikke bu bas bi",takeTicketPhoto:"Jëlal nataal bu tikke bi",exportPdf:"Génne kayit bi ci PDF",ownerSheet:"Kayitu boroom bi",noPhoto:"Amul nataal",noTicket:"Amul tikke bu ñu yebbi",baggageLabel:"Yëkkatu",locationDate:"Fu mu réer ak bés bi",busNumber:"Nimero bas bi",assistantRegion:"Dimbali bu IA",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",close:"Tëj",assistantWelcome:"Nanga def ! Mën naa tontu la ci laaj yi jëm ci xët wii te dimbali la nga waajal sa xibaar. Bul bind tur, nimero telefon walla nimero tikke ci waxtaan wi.",questionLabel:"Sa laaj",questionPlaceholder:"Misaal: naka laay waajee sama xibaar?",send:"Yónnee",assistantPrivacy:"Waxtaan bi rekk lañuy yónnee ci sarwiisu IA ngir mu tontu. Bul séddoo xibaaru bopp ci fii.",needHelp:"Soxla nga dimbali?",contactTitle:"Soxla nga dimbali? Jokkoo ak nun.",contactText:"Su amee laaj ci sa yëkkatu, bindal nu ci WhatsApp walla woo nu.",whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu ci 77 552 12 91",whatsappAria:"Jokkoo ak nun ci WhatsApp: 77 552 12 91",callAria:"Woo 77 552 12 91",footerText:"AIBD DEM DIKK — Xibaar ak waajal kayit ci yëkkatu yi ñu réer.",footerContact:"Jokkoo ak sarwiis bi",notSpecified:"Ñu waxul",photoAlt:"Nataalu yëkkatu bi",cameraAlt:"Nataal bu kamera bi jël",ticketAlt:"Tikke bu bas bi",refPrefix:"Kayit nimero ",refEdited:" · bindees ko ci ",thinking:"Maa ngi waajal tontu…",invalidResponse:"Sarwiis bi delloo tontu bu baaxul. Jéemaatal.",unavailable:"Dimbali bi doxul fii. Ubbi site bi ñu siiwal te jéemaatal.",serviceUnavailable:"Sarwiis bi doxul léegi. Jéemaatal ci kanam.",connectionError:"Mëneesula jokkoo ak dimbali bi. Seetal sa internet te jéemaatal.",serverErrors:{notConfigured:"Dimbali bi ñu paregul.",invalidConversation:"Melokaanu waxtaan wi baaxul.",invalidMessage:"Benn bataaxal dafa féex walla dafa gudd lool.",mustEndWithQuestion:"Waxtaan wi war na jeex ak laaj.",invalidOrigin:"Bunt bu ñu yónnee laaj bi baaxul.",notAllowed:"Jëf ji kenn mayuko.",originNotAllowed:"Bunt bii kenn mayuko.",aiConnectionError:"Mëneesula jot ci sarwiisu IA. Jéemaatal ci kanam.",aiError:"Sarwiisu IA am na jafe-jafe. Jéemaatal ci kanam.",aiInvalidJson:"Sarwiisu IA delloo tontu bu baaxul.",aiNoReply:"Sarwiisu IA tontuwul."},exportedOn:"bindees ko ci "}
+  };
+  Object.assign(t.fr,{whatsapp:"Écrire sur WhatsApp",call:"Appeler",whatsappAria:"Nous contacter sur WhatsApp",callAria:"Appeler le service"});
+  Object.assign(t.en,{whatsapp:"Message us on WhatsApp",call:"Call us",whatsappAria:"Contact us on WhatsApp",callAria:"Call the service"});
+  Object.assign(t.wo,{whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu",whatsappAria:"Jokkoo ak nun ci WhatsApp",callAria:"Woo sarwiis bi"});
+  t.en.pdfBrandTitle="AIBD DEM DIKK — Lost property and baggage";
+  t.wo.pdfBrandTitle="AIBD DEM DIKK — Yëkkatu yi ñu réer";
+  var select=document.getElementById("language-select");
+  var language="fr";
+  try{
+    var saved=localStorage.getItem("aibd-language");
+    if(saved&&t[saved])language=saved;
+  }catch(error){}
+  select.value=language;
+  window.siteLanguage=language;
+  window.siteTranslations=t;
+  window.siteText=function(key){return t[window.siteLanguage][key]||t.fr[key]||key};
+  function applyLanguage(){
+    language=select.value;
+    window.siteLanguage=language;
+    var d=t[language];
+    document.documentElement.lang=language;
+    document.title=d.pageTitle;
+    document.querySelector('meta[name="description"]').content=d.metaDescription;
+    document.querySelectorAll("[data-i18n]").forEach(function(element){
+      if((element.id==="ph"||element.id==="ph2")&&element.querySelector("img"))return;
+      element.textContent=d[element.getAttribute("data-i18n")];
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(element){element.placeholder=d[element.getAttribute("data-i18n-placeholder")]});
+    document.querySelectorAll("[data-i18n-aria]").forEach(function(element){element.setAttribute("aria-label",d[element.getAttribute("data-i18n-aria")])});
+    document.querySelector("#contact .whatsapp").setAttribute("aria-label",d.whatsappAria);
+    document.querySelector('#contact a[href^="tel:"]').setAttribute("aria-label",d.callAria);
+    document.getElementById("o-couleur").textContent=d.notSpecified;
+    try{localStorage.setItem("aibd-language",language)}catch(error){}
+    if(window.updateBagPreview)window.updateBagPreview();
+  }
+  select.addEventListener("change",applyLanguage);
+  document.addEventListener("DOMContentLoaded",applyLanguage);
+})();
+</script>
+<script>
+(function(){
+  var ids=["nom","tel","desc","tkt"];
+  var couleurChoisie=false;
   function maj(){
     ids.forEach(function(i){
       document.getElementById("o-"+i).textContent=document.getElementById(i).value.trim()||"—";
     });
+    var lieu=document.getElementById("lieu").value;
+    var datePerte=document.getElementById("date-perte").value;
+    var locale=window.siteLanguage==="en"?"en-GB":window.siteLanguage==="wo"?"wo-SN":"fr-FR";
+    var dateAffichee=datePerte
+      ?new Date(datePerte+"T00:00:00").toLocaleDateString(locale)
+      :"";
+    document.getElementById("o-lieu").textContent=[lieu,dateAffichee].filter(Boolean).join(" · ")||"—";
+    document.getElementById("o-couleur").textContent=couleurChoisie
+      ?document.getElementById("couleur").value.toUpperCase()
+      :window.siteText("notSpecified");
   }
+  window.updateBagPreview=maj;
   ids.forEach(function(i){document.getElementById(i).addEventListener("input",maj)});
+  document.getElementById("lieu").addEventListener("change",maj);
+  document.getElementById("date-perte").addEventListener("input",maj);
+  document.getElementById("tkt").addEventListener("change",maj);
+  document.getElementById("couleur").addEventListener("input",function(){
+    couleurChoisie=true;
+    maj();
+  });
   document.getElementById("photo").addEventListener("change",function(e){
     var f=e.target.files&&e.target.files[0], ph=document.getElementById("ph");
-    if(!f){ph.textContent="Aucune photo ajoutée";return}
+    if(!f){ph.textContent=window.siteText("noPhoto");return}
     var r=new FileReader();
-    r.onload=function(){var im=new Image();im.alt="Photo du bagage";im.src=r.result;ph.textContent="";ph.appendChild(im)};
+    r.onload=function(){var im=new Image();im.alt=window.siteText("photoAlt");im.src=r.result;ph.textContent="";ph.appendChild(im)};
     r.readAsDataURL(f);
   });
   [["photo-cam","ph"],["ticket-cam","ph2"]].forEach(function(c){
@@ -133,24 +416,106 @@ label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offse
       var f=e.target.files&&e.target.files[0], ph=document.getElementById(c[1]);
       if(!f)return;
       var r=new FileReader();
-      r.onload=function(){var im=new Image();im.alt="Photo prise avec l'appareil";im.src=r.result;ph.textContent="";ph.appendChild(im)};
+      r.onload=function(){var im=new Image();im.alt=window.siteText("cameraAlt");im.src=r.result;ph.textContent="";ph.appendChild(im)};
       r.readAsDataURL(f);
     });
   });
   document.getElementById("ticket").addEventListener("change",function(e){
     var f=e.target.files&&e.target.files[0], ph=document.getElementById("ph2");
-    if(!f){ph.textContent="Aucun ticket importé";return}
+    if(!f){ph.textContent=window.siteText("noTicket");return}
     var r=new FileReader();
-    r.onload=function(){var im=new Image();im.alt="Ticket de bus";im.src=r.result;ph.textContent="";ph.appendChild(im)};
+    r.onload=function(){var im=new Image();im.alt=window.siteText("ticketAlt");im.src=r.result;ph.textContent="";ph.appendChild(im)};
     r.readAsDataURL(f);
   });
   document.getElementById("exp").addEventListener("click",function(){
-    var d=new Date(), ref="Fiche n° "+d.getFullYear()+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.floor(1000+Math.random()*9000)+" · éditée le "+d.toLocaleDateString("fr-FR");
+    var locale=window.siteLanguage==="en"?"en-GB":window.siteLanguage==="wo"?"wo-SN":"fr-FR";
+    var d=new Date(), ref=window.siteText("refPrefix")+d.getFullYear()+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.floor(1000+Math.random()*9000)+window.siteText("refEdited")+d.toLocaleDateString(locale);
     document.getElementById("ref").textContent=ref;
     window.print();
   });
   maj();
 })();
 </script>
+<script>
+(function(){
+  var toggle=document.getElementById("assistant-toggle");
+  var panel=document.getElementById("assistant-panel");
+  var close=document.getElementById("assistant-close");
+  var form=document.getElementById("assistant-form");
+  var input=document.getElementById("assistant-input");
+  var send=document.getElementById("assistant-send");
+  var messagesElement=document.getElementById("assistant-messages");
+  var status=document.getElementById("assistant-status");
+  var messages=[];
+
+  function setOpen(open){
+    panel.hidden=!open;
+    toggle.setAttribute("aria-expanded",String(open));
+    if(open)input.focus();
+    else toggle.focus();
+  }
+
+  function addMessage(role,text){
+    var message=document.createElement("p");
+    message.className="assistant-message"+(role==="user"?" user":"");
+    message.textContent=text;
+    messagesElement.appendChild(message);
+    messagesElement.scrollTop=messagesElement.scrollHeight;
+  }
+
+  toggle.addEventListener("click",function(){setOpen(panel.hidden)});
+  close.addEventListener("click",function(){setOpen(false)});
+  form.addEventListener("submit",async function(event){
+    event.preventDefault();
+    var text=input.value.trim();
+    if(!text||send.disabled)return;
+    messages.push({role:"user",content:text});
+    messages=messages.slice(-12);
+    addMessage("user",text);
+    input.value="";
+    input.disabled=true;
+    send.disabled=true;
+    status.textContent=window.siteText("thinking");
+    try{
+      var response=await fetch("/api/chat",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({messages:messages,language:window.siteLanguage})
+      });
+      var result;
+      try{
+        result=await response.json();
+      }catch(parseError){
+        throw new Error(response.ok
+          ?window.siteText("invalidResponse")
+          :window.siteText("unavailable"));
+      }
+      if(!response.ok)throw new Error((result&&result.error)||window.siteText("serviceUnavailable"));
+      if(typeof result.reply!=="string"||!result.reply.trim())throw new Error(window.siteText("invalidResponse"));
+      messages.push({role:"assistant",content:result.reply});
+      messages=messages.slice(-12);
+      addMessage("assistant",result.reply);
+      status.textContent="";
+    }catch(error){
+      status.textContent=error.message||window.siteText("connectionError");
+    }finally{
+      input.disabled=false;
+      send.disabled=false;
+      input.focus();
+    }
+  });
+})();
+</script>
+<section class="contact-section noprint" id="contact" aria-labelledby="titre-contact">
+  <h2 id="titre-contact" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h2>
+  <p data-i18n="contactText">Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.</p>
+  <div class="contact-actions">
+    <a class="whatsapp" href="https://wa.me/221775521291" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp" data-i18n="whatsapp">Écrire sur WhatsApp</a>
+    <a href="tel:+221775521291" aria-label="Appeler le service" data-i18n="call">Appeler</a>
+  </div>
+</section>
+<footer>
+  <p><span data-i18n="footerText">AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.</span> <a href="#contact" data-i18n="footerContact">Contacter le service</a></p>
+</footer>
 </body>
 </html>
