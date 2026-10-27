@@ -107,6 +107,7 @@ label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offse
 .assistant-form{display:grid;gap:.5rem}
 .assistant-form label{margin:0}
 .assistant-form textarea{min-height:4.5rem;max-height:8rem;margin:0;font:.92rem Arial,sans-serif}
+.assistant-actions{display:flex;justify-content:flex-end;gap:.5rem}
 .assistant-form button{justify-self:end;width:auto;margin:0;padding:9px 14px}
 .assistant-privacy{margin:0;color:var(--grey);font:.75rem/1.4 Arial,sans-serif}
 @media(max-width:34rem){.assistant-widget{right:max(.75rem,env(safe-area-inset-right));bottom:max(.75rem,env(safe-area-inset-bottom))}.assistant-panel{position:fixed;right:.5rem;bottom:4.5rem;height:min(34rem,calc(100dvh - 6rem))}}
@@ -325,7 +326,10 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <form class="assistant-form" id="assistant-form">
       <label for="assistant-input" data-i18n="questionLabel">Votre question</label>
       <textarea id="assistant-input" maxlength="1200" required placeholder="Ex. : comment préparer ma déclaration ?" data-i18n-placeholder="questionPlaceholder"></textarea>
-      <button id="assistant-send" type="submit" data-i18n="send">Envoyer</button>
+      <div class="assistant-actions">
+        <button id="assistant-voice" type="button" aria-label="Dicter votre question" data-i18n="voiceInput" data-i18n-aria="voiceInputAria">Parler</button>
+        <button id="assistant-send" type="submit" data-i18n="send">Envoyer</button>
+      </div>
     </form>
     <p class="assistant-privacy" data-i18n="assistantPrivacy">Seuls les messages du chat sont envoyés à un service d’IA pour générer une réponse. N’y partagez aucune donnée personnelle.</p>
   </div>
@@ -341,6 +345,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   Object.assign(t.fr,{assistantRegion:"Assistant en ligne",assistantTitle:"Assistant objets perdus",assistantWelcome:"Bonjour ! Je suis l’assistant automatique du site. Je peux vous guider pour préparer une déclaration et répondre aux questions fréquentes. Pour une vérification personnelle, contactez le service avec les boutons ci-dessous. Ne partagez pas de données personnelles dans le chat.",assistantPrivacy:"Selon la configuration du site, vos messages peuvent être traités par un service d’IA. Ne partagez aucune donnée personnelle dans le chat.",automaticReply:"Réponse automatique du site."});
   Object.assign(t.en,{assistantRegion:"Online assistant",assistantTitle:"Lost property assistant",assistantWelcome:"Hello! I am the website’s automatic assistant. I can guide you through preparing a report and answer common questions. For a personal follow-up, contact the service using the buttons below. Do not share personal information in the chat.",assistantPrivacy:"Depending on the site configuration, your messages may be processed by an AI service. Do not share personal information in the chat.",automaticReply:"Automatic website reply."});
   Object.assign(t.wo,{assistantRegion:"Dimbali ci internet",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",assistantWelcome:"Nanga def! Dimbali bu otomatik laa ci site bi. Mën naa la dimbali nga waajal kayit te tontu laaj yi ñu faral di laaj. Ngir jokkoo ak sarwiis bi, tànnal butoŋ yi ci suuf. Bul bind xibaaru bopp ci waxtaan wi.",assistantPrivacy:"Ci ni site bi ñu sampare, mën nañu jëfandikoo sa bataaxal ci sarwiisu IA. Bul bind xibaaru bopp ci waxtaan wi.",automaticReply:"Tontu bu otomatik ci site bi."});
+  Object.assign(t.fr,{voiceInput:"Parler",voiceInputAria:"Dicter votre question",stopVoice:"Arrêter",voiceListening:"Je vous écoute… Parlez maintenant.",voiceReady:"Dictée terminée. Vous pouvez relire puis envoyer votre question.",voiceUnsupported:"La dictée vocale n’est pas prise en charge par ce navigateur. Vous pouvez écrire votre question.",voiceDenied:"L’accès au microphone a été refusé. Autorisez-le dans les paramètres du navigateur.",voiceNoSpeech:"Aucune parole détectée. Réessayez ou écrivez votre question.",voiceNetwork:"La dictée vocale est indisponible. Vérifiez votre connexion et réessayez.",voiceError:"La dictée vocale n’a pas fonctionné. Réessayez ou écrivez votre question.",assistantPrivacy:"La dictée utilise la reconnaissance vocale du navigateur ; le texte reconnu est envoyé au chat. Selon la configuration, les messages peuvent être traités par un service d’IA. Ne partagez aucune donnée personnelle."});
+  Object.assign(t.en,{voiceInput:"Speak",voiceInputAria:"Dictate your question",stopVoice:"Stop",voiceListening:"Listening… Speak now.",voiceReady:"Dictation finished. Review your question and send it when ready.",voiceUnsupported:"Voice dictation is not supported by this browser. You can type your question instead.",voiceDenied:"Microphone access was denied. Allow it in your browser settings.",voiceNoSpeech:"No speech was detected. Try again or type your question.",voiceNetwork:"Voice dictation is unavailable. Check your connection and try again.",voiceError:"Voice dictation did not work. Try again or type your question.",assistantPrivacy:"Dictation uses your browser’s speech recognition; recognized text is sent to the chat. Depending on configuration, messages may be processed by an AI service. Do not share personal information."});
+  Object.assign(t.wo,{voiceInput:"Waxal",voiceInputAria:"Waxal sa laaj",stopVoice:"Taxawal",voiceListening:"Maa ngi déglu… Waxal léegi.",voiceReady:"Wax bi jeex na. Seetal sa laaj te yónnee ko.",voiceUnsupported:"Mëneesula jëfandikoo wax ci navigateur bii. Mën nga bind sa laaj.",voiceDenied:"Ñu mayul jot ci mikóro bi. Mayal ko ci réglage navigateur bi.",voiceNoSpeech:"Déggunu wax. Jéemaatal walla bind sa laaj.",voiceNetwork:"Wax ci mikóro doxul. Seetal internet bi te jéemaatal.",voiceError:"Wax ci mikóro bi doxul. Jéemaatal walla bind sa laaj.",assistantPrivacy:"Wax ci mikóro dafay jëfandikoo navigateur bi; bataaxal bu ñu dégg rekk lañuy yónnee ci waxtaan wi. Mën nañu jëfandikoo bataaxal yi ci sarwiisu IA. Bul bind xibaaru bopp."});
   Object.assign(t.fr,{whatsapp:"Écrire sur WhatsApp",call:"Appeler",whatsappAria:"Nous contacter sur WhatsApp",callAria:"Appeler le service"});
   Object.assign(t.en,{whatsapp:"Message us on WhatsApp",call:"Call us",whatsappAria:"Contact us on WhatsApp",callAria:"Call the service"});
   Object.assign(t.wo,{whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu",whatsappAria:"Jokkoo ak nun ci WhatsApp",callAria:"Woo sarwiis bi"});
@@ -447,9 +454,57 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   var form=document.getElementById("assistant-form");
   var input=document.getElementById("assistant-input");
   var send=document.getElementById("assistant-send");
+  var voiceButton=document.getElementById("assistant-voice");
   var messagesElement=document.getElementById("assistant-messages");
   var status=document.getElementById("assistant-status");
   var messages=[];
+  var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var recognition=SpeechRecognition?new SpeechRecognition():null;
+  var isListening=false;
+  var isSending=false;
+  var voicePrefix="";
+
+  if(recognition){
+    recognition.continuous=false;
+    recognition.interimResults=true;
+    recognition.maxAlternatives=1;
+    recognition.onstart=function(){
+      isListening=true;
+      voiceButton.textContent=window.siteText("stopVoice");
+      voiceButton.setAttribute("aria-label",window.siteText("stopVoice"));
+      send.disabled=true;
+      status.textContent=window.siteText("voiceListening");
+    };
+    recognition.onresult=function(event){
+      var finalTranscript="";
+      var interimTranscript="";
+      for(var i=0;i<event.results.length;i++){
+        var transcript=event.results[i][0].transcript;
+        if(event.results[i].isFinal)finalTranscript+=transcript;
+        else interimTranscript+=transcript;
+      }
+      var transcript=finalTranscript||interimTranscript;
+      if(transcript)input.value=voicePrefix+(voicePrefix?" ":"")+transcript.trim();
+    };
+    recognition.onerror=function(event){
+      var errorKey=event.error==="not-allowed"||event.error==="service-not-allowed"
+        ?"voiceDenied"
+        :event.error==="no-speech"?"voiceNoSpeech"
+        :event.error==="network"?"voiceNetwork"
+        :"voiceError";
+      status.textContent=window.siteText(errorKey);
+    };
+    recognition.onend=function(){
+      isListening=false;
+      voiceButton.textContent=window.siteText("voiceInput");
+      voiceButton.setAttribute("aria-label",window.siteText("voiceInputAria"));
+      voiceButton.disabled=isSending;
+      send.disabled=isSending;
+      if(status.textContent===window.siteText("voiceListening")){
+        status.textContent=input.value.trim()?window.siteText("voiceReady"):"";
+      }
+    };
+  }
 
   function setOpen(open){
     panel.hidden=!open;
@@ -468,6 +523,23 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 
   toggle.addEventListener("click",function(){setOpen(panel.hidden)});
   close.addEventListener("click",function(){setOpen(false)});
+  voiceButton.addEventListener("click",function(){
+    if(!recognition){
+      status.textContent=window.siteText("voiceUnsupported");
+      return;
+    }
+    if(isListening){
+      recognition.stop();
+      return;
+    }
+    recognition.lang={fr:"fr-FR",en:"en-US",wo:"wo-SN"}[window.siteLanguage]||"fr-FR";
+    voicePrefix=input.value.trim();
+    try{
+      recognition.start();
+    }catch(error){
+      status.textContent=window.siteText("voiceError");
+    }
+  });
   form.addEventListener("submit",async function(event){
     event.preventDefault();
     var text=input.value.trim();
@@ -478,6 +550,8 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     input.value="";
     input.disabled=true;
     send.disabled=true;
+    voiceButton.disabled=true;
+    isSending=true;
     status.textContent=window.siteText("thinking");
     try{
       var response=await fetch("/api/chat",{
@@ -503,7 +577,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       status.textContent=error.message||window.siteText("connectionError");
     }finally{
       input.disabled=false;
-      send.disabled=false;
+      isSending=false;
+      send.disabled=isListening;
+      voiceButton.disabled=false;
       input.focus();
     }
   });
