@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { HttpError, getConfig, supabase } = require('../lib/declaration-service');
+const { HttpError, getCleanupConfig, supabase } = require('../lib/declaration-service');
 
 const RETENTION_DAYS = 30;
 const BATCH_SIZE = 100;
@@ -65,7 +65,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const config = getConfig();
+    const config = getCleanupConfig();
     authorize(req, config);
     return res.status(200).json(await removeExpiredDeclarations(config));
   } catch (error) {
