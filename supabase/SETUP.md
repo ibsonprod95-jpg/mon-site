@@ -55,6 +55,8 @@ N’ajoutez pas de barre oblique finale à `SITE_ORIGIN`. Après chaque changeme
 
 Le fichier [`../vercel.json`](../vercel.json) planifie la purge tous les jours à 02:00 UTC. Configurez `CRON_SECRET` dans les variables serveur de Vercel et vérifiez dans le tableau de bord **Cron Jobs** que le travail s’exécute après le déploiement de production. Il supprime les anciennes photos du bucket privé et les lignes de déclaration (avec leur historique). Les sauvegardes du fournisseur peuvent avoir une durée distincte : indiquez-la dans l’avis de confidentialité après vérification des paramètres de votre projet Supabase.
 
+La purge nécessite uniquement `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` et `CRON_SECRET`. Elle peut ainsi continuer à supprimer les dossiers arrivés à échéance même si Upstash ou l’avis de confidentialité est temporairement mal configuré. L’envoi et le suivi restent, eux, désactivés tant que toute la configuration n’est pas valide.
+
 ## 5. Vérifier avant ouverture au public
 
 - Ouvrez le site déployé : les boutons de suivi restent désactivés tant que l’API ne confirme pas la configuration.
