@@ -139,6 +139,7 @@
           card.appendChild(textValue("Couleur",record.color));
           card.appendChild(textValue("Lieu",record.lost_location));
           card.appendChild(textValue("Date de perte",record.lost_date));
+          card.appendChild(textValue("Créneau horaire",record.lost_time_slot));
           card.appendChild(textValue("Bus",record.bus_number));
           card.appendChild(textValue("Reçu le",new Date(record.created_at).toLocaleString("fr-FR")));
 
