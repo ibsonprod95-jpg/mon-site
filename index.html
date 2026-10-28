@@ -53,6 +53,8 @@ dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
 .logo{display:inline-block;width:52px;height:52px;flex:none;background:var(--logo) center/contain no-repeat;border-radius:10px}
 .logo.sm{width:34px;height:34px;border-radius:7px}
+.home-banner{max-width:1200px;margin:18px auto 28px;padding:0 20px}
+.home-banner img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(23,66,59,.12)}
 header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1000px;margin:0 auto}
 header .brand{display:flex;align-items:center;gap:14px}
 header nav{display:flex;flex-wrap:wrap;gap:8px 18px}
@@ -112,22 +114,32 @@ label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offse
 .assistant-form button{justify-self:end;width:auto;margin:0;padding:9px 14px}
 .assistant-privacy{margin:0;color:var(--grey);font:.75rem/1.4 Arial,sans-serif}
 @media(max-width:34rem){.assistant-widget{right:max(.75rem,env(safe-area-inset-right));bottom:max(.75rem,env(safe-area-inset-bottom))}.assistant-panel{position:fixed;right:.5rem;bottom:4.5rem;height:min(34rem,calc(100dvh - 6rem))}}
-.site-settings{position:relative}
-.site-settings summary{list-style:none;padding:9px 12px;border-radius:6px;color:#fff;font-weight:700;cursor:pointer}
-.site-settings summary::-webkit-details-marker{display:none}
-.site-settings summary:hover,.site-settings[open] summary{background:rgba(255,255,255,.14)}
-.settings-panel{position:absolute;z-index:20;right:0;top:calc(100% + .65rem);display:grid;gap:12px;width:min(22rem,calc(100vw - 2rem));padding:16px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.2)}
+.utility-drawer summary{position:fixed;z-index:42;left:0;top:42%;max-width:48vh;padding:14px 10px;border:0;border-radius:0 8px 8px 0;background:var(--brand);color:#fff;font-weight:700;writing-mode:vertical-rl;transform:rotate(180deg);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.utility-drawer summary::-webkit-details-marker{display:none}
+.utility-drawer summary:hover{background:var(--brand-dark)}
+.utility-drawer[open]{position:fixed;inset:0;z-index:40;background:rgba(12,28,26,.48)}
+.utility-backdrop{position:fixed;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;cursor:default}
+.utility-panel{position:fixed;z-index:41;inset:0 auto 0 0;display:grid;align-content:start;gap:20px;overflow-y:auto;width:min(23rem,calc(100vw - 2.5rem));padding:24px 20px max(24px,env(safe-area-inset-bottom));background:var(--surface);color:var(--text);border-right:1px solid var(--line);box-shadow:8px 0 32px rgba(0,0,0,.2)}
+.utility-panel[hidden]{display:none}
+.utility-panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.utility-panel h2{margin:0;font-size:1.35rem}
+.utility-close{width:auto;margin:0;padding:8px 12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.settings-panel{display:grid;gap:12px}
 .settings-panel label{display:grid;gap:5px;margin:0;font-size:.9rem}
 .settings-panel select{width:100%;margin:0;background:var(--surface);color:var(--text)}
 .settings-panel .settings-check{display:flex;align-items:flex-start;gap:9px;font-weight:600}
 .settings-panel .settings-check input{flex:0 0 auto;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand)}
 .settings-panel .settings-help{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
+.utility-contact{padding-top:18px;border-top:1px solid var(--line)}
+.utility-contact h3{margin:0 0 8px;font-size:1.1rem}
+.utility-contact p{margin:0;color:var(--muted);font-size:.92rem}
+.utility-contact .contact-actions{display:grid;grid-template-columns:1fr}
 html[data-text-size="large"]{font-size:112.5%}
 html[data-text-size="xlarge"]{font-size:125%}
 html.reading-comfort body{letter-spacing:.015em}
 html.reading-comfort p,html.reading-comfort li,html.reading-comfort dd,html.reading-comfort .assistant-message{line-height:1.9}
 html.reading-comfort p{margin-bottom:1em}
-html.reading-comfort .presentation-intro,html.reading-comfort .service-card p,html.reading-comfort main p,html.reading-comfort .contact-section p{max-width:70ch}
+html.reading-comfort .presentation-intro,html.reading-comfort .service-card p,html.reading-comfort main p,html.reading-comfort .utility-contact p{max-width:70ch}
 :root[data-theme="light"]{
   --bg:#f3f7f5;
   --surface:#fff;
@@ -151,9 +163,6 @@ header .bar{min-height:54px}
 header .logo{background-color:#fff;padding:3px}
 header nav a{padding:9px 12px;border-radius:6px;transition:background .18s ease}
 header nav a:hover{background:rgba(255,255,255,.14);text-decoration:none}
-.contact-section{max-width:1000px;margin:0 auto 30px;padding:clamp(22px,4vw,36px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(23,66,59,.055)}
-.contact-section h2{margin:0 0 8px;color:var(--text);font-size:1.5rem}
-.contact-section p{margin:0;color:var(--muted)}
 .contact-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 .contact-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border:1px solid var(--brand);border-radius:8px;background:var(--brand);color:#fff;font-weight:700;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
 .contact-actions a.whatsapp{border-color:#16834a;background:#16834a}
@@ -171,12 +180,32 @@ header nav a:hover{background:rgba(255,255,255,.14);text-decoration:none}
 .hero-mark{min-height:0;padding:0;aspect-ratio:1323 / 1600}
 .hero-mark:before,.hero-mark:after{display:none}
 .hero-mark img{display:block;width:100%;height:100%;border-radius:inherit;object-fit:cover}
+.hero-image-brand{position:absolute;top:0;right:0;z-index:2;display:flex;width:52%;height:21%;box-sizing:border-box;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;padding:0 6%;background:#fbfaf6;color:#111;pointer-events:none}
+.hero-image-brand strong,.hero-image-brand span{display:block}
+.hero-image-brand strong{color:#111;text-align:left;font-size:clamp(.85rem,2vw,2rem);line-height:1.05;letter-spacing:-.03em}
+.hero-image-brand span{margin:0;color:#242424;text-align:left;font-size:clamp(.65rem,1.25vw,1.05rem);font-weight:500;line-height:1.2}
 .hero-image-credit{position:absolute;right:12px;bottom:12px;z-index:1;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.94);color:var(--brand-dark);font-size:.75rem;font-weight:700;text-decoration:none}
 .hero-actions{gap:12px}
 .hero-actions a{box-shadow:0 5px 12px rgba(8,118,111,.15);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
 .hero-actions a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(8,118,111,.2)}
 .hero-actions a.secondary{box-shadow:none;background:#fff}
 .presentation{margin:0 auto 34px}
+.navette-info{width:min(1100px,calc(100% - 32px));margin:0 auto 34px;padding:clamp(22px,4vw,36px);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:16px;background:var(--surface);color:var(--text);box-shadow:0 10px 30px rgba(23,66,59,.055)}
+.navette-heading{max-width:760px}
+.navette-heading h2{margin:12px 0;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.2}
+.navette-heading>p:last-child{line-height:1.7;color:var(--muted)}
+.navette-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.navette-card{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.navette-card h3{margin:0 0 10px;font-size:1.05rem}
+.navette-card p{margin:0;color:var(--muted);line-height:1.65}
+.navette-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:22px}
+.navette-fare{margin:0}
+.navette-fare strong{color:var(--brand);font-size:1.55rem}
+.navette-benefits{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.navette-benefits li{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-weight:700}
+.navette-benefits li:before{content:"✓";margin-right:7px;color:var(--brand)}
+.navette-source{display:inline-block;margin-top:18px;font-weight:700}
+@media(max-width:760px){.navette-details{grid-template-columns:1fr}.navette-footer{align-items:flex-start;flex-direction:column}}
 .presentation h2{font-size:1.7rem;letter-spacing:-.02em}
 .presentation-intro{font-size:1.02rem;line-height:1.7}
 .service-cards{gap:16px;margin-top:24px}
@@ -210,6 +239,8 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 @media(max-width:760px){
   header{padding:14px 16px}
   header nav{padding-left:0}
+  .home-banner{margin:14px auto 22px;padding:0 16px}
+  .home-banner img{border-radius:10px}
   .hero{margin:20px 16px 24px;padding:24px;border-radius:14px}
   .hero h2{max-width:16ch}
   .hero-mark{min-height:0}
@@ -217,11 +248,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   .service-cards{gap:12px}
   main{padding:0 16px 28px}
   main>section{padding:20px}
-  .contact-section{margin:0 16px 24px;padding:22px;border-radius:12px}
   .contact-actions{display:grid;grid-template-columns:1fr}
-  .site-settings{width:100%}
-  .site-settings summary{display:inline-block}
-  .settings-panel{left:0;right:auto}
+  .utility-drawer summary{top:auto;bottom:28%;max-width:55vh}
+  .utility-panel{width:min(23rem,calc(100vw - 2.5rem));padding:20px 16px max(20px,env(safe-area-inset-bottom))}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -251,41 +280,60 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     </div>
     <nav aria-label="Navigation principale" data-i18n-aria="mainNav">
       <a href="#service" data-i18n="navService">Le service</a>
+      <a href="#navettes" data-i18n="navShuttle">Navettes AIBD</a>
       <a href="#declaration" data-i18n="navForm">Préparer ma fiche</a>
       <a href="#suivi" data-track-key="navTracking">Suivre une déclaration</a>
-      <a href="#contact" data-i18n="navContact">Nous contacter</a>
-      <details class="site-settings">
-        <summary data-i18n="settingsTitle">Paramètres</summary>
-        <div class="settings-panel" aria-label="Paramètres du site" data-i18n-aria="settingsTitle">
-          <label for="language-select"><span data-i18n="languageLabel">Langue</span>
-            <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
-              <option value="fr">Français</option>
-              <option value="en">English</option>
-              <option value="wo">Wolof</option>
-            </select>
-          </label>
-          <label for="theme-select"><span data-i18n="themeLabel">Thème</span>
-            <select id="theme-select">
-              <option value="system" data-i18n="themeSystem">Automatique</option>
-              <option value="light" data-i18n="themeLight">Clair</option>
-              <option value="dark" data-i18n="themeDark">Sombre</option>
-            </select>
-          </label>
-          <label for="text-size-select"><span data-i18n="textSizeLabel">Taille du texte</span>
-            <select id="text-size-select">
-              <option value="normal" data-i18n="textSizeNormal">Normale</option>
-              <option value="large" data-i18n="textSizeLarge">Grande</option>
-              <option value="xlarge" data-i18n="textSizeExtraLarge">Très grande</option>
-            </select>
-          </label>
-          <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
-          <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
-          <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
-        </div>
-      </details>
     </nav>
   </div>
 </header>
+<div class="home-banner">
+  <img src="assets/dem-dikk-encore-plus-proche.jpg" alt="Bus Dakar Dem Dikk et personne souriante avec le message « Encore plus proche de vous »" fetchpriority="high">
+</div>
+<details class="utility-drawer" id="utility-drawer">
+  <summary data-i18n="utilityTitle">Paramètres &amp; contact</summary>
+  <button class="utility-backdrop" type="button" aria-label="Fermer le panneau" data-i18n-aria="close"></button>
+  <aside class="utility-panel" aria-label="Paramètres et contact" data-i18n-aria="utilityTitle">
+    <div class="utility-panel-header">
+      <h2 data-i18n="utilityTitle">Paramètres &amp; contact</h2>
+      <button class="utility-close" id="utility-close" type="button" data-i18n="close">Fermer</button>
+    </div>
+    <section class="settings-panel" aria-label="Paramètres du site" data-i18n-aria="settingsTitle">
+      <h3 data-i18n="settingsTitle">Paramètres</h3>
+      <label for="language-select"><span data-i18n="languageLabel">Langue</span>
+        <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+          <option value="wo">Wolof</option>
+        </select>
+      </label>
+      <label for="theme-select"><span data-i18n="themeLabel">Thème</span>
+        <select id="theme-select">
+          <option value="system" data-i18n="themeSystem">Automatique</option>
+          <option value="light" data-i18n="themeLight">Clair</option>
+          <option value="dark" data-i18n="themeDark">Sombre</option>
+        </select>
+      </label>
+      <label for="text-size-select"><span data-i18n="textSizeLabel">Taille du texte</span>
+        <select id="text-size-select">
+          <option value="normal" data-i18n="textSizeNormal">Normale</option>
+          <option value="large" data-i18n="textSizeLarge">Grande</option>
+          <option value="xlarge" data-i18n="textSizeExtraLarge">Très grande</option>
+        </select>
+      </label>
+      <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
+      <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
+      <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
+    </section>
+    <section class="utility-contact" id="contact" aria-labelledby="titre-contact">
+      <h3 id="titre-contact" tabindex="-1" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h3>
+      <p data-i18n="contactText">Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.</p>
+      <div class="contact-actions">
+        <a class="whatsapp" href="https://wa.me/221775521291" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp" data-i18n="whatsapp">Écrire sur WhatsApp</a>
+        <a href="tel:+221775521291" aria-label="Appeler le service" data-i18n="call">Appeler</a>
+      </div>
+    </section>
+  </aside>
+</details>
 <section class="hero" aria-labelledby="titre-vitrine">
   <div>
     <p class="hero-kicker">AIBD DEM DIKK</p>
@@ -298,7 +346,41 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   </div>
   <div class="hero-mark" aria-label="Service objets et bagages perdus" data-i18n-aria="heroMark">
     <img src="assets/dem-dikk-express-aibd.jpg" alt="Affiche officielle de la navette Express AIBD de Dem Dikk, entre Dakar et l’aéroport Blaise-Diagne" fetchpriority="high">
+    <div class="hero-image-brand">
+      <strong>AIBD DEM DIKK</strong>
+      <span data-i18n="heroImageLabel">Navette Express AIBD</span>
+    </div>
   </div>
+</section>
+<section class="navette-info" id="navettes" aria-labelledby="titre-navettes">
+  <div class="navette-heading">
+    <p class="hero-kicker" data-i18n="shuttleKicker">Navettes-Express AIBD</p>
+    <h2 id="titre-navettes" data-i18n="shuttleTitle">Rejoignez l’aéroport simplement et en toute sécurité</h2>
+    <p data-i18n="shuttleIntro">Dakar Dem Dikk met à votre disposition des navettes Express pour rallier l’Aéroport International Blaise Diagne (AIBD) ou rejoindre le centre-ville.</p>
+  </div>
+  <div class="navette-details">
+    <article class="navette-card">
+      <h3 data-i18n="shuttleToAirportTitle">Départ vers l’aéroport</h3>
+      <p data-i18n="shuttleToAirportText">Départ au terminus HLM Grand-Yoff, en face du Stade Léopold Sédar Senghor, une heure avant l’heure de convocation à l’aéroport.</p>
+    </article>
+    <article class="navette-card">
+      <h3 data-i18n="shuttleFromAirportTitle">Départ depuis l’AIBD</h3>
+      <p data-i18n="shuttleFromAirportText">Les bus partent une heure après l’atterrissage de votre vol et desservent le centre-ville.</p>
+    </article>
+    <article class="navette-card">
+      <h3 data-i18n="shuttleServiceTitle">Un service pratique</h3>
+      <p data-i18n="shuttleServiceText">Bus climatisés, passage par l’autoroute à péage, service disponible 24 h/24 et 7 j/7.</p>
+    </article>
+  </div>
+  <div class="navette-footer">
+    <p class="navette-fare"><strong data-i18n="shuttleFare">6 000 FCFA</strong> <span data-i18n="shuttleFareDetail">l’aller simple</span></p>
+    <ul class="navette-benefits" aria-label="Atouts du service" data-i18n-aria="shuttleBenefitsLabel">
+      <li data-i18n="shuttleReliable">Fiabilité</li>
+      <li data-i18n="shuttleSafe">Sécurité</li>
+      <li data-i18n="shuttleFlexible">Flexibilité</li>
+    </ul>
+  </div>
+  <a class="navette-source" href="https://demdikk.sn/offres-de-transport/" target="_blank" rel="noopener noreferrer" data-i18n="shuttleSource">Consulter les offres officielles de Dakar Dem Dikk</a>
 </section>
 <section class="presentation" id="service" aria-labelledby="titre-service">
   <h2 id="titre-service" data-i18n="serviceTitle">À vos côtés pour vos déplacements</h2>
@@ -306,7 +388,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   <div class="service-cards">
     <article class="service-card">
       <strong data-i18n="cardDescribeTitle">Décrivez le bagage</strong>
-      <p data-i18n="cardDescribeText">Indiquez ses signes distinctifs, sa couleur et, si possible, ajoutez une photo pour faciliter son identification.</p>
+      <p data-i18n="cardDescribeText">Décrivez ses signes distinctifs. Vous pouvez ajouter un justificatif si vous en avez un.</p>
     </article>
     <article class="service-card">
       <strong data-i18n="cardJourneyTitle">Précisez le trajet</strong>
@@ -323,32 +405,26 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <h2 data-i18n="formTitle">Préparer ma fiche de déclaration</h2>
     <p class="form-note" data-i18n="formNote">Remplissez les informations disponibles, puis choisissez « Exporter la fiche en PDF ». Cette page prépare une fiche sur votre appareil ; elle ne transmet pas automatiquement votre déclaration au service.</p>
     <label for="nom" data-i18n="ownerLabel">Nom du propriétaire</label>
-    <input id="nom" autocomplete="name">
+    <input id="nom" autocomplete="name" maxlength="120">
     <label for="tel" data-i18n="phoneLabel">Téléphone</label>
-    <input id="tel" type="tel" autocomplete="tel">
+    <input id="tel" type="tel" autocomplete="tel" maxlength="40">
     <label for="desc" data-i18n="descriptionLabel">Description du bagage</label>
-    <textarea id="desc" placeholder="Couleur, taille, marque, signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
-    <label for="couleur" data-i18n="colorLabel">Couleur du bagage</label>
-    <input id="couleur" type="color" value="#000000" aria-describedby="aide-couleur">
-    <small id="aide-couleur" data-i18n="colorHelp">Choisissez une couleur dans le sélecteur. Vous pouvez sélectionner toutes les couleurs.</small>
+    <textarea id="desc" maxlength="1200" placeholder="Taille, marque et signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
     <label for="lieu" data-i18n="locationLabel">Lieu de la perte</label>
     <select id="lieu">
       <option value="" data-i18n="chooseLocation">Choisir un lieu</option>
       <option value="AIBD">AIBD</option>
       <option value="HLM GRAND YOFF">HLM GRAND YOFF</option>
+      <option value="TERMINUS GUEDIAWAYE">TERMINUS GUEDIAWAYE</option>
     </select>
     <label for="date-perte" data-i18n="dateLabel">Date de la perte</label>
     <input id="date-perte" type="date">
     <label for="tkt" data-i18n="busLabel">Numéro du bus</label>
-    <input id="tkt" inputmode="text" placeholder="Ex. : bus ligne 1" data-i18n-placeholder="busPlaceholder">
-    <label for="photo" data-i18n="photoLabel">Photo du bagage</label>
-    <input id="photo" type="file" accept="image/*">
-    <label class="cam" for="photo-cam" data-i18n="takePhoto">Prendre une photo du bagage</label>
-    <input id="photo-cam" class="sr" type="file" accept="image/*" capture="environment">
-    <label for="ticket" data-i18n="ticketLabel">Importer le ticket de bus acheté</label>
-    <input id="ticket" type="file" accept="image/*">
-    <label class="cam" for="ticket-cam" data-i18n="takeTicketPhoto">Prendre une photo du ticket</label>
-    <input id="ticket-cam" class="sr" type="file" accept="image/*" capture="environment">
+    <input id="tkt" inputmode="text" maxlength="80" placeholder="Ex. : bus ligne 1" data-i18n-placeholder="busPlaceholder">
+    <label for="ticket" data-i18n="fileLabel">Ajouter un justificatif (facultatif)</label>
+    <input id="ticket" type="file" aria-describedby="aide-justificatif">
+    <small id="aide-justificatif" data-i18n="fileHelp">Tous les formats sont acceptés jusqu’à 15 Mo. La fiche PDF affiche le nom du fichier et son aperçu s’il s’agit d’une image. Pour transmettre le fichier original, envoyez-le séparément au service.</small>
+    <p id="file-status" class="tracking-status" role="status" aria-live="polite"></p>
     <button type="button" id="exp" class="alt" data-i18n="exportPdf">Exporter la fiche en PDF</button>
     <div class="online-submit">
       <h3 data-track-key="submitTitle">Enregistrer ma déclaration en ligne</h3>
@@ -368,13 +444,11 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <div class="fiche">
       <div class="fiche-head"><span class="logo sm" role="img" aria-label="Logo Dem Dikk"></span><span data-i18n="pdfBrandTitle">AIBD DEM DIKK — Objets et bagages perdus</span></div>
       <div class="fiche-body">
-        <div class="photo" id="ph" data-i18n="noPhoto">Aucune photo ajoutée</div>
-        <div class="photo ticket" id="ph2" data-i18n="noTicket">Aucun ticket importé</div>
+        <div class="photo ticket" id="ph2" data-i18n="noFile" role="status" aria-live="polite" aria-atomic="true">Aucun fichier ajouté</div>
         <dl>
           <dt data-i18n="ownerLabel">Propriétaire</dt><dd id="o-nom">—</dd>
           <dt data-i18n="phoneLabel">Téléphone</dt><dd id="o-tel">—</dd>
           <dt data-i18n="baggageLabel">Bagage</dt><dd id="o-desc">—</dd>
-          <dt data-i18n="colorLabel">Couleur du bagage</dt><dd id="o-couleur">Non précisée</dd>
           <dt data-i18n="locationDate">Lieu et date</dt><dd id="o-lieu">—</dd>
           <dt data-i18n="busNumber">N° du bus</dt><dd id="o-tkt">—</dd>
         </dl>
@@ -417,10 +491,19 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 <script>
 (function(){
   var copy={
-    fr:{submitTitle:"Enregistrer ma déclaration en ligne",submitIntro:"Pour obtenir un code de suivi, envoyez les renseignements ci-dessus au service. Les photos sont facultatives et seront envoyées avec la déclaration.",consentText:"J’accepte l’enregistrement de mes coordonnées et des renseignements de cette déclaration pour son traitement et son suivi. Je comprends que le code privé ne pourra pas être récupéré si je le perds.",submitButton:"Envoyer et créer mon suivi",trackTitle:"Suivre ma déclaration",trackIntro:"Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.",trackingCodeLabel:"Code de suivi",trackingSecretLabel:"Code privé",trackButton:"Consulter le dossier",working:"Envoi en cours…",loading:"Recherche du dossier…",missingFields:"Veuillez remplir votre nom, téléphone, description, lieu et date de perte.",needConsent:"Veuillez accepter l’enregistrement des données avant l’envoi.",genericError:"Une erreur est survenue. Veuillez réessayer.",created:"Déclaration enregistrée. Conservez ces deux codes : ils ne seront affichés qu’une seule fois.",secretLabel:"Code privé (à garder secret)",trackingResult:"Dossier enregistré",status:"Statut",updated:"Dernière mise à jour",history:"Historique du dossier",noHistory:"Aucun historique pour le moment.",note:"Message du service",photos:"Photos jointes",baggagePhoto:"Photo du bagage",ticketPhoto:"Photo du ticket",badPhoto:"Impossible de lire la photo sélectionnée.",largePhoto:"Choisissez une image de moins de 15 Mo pour pouvoir la joindre.",submitError:"Impossible d’enregistrer la déclaration.",notFound:"Dossier introuvable ou codes incorrects.",received:"Reçu",searching:"Recherche en cours",found:"Bagage retrouvé",closed:"Dossier clôturé"},
-    en:{submitTitle:"Submit a report online",submitIntro:"Send the details above to the service to receive a tracking code. Photos are optional and will be sent with the report.",consentText:"I agree to storing my contact details and report information for processing and follow-up. I understand the private code cannot be recovered if I lose it.",submitButton:"Submit and create tracking",trackTitle:"Track my report",trackIntro:"Enter the tracking code and private code you received when submitting the report. Both are required to view it.",trackingCodeLabel:"Tracking code",trackingSecretLabel:"Private code",trackButton:"View report",working:"Submitting…",loading:"Looking up your report…",missingFields:"Enter your name, phone number, description, location and date of loss.",needConsent:"Please agree to data storage before submitting.",genericError:"Something went wrong. Please try again.",created:"Report saved. Keep both codes safe: they will only be shown once.",secretLabel:"Private code (keep it secret)",trackingResult:"Report saved",status:"Status",updated:"Last updated",history:"Report history",noHistory:"No history yet.",note:"Service message",photos:"Attached photos",baggagePhoto:"Baggage photo",ticketPhoto:"Ticket photo",badPhoto:"Could not read the selected photo.",largePhoto:"Choose an image smaller than 15 MB to attach it.",submitError:"Could not save your report.",notFound:"Report not found or codes are incorrect.",received:"Received",searching:"Search in progress",found:"Baggage found",closed:"Case closed"},
+    fr:{submitTitle:"Enregistrer ma déclaration en ligne",submitIntro:"Pour obtenir un code de suivi, envoyez les renseignements ci-dessus au service. Seules les images peuvent être jointes au suivi en ligne. Pour les autres fichiers, exportez la fiche PDF et transmettez le fichier original séparément.",consentText:"J’accepte l’enregistrement de mes coordonnées et des renseignements de cette déclaration pour son traitement et son suivi. Je comprends que le code privé ne pourra pas être récupéré si je le perds.",submitButton:"Envoyer et créer mon suivi",trackTitle:"Suivre ma déclaration",trackIntro:"Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.",trackingCodeLabel:"Code de suivi",trackingSecretLabel:"Code privé",trackButton:"Consulter le dossier",working:"Envoi en cours…",loading:"Recherche du dossier…",missingFields:"Veuillez remplir votre nom, téléphone, description, lieu et date de perte.",needConsent:"Veuillez accepter l’enregistrement des données avant l’envoi.",genericError:"Une erreur est survenue. Veuillez réessayer.",created:"Déclaration enregistrée. Conservez ces deux codes : ils ne seront affichés qu’une seule fois.",secretLabel:"Code privé (à garder secret)",trackingResult:"Dossier enregistré",status:"Statut",updated:"Dernière mise à jour",history:"Historique du dossier",noHistory:"Aucun historique pour le moment.",note:"Message du service",photos:"Fichiers joints",baggagePhoto:"Photo du bagage",ticketPhoto:"Justificatif",badPhoto:"Impossible de lire ce fichier.",largePhoto:"Choisissez une image de moins de 15 Mo pour pouvoir la joindre.",submitError:"Impossible d’enregistrer la déclaration.",notFound:"Dossier introuvable ou codes incorrects.",received:"Reçu",searching:"Recherche en cours",found:"Bagage retrouvé",closed:"Dossier clôturé"},
+    en:{submitTitle:"Submit a report online",submitIntro:"Send the details above to the service to receive a tracking code. Only images can be attached to online tracking. For other file types, export the PDF form and send the original file separately.",consentText:"I agree to storing my contact details and report information for processing and follow-up. I understand the private code cannot be recovered if I lose it.",submitButton:"Submit and create tracking",trackTitle:"Track my report",trackIntro:"Enter the tracking code and private code you received when submitting the report. Both are required to view it.",trackingCodeLabel:"Tracking code",trackingSecretLabel:"Private code",trackButton:"View report",working:"Submitting…",loading:"Looking up your report…",missingFields:"Enter your name, phone number, description, location and date of loss.",needConsent:"Please agree to data storage before submitting.",genericError:"Something went wrong. Please try again.",created:"Report saved. Keep both codes safe: they will only be shown once.",secretLabel:"Private code (keep it secret)",trackingResult:"Report saved",status:"Status",updated:"Last updated",history:"Report history",noHistory:"No history yet.",note:"Service message",photos:"Attached files",baggagePhoto:"Baggage photo",ticketPhoto:"Supporting file",badPhoto:"Could not read this file.",largePhoto:"Choose an image smaller than 15 MB to attach it.",submitError:"Could not save your report.",notFound:"Report not found or codes are incorrect.",received:"Received",searching:"Search in progress",found:"Baggage found",closed:"Case closed"},
     wo:{submitTitle:"Yónnee kayit ci internet",submitIntro:"Yónnee xibaar yi ci kaw ngir jot kodu toppandoo. Foto yi amul solo te ñu mën nañu leen yónnee ak kayit bi.",consentText:"Nangu naa ñu denc sama koont ak xibaar yi ci kayit bi ngir liggéey ak toppandoo ko. Xam naa ne mëneesula delloo kodu sir bi bu ma ko réeree.",submitButton:"Yónnee te sos toppandoo",trackTitle:"Toppandoo sama kayit",trackIntro:"Dugalal kodu toppandoo ak kodu sir bi nga jot bi nga yónnee kayit bi. Ñaar ñépp lañu soxla ngir gis dosiye bi.",trackingCodeLabel:"Kodu toppandoo",trackingSecretLabel:"Kodu sir",trackButton:"Seet dosiye bi",working:"Mi ngi yónnee…",loading:"Mi ngi seet dosiye bi…",missingFields:"Dugalal sa tur, nimero telefon, melokaan, fu mu réer ak bés bi.",needConsent:"Nangul denc xibaar yi bala ngay yónnee.",genericError:"Am na jafe-jafe. Jéemaatal.",created:"Kayit bi denc nañu ko. Dencal ñaar ñépp: kenn du la leen wone beneen yoon.",secretLabel:"Kodu sir (denc ko ci sir)",trackingResult:"Kayit bi denc nañu ko",status:"Taxawaay",updated:"Yeesal bu mujj",history:"Taarixu dosiye bi",noHistory:"Amagul taarix.",note:"Bataaxalu sarwiis bi",photos:"Foto yi",baggagePhoto:"Foto yëkkatu bi",ticketPhoto:"Foto tikke bi",badPhoto:"Mëneesula jàng foto bi.",largePhoto:"Tànnal nataal bu ndaw lu ëppul 15 Mo ngir yokk ko.",submitError:"Mëneesula denc kayit bi.",notFound:"Dosiye bi amul walla kode yi jubul.",received:"Jot nañu ko",searching:"Seet mi ngi dox",found:"Gis nañu yëkkatu bi",closed:"Dosiye bi tëj nañu ko"}
   };
+  copy.fr.submitIntro="Si le suivi en ligne est activé, seules les images peuvent être jointes à la déclaration. Pour les autres formats, exportez la fiche PDF puis envoyez le fichier original séparément au service.";
+  copy.en.submitIntro="If online tracking is enabled, only images can be attached to a report. For other file types, export the PDF form and send the original file to the service separately.";
+  copy.wo.submitIntro="Su fekkee toppandoo bi dox na, nataal rekk lañu mën a yokk ci kayit bi. Ngir yeneen format, génneel kayit PDF bi te yónnee dencukaay bi ci boppam ci sarwiis bi.";
+  copy.fr.onlineFileUnsupported="Ce format ne peut pas être envoyé avec le suivi en ligne. Exportez la fiche PDF et transmettez le fichier original séparément au service.";
+  copy.en.onlineFileUnsupported="This file type cannot be sent with online tracking. Export the PDF form and send the original file to the service separately.";
+  copy.wo.onlineFileUnsupported="Mëneesula yónnee format bii ak toppandoo bi. Génneel kayit PDF bi te yónnee dencukaay bi ci sarwiis bi.";
+  copy.fr.badPhoto="Impossible de lire ce fichier.";
+  copy.en.badPhoto="Could not read this file.";
+  copy.wo.badPhoto="Mëneesula jàng dencukaay bii.";
   copy.fr.serviceNotReady="Le suivi doit être configuré dans Supabase avant utilisation.";
   copy.en.serviceNotReady="Online tracking must be configured in Supabase before use.";
   copy.wo.serviceNotReady="War nañu jëfandikoo Supabase ngir toppandoo bi dox.";
@@ -534,20 +617,6 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     });
   }
 
-  function selectedFile(primary, camera){
-    return document.getElementById(primary).files[0]||document.getElementById(camera).files[0]||null;
-  }
-
-  [["photo","photo-cam"],["ticket","ticket-cam"]].forEach(function(pair){
-    pair.forEach(function(id,index){
-      document.getElementById(id).addEventListener("change",function(event){
-        if(event.target.files&&event.target.files.length){
-          document.getElementById(pair[index===0?1:0]).value="";
-        }
-      });
-    });
-  });
-
   function statusName(value){
     return text(statusNames[value]||"received");
   }
@@ -627,11 +696,16 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   submitButton.addEventListener("click",async function(){
     var consent=document.getElementById("declaration-consent").checked;
     if(!consent){submitStatus.textContent=text("needConsent");return}
+    var ticket=document.getElementById("ticket").files[0]||null;
+    if(ticket&&!ticket.type.startsWith("image/")){
+      submitStatus.textContent=text("onlineFileUnsupported");
+      document.getElementById("file-status").textContent=text("onlineFileUnsupported");
+      return;
+    }
     var fields={
       ownerName:document.getElementById("nom").value.trim(),
       phone:document.getElementById("tel").value.trim(),
       description:document.getElementById("desc").value.trim(),
-      color:document.getElementById("couleur").value,
       location:document.getElementById("lieu").value,
       lostDate:document.getElementById("date-perte").value,
       busNumber:document.getElementById("tkt").value.trim()
@@ -641,21 +715,19 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     }
     submitButton.disabled=true;
     submitStatus.textContent=text("working");
+    document.getElementById("file-status").textContent="";
     createdResult.hidden=true;
     try{
-      var baggage=selectedFile("photo","photo-cam");
-      var ticket=selectedFile("ticket","ticket-cam");
       var result=await api({
         action:"submit",
         consent:consent,
         ownerName:fields.ownerName,
         phone:fields.phone,
         description:fields.description,
-        color:fields.color,
         location:fields.location,
         lostDate:fields.lostDate,
         busNumber:fields.busNumber,
-        photo:baggage?await encodeImage(baggage):null,
+        photo:null,
         ticketPhoto:ticket?await encodeImage(ticket):null
       });
       createdResult.replaceChildren();
@@ -742,13 +814,80 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   Object.assign(t.fr,{whatsapp:"Écrire sur WhatsApp",call:"Appeler",whatsappAria:"Nous contacter sur WhatsApp",callAria:"Appeler le service"});
   Object.assign(t.en,{whatsapp:"Message us on WhatsApp",call:"Call us",whatsappAria:"Contact us on WhatsApp",callAria:"Call the service"});
   Object.assign(t.wo,{whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu",whatsappAria:"Jokkoo ak nun ci WhatsApp",callAria:"Woo sarwiis bi"});
+  Object.assign(t.fr,{utilityTitle:"Paramètres et contact"});
+  Object.assign(t.en,{utilityTitle:"Settings & contact"});
+  Object.assign(t.wo,{utilityTitle:"Toppatoo ak jokkoo"});
   t.en.pdfBrandTitle="AIBD DEM DIKK — Lost property and baggage";
   t.wo.pdfBrandTitle="AIBD DEM DIKK — Yëkkatu yi ñu réer";
+  Object.assign(t.fr,{heroImageLabel:"Navette Express AIBD"});
+  Object.assign(t.en,{heroImageLabel:"AIBD Express Shuttle"});
+  Object.assign(t.wo,{heroImageLabel:"Navet-Express AIBD"});
+  Object.assign(t.fr,{
+    navShuttle:"Navettes AIBD",
+    shuttleKicker:"Navettes-Express AIBD",
+    shuttleTitle:"Rejoignez l’aéroport simplement et en toute sécurité",
+    shuttleIntro:"Dakar Dem Dikk met à votre disposition des navettes Express pour rallier l’Aéroport International Blaise Diagne (AIBD) ou rejoindre le centre-ville.",
+    shuttleToAirportTitle:"Départ vers l’aéroport",
+    shuttleToAirportText:"Départ au terminus HLM Grand-Yoff, en face du Stade Léopold Sédar Senghor, une heure avant l’heure de convocation à l’aéroport.",
+    shuttleFromAirportTitle:"Départ depuis l’AIBD",
+    shuttleFromAirportText:"Les bus partent une heure après l’atterrissage de votre vol et desservent le centre-ville.",
+    shuttleServiceTitle:"Un service pratique",
+    shuttleServiceText:"Bus climatisés, passage par l’autoroute à péage, service disponible 24 h/24 et 7 j/7.",
+    shuttleFare:"6 000 FCFA",
+    shuttleFareDetail:"l’aller simple",
+    shuttleBenefitsLabel:"Atouts du service",
+    shuttleReliable:"Fiabilité",
+    shuttleSafe:"Sécurité",
+    shuttleFlexible:"Flexibilité",
+    shuttleSource:"Consulter les offres officielles de Dakar Dem Dikk"
+  });
+  Object.assign(t.en,{
+    navShuttle:"AIBD shuttles",
+    shuttleKicker:"AIBD Express Shuttles",
+    shuttleTitle:"Reach the airport easily and safely",
+    shuttleIntro:"Dakar Dem Dikk operates Express shuttles to Blaise Diagne International Airport (AIBD) and back to downtown Dakar.",
+    shuttleToAirportTitle:"Departures to the airport",
+    shuttleToAirportText:"Depart from the HLM Grand-Yoff terminus, opposite Léopold Sédar Senghor Stadium, one hour before your airport check-in time.",
+    shuttleFromAirportTitle:"Departures from AIBD",
+    shuttleFromAirportText:"Buses depart one hour after your flight lands and serve downtown Dakar.",
+    shuttleServiceTitle:"A convenient service",
+    shuttleServiceText:"Air-conditioned buses use the toll highway. Service runs 24 hours a day, 7 days a week.",
+    shuttleFare:"6,000 FCFA",
+    shuttleFareDetail:"one way",
+    shuttleBenefitsLabel:"Service benefits",
+    shuttleReliable:"Reliable",
+    shuttleSafe:"Safe",
+    shuttleFlexible:"Flexible",
+    shuttleSource:"View official Dakar Dem Dikk transport offers"
+  });
+  Object.assign(t.wo,{
+    navShuttle:"Navet yi AIBD",
+    shuttleKicker:"Navet-Express AIBD",
+    shuttleTitle:"Demal aeroport bi ci yoon wu yomb te am kaaraange",
+    shuttleIntro:"Dakar Dem Dikk dafay joxe navet Express ngir dem ci Aeroport International Blaise Diagne (AIBD) walla dellu ci dëkk bi.",
+    shuttleToAirportTitle:"Tukki ci aeroport",
+    shuttleToAirportText:"Navet bi dafay génn terminus HLM Grand-Yoff, ca kanam Stade Léopold Sédar Senghor, benn waxtu bala sa waxtu jàppandi ci aeroport.",
+    shuttleFromAirportTitle:"Tukki jóge AIBD",
+    shuttleFromAirportText:"Bas yi dañuy génn benn waxtu gannaaw sa gaal bi wàcc, te dañuy dem ci dëkk bi.",
+    shuttleServiceTitle:"Sarwiis bu yomb",
+    shuttleServiceText:"Bas yi am nañu kondisioneer te dañuy jaar ci autoroute bu toll. Sarwiis bi dafay dox 24 waxtu ci bis bi, 7 fan ci ayu-bis.",
+    shuttleFare:"6 000 FCFA",
+    shuttleFareDetail:"benn yoon",
+    shuttleBenefitsLabel:"Njariñu sarwiis bi",
+    shuttleReliable:"Wóor",
+    shuttleSafe:"Kaaraange",
+    shuttleFlexible:"Yomb",
+    shuttleSource:"Xoolal offres officielles yi ci Dakar Dem Dikk"
+  });
   var select=document.getElementById("language-select");
   var themeSelect=document.getElementById("theme-select");
   var textSizeSelect=document.getElementById("text-size-select");
   var voiceSetting=document.getElementById("voice-setting");
   var readingComfortSetting=document.getElementById("reading-comfort-setting");
+  var utilityDrawer=document.getElementById("utility-drawer");
+  var utilityClose=document.getElementById("utility-close");
+  var utilitySummary=utilityDrawer.querySelector("summary");
+  var focusContactOnOpen=false;
   var language="fr";
   try{
     var saved=localStorage.getItem("aibd-language");
@@ -771,6 +910,30 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   document.documentElement.setAttribute("data-text-size",textSizeSelect.value);
   document.documentElement.classList.toggle("reading-comfort",readingComfortSetting.checked);
   select.value=language;
+  t.fr.cardDescribeText="Décrivez ses signes distinctifs. Vous pouvez ajouter un justificatif si vous en avez un.";
+  t.en.cardDescribeText="Describe its identifying features. You can add supporting material if you have any.";
+  t.wo.cardDescribeText="Waxal màndargay xamle yi. Boo amee kayit, mën nga ko yokk.";
+  t.fr.descriptionPlaceholder="Taille, marque et signes distinctifs";
+  t.en.descriptionPlaceholder="Size, brand and identifying features";
+  t.wo.descriptionPlaceholder="Dayo, marka ak màndargay xamle";
+  t.fr.formNote="Remplissez les informations disponibles. Vous pouvez ajouter un fichier de tout format (15 Mo maximum) ; la fiche PDF affichera son nom et l’aperçu s’il s’agit d’une image. Le fichier original ne sera pas transmis : envoyez-le séparément au service.";
+  t.en.formNote="Fill in the information you have. You can add a file in any format (up to 15 MB); the PDF form will show its name and preview it if it is an image. The original file is not sent: send it to the service separately.";
+  t.wo.formNote="Dugalal xibaar yi nga am. Mën nga yokk dencukaay ci bépp format (15 Mo mu ëppul); kayit PDF bi dina wone turam ak nataalam su fekkee nataal la. Dencukaay bi duñu ko yónnee: yónnee ko ci sarwiis bi ci boppam.";
+  t.fr.fileLabel="Ajouter un justificatif (facultatif)";
+  t.en.fileLabel="Add a supporting file (optional)";
+  t.wo.fileLabel="Yokk kayit (du war)";
+  t.fr.fileHelp="Tous les formats sont acceptés jusqu’à 15 Mo. La fiche PDF affiche le nom du fichier et son aperçu s’il s’agit d’une image. Pour transmettre le fichier original, envoyez-le séparément au service.";
+  t.en.fileHelp="All file types are accepted up to 15 MB. The PDF form shows the file name and a preview for images. To send the original file, contact the service separately.";
+  t.wo.fileHelp="Nangu nañu bépp format ba 15 Mo. Kayit PDF bi dina wone turu dencukaay bi ak nataalam su fekkee nataal la. Ngir yónnee dencukaay bi ci boppam, jokkool ak sarwiis bi.";
+  t.fr.noFile="Aucun fichier ajouté";
+  t.en.noFile="No file added";
+  t.wo.noFile="Amul dencukaay bu ñu yokk";
+  t.fr.attachmentPreviewAlt="Aperçu du justificatif";
+  t.en.attachmentPreviewAlt="Supporting file preview";
+  t.wo.attachmentPreviewAlt="Nataalu kayit bi";
+  t.fr.fileTooLarge="Choisissez un fichier de 15 Mo maximum.";
+  t.en.fileTooLarge="Choose a file up to 15 MB.";
+  t.wo.fileTooLarge="Tànnal dencukaay bu 15 Mo walla lu ko ëppul.";
   window.siteLanguage=language;
   window.siteTranslations=t;
   window.siteText=function(key){return t[window.siteLanguage][key]||t.fr[key]||key};
@@ -782,14 +945,13 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     document.title=d.pageTitle;
     document.querySelector('meta[name="description"]').content=d.metaDescription;
     document.querySelectorAll("[data-i18n]").forEach(function(element){
-      if((element.id==="ph"||element.id==="ph2")&&element.querySelector("img"))return;
+      if(element.id==="ph2"&&(element.querySelector("img")||element.dataset.fileName))return;
       element.textContent=d[element.getAttribute("data-i18n")];
     });
     document.querySelectorAll("[data-i18n-placeholder]").forEach(function(element){element.placeholder=d[element.getAttribute("data-i18n-placeholder")]});
     document.querySelectorAll("[data-i18n-aria]").forEach(function(element){element.setAttribute("aria-label",d[element.getAttribute("data-i18n-aria")])});
     document.querySelector("#contact .whatsapp").setAttribute("aria-label",d.whatsappAria);
     document.querySelector('#contact a[href^="tel:"]').setAttribute("aria-label",d.callAria);
-    document.getElementById("o-couleur").textContent=d.notSpecified;
     try{localStorage.setItem("aibd-language",language)}catch(error){}
     if(window.updateBagPreview)window.updateBagPreview();
     window.dispatchEvent(new CustomEvent("aibd-language-changed"));
@@ -811,13 +973,43 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     document.documentElement.classList.toggle("reading-comfort",readingComfortSetting.checked);
     savePreference("reading-comfort",readingComfortSetting.checked?"on":"off");
   });
+  utilityClose.addEventListener("click",function(){utilityDrawer.open=false});
+  utilityDrawer.querySelector(".utility-backdrop").addEventListener("click",function(){utilityDrawer.open=false});
+  utilityDrawer.addEventListener("toggle",function(){
+    if(utilityDrawer.open){
+      if(focusContactOnOpen){
+        focusContactOnOpen=false;
+        window.setTimeout(function(){
+          var heading=document.getElementById("titre-contact");
+          heading.focus();
+          heading.scrollIntoView({block:"start"});
+        },0);
+      }else utilityClose.focus();
+    }else utilitySummary.focus();
+  });
+  document.addEventListener("keydown",function(event){
+    if(event.key==="Escape"&&utilityDrawer.open)utilityDrawer.open=false;
+  });
+  document.addEventListener("click",function(event){
+    var link=event.target.closest('a[href="#contact"]');
+    if(!link)return;
+    event.preventDefault();
+    if(utilityDrawer.open){
+      var heading=document.getElementById("titre-contact");
+      heading.focus();
+      heading.scrollIntoView({block:"start"});
+      return;
+    }
+    focusContactOnOpen=true;
+    utilityDrawer.open=true;
+    history.replaceState(null,"","#contact");
+  });
   document.addEventListener("DOMContentLoaded",applyLanguage);
 })();
 </script>
 <script>
 (function(){
   var ids=["nom","tel","desc","tkt"];
-  var couleurChoisie=false;
   function maj(){
     ids.forEach(function(i){
       document.getElementById("o-"+i).textContent=document.getElementById(i).value.trim()||"—";
@@ -829,41 +1021,42 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       ?new Date(datePerte+"T00:00:00").toLocaleDateString(locale)
       :"";
     document.getElementById("o-lieu").textContent=[lieu,dateAffichee].filter(Boolean).join(" · ")||"—";
-    document.getElementById("o-couleur").textContent=couleurChoisie
-      ?document.getElementById("couleur").value.toUpperCase()
-      :window.siteText("notSpecified");
   }
   window.updateBagPreview=maj;
   ids.forEach(function(i){document.getElementById(i).addEventListener("input",maj)});
   document.getElementById("lieu").addEventListener("change",maj);
   document.getElementById("date-perte").addEventListener("input",maj);
   document.getElementById("tkt").addEventListener("change",maj);
-  document.getElementById("couleur").addEventListener("input",function(){
-    couleurChoisie=true;
-    maj();
-  });
-  document.getElementById("photo").addEventListener("change",function(e){
-    var f=e.target.files&&e.target.files[0], ph=document.getElementById("ph");
-    if(!f){ph.textContent=window.siteText("noPhoto");return}
-    var r=new FileReader();
-    r.onload=function(){var im=new Image();im.alt=window.siteText("photoAlt");im.src=r.result;ph.textContent="";ph.appendChild(im)};
-    r.readAsDataURL(f);
-  });
-  [["photo-cam","ph"],["ticket-cam","ph2"]].forEach(function(c){
-    document.getElementById(c[0]).addEventListener("change",function(e){
-      var f=e.target.files&&e.target.files[0], ph=document.getElementById(c[1]);
-      if(!f)return;
-      var r=new FileReader();
-      r.onload=function(){var im=new Image();im.alt=window.siteText("cameraAlt");im.src=r.result;ph.textContent="";ph.appendChild(im)};
-      r.readAsDataURL(f);
-    });
-  });
   document.getElementById("ticket").addEventListener("change",function(e){
-    var f=e.target.files&&e.target.files[0], ph=document.getElementById("ph2");
-    if(!f){ph.textContent=window.siteText("noTicket");return}
-    var r=new FileReader();
-    r.onload=function(){var im=new Image();im.alt=window.siteText("ticketAlt");im.src=r.result;ph.textContent="";ph.appendChild(im)};
-    r.readAsDataURL(f);
+    var file=e.target.files&&e.target.files[0];
+    var preview=document.getElementById("ph2");
+    var status=document.getElementById("file-status");
+    status.textContent="";
+    preview.replaceChildren();
+    delete preview.dataset.fileName;
+    if(!file){
+      preview.textContent=window.siteText("noFile");
+      return;
+    }
+    if(file.size>15*1024*1024){
+      e.target.value="";
+      preview.textContent=window.siteText("noFile");
+      status.textContent=window.siteText("fileTooLarge");
+      return;
+    }
+    preview.dataset.fileName=file.name;
+    preview.textContent=file.name+" ("+Math.ceil(file.size/1024)+" Ko)";
+    if(file.type.startsWith("image/")){
+      var reader=new FileReader();
+      reader.onload=function(){
+        var image=new Image();
+        image.alt=window.siteText("attachmentPreviewAlt");
+        image.src=reader.result;
+        preview.prepend(image);
+      };
+      reader.onerror=function(){status.textContent=window.siteText("badPhoto")};
+      reader.readAsDataURL(file);
+    }
   });
   document.getElementById("exp").addEventListener("click",function(){
     var locale=window.siteLanguage==="en"?"en-GB":window.siteLanguage==="wo"?"wo-SN":"fr-FR";
@@ -1021,14 +1214,6 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   });
 })();
 </script>
-<section class="contact-section noprint" id="contact" aria-labelledby="titre-contact">
-  <h2 id="titre-contact" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h2>
-  <p data-i18n="contactText">Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.</p>
-  <div class="contact-actions">
-    <a class="whatsapp" href="https://wa.me/221775521291" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp" data-i18n="whatsapp">Écrire sur WhatsApp</a>
-    <a href="tel:+221775521291" aria-label="Appeler le service" data-i18n="call">Appeler</a>
-  </div>
-</section>
 <footer>
   <p><span data-i18n="footerText">AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.</span> <a href="#contact" data-i18n="footerContact">Contacter le service</a></p>
 </footer>
