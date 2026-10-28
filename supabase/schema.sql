@@ -8,6 +8,8 @@ create table if not exists public.declarations (
   color text not null,
   lost_location text not null,
   lost_date date not null,
+  lost_time_slot text not null
+    check (lost_time_slot in ('07h00 – 15h00', '15h00 – 23h00', '23h00 – 07h00')),
   bus_number text,
   photo_path text,
   ticket_path text,
@@ -22,6 +24,14 @@ alter table public.declarations
 alter table public.declarations
   add constraint declarations_lost_location_check
   check (lost_location in ('AIBD', 'HLM GRAND YOFF', 'TERMINUS GUEDIAWAYE'));
+
+alter table public.declarations
+  add column if not exists lost_time_slot text;
+alter table public.declarations
+  drop constraint if exists declarations_lost_time_slot_check;
+alter table public.declarations
+  add constraint declarations_lost_time_slot_check
+  check (lost_time_slot is null or lost_time_slot in ('07h00 – 15h00', '15h00 – 23h00', '23h00 – 07h00'));
 
 create table if not exists public.declaration_status_history (
   id bigint generated always as identity primary key,
@@ -57,6 +67,10 @@ on conflict (id) do update set
   file_size_limit = 1048576,
   allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
 
+drop function if exists public.create_lost_declaration(
+  uuid, text, text, text, text, text, text, text, date, text, text, text
+);
+
 create or replace function public.create_lost_declaration(
   p_id uuid,
   p_tracking_code text,
@@ -67,6 +81,7 @@ create or replace function public.create_lost_declaration(
   p_color text,
   p_lost_location text,
   p_lost_date date,
+  p_lost_time_slot text,
   p_bus_number text,
   p_photo_path text,
   p_ticket_path text
@@ -80,10 +95,10 @@ declare
 begin
   insert into public.declarations (
     id, tracking_code, access_secret_hash, owner_name, phone, description,
-    color, lost_location, lost_date, bus_number, photo_path, ticket_path
+    color, lost_location, lost_date, lost_time_slot, bus_number, photo_path, ticket_path
   ) values (
     p_id, p_tracking_code, p_access_secret_hash, p_owner_name, p_phone,
-    p_description, p_color, p_lost_location, p_lost_date, p_bus_number,
+    p_description, p_color, p_lost_location, p_lost_date, p_lost_time_slot, p_bus_number,
     p_photo_path, p_ticket_path
   )
   returning * into created;
@@ -124,12 +139,12 @@ end;
 $$;
 
 revoke all on function public.create_lost_declaration(
-  uuid, text, text, text, text, text, text, text, date, text, text, text
+  uuid, text, text, text, text, text, text, text, date, text, text, text, text
 ) from public, anon, authenticated;
 revoke all on function public.update_lost_declaration_status(uuid, text, text)
   from public, anon, authenticated;
 grant execute on function public.create_lost_declaration(
-  uuid, text, text, text, text, text, text, text, date, text, text, text
+  uuid, text, text, text, text, text, text, text, date, text, text, text, text
 ) to service_role;
 grant execute on function public.update_lost_declaration_status(uuid, text, text)
   to service_role;
