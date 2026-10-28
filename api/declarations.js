@@ -12,6 +12,7 @@ const MAX_IMAGE_BYTES = 1024 * 1024;
 const MAX_BODY_BYTES = 3 * 1024 * 1024;
 const STATUSES = new Set(['received', 'searching', 'found', 'closed']);
 const LOCATIONS = new Set(['AIBD', 'HLM GRAND YOFF', 'TERMINUS GUEDIAWAYE']);
+const LOST_TIME_SLOTS = new Set(['07h00 – 15h00', '15h00 – 23h00', '23h00 – 07h00']);
 
 function respond(res, status, body) {
   return res.status(status).json(body);
@@ -110,7 +111,7 @@ async function signedPhoto(config, path) {
 
 async function findDeclaration(config, trackingCode) {
   const params = new URLSearchParams({
-    select: 'id,tracking_code,access_secret_hash,owner_name,phone,description,color,lost_location,lost_date,bus_number,photo_path,ticket_path,status,created_at,updated_at',
+    select: 'id,tracking_code,access_secret_hash,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at',
     tracking_code: `eq.${trackingCode}`,
     limit: '1'
   });
@@ -178,6 +179,8 @@ async function submit(config, body) {
   const color = body.color === undefined ? '' : requiredText(body.color, 'La couleur', 7);
   if (color && !/^#[0-9a-f]{6}$/i.test(color)) throw new HttpError(400, 'Couleur invalide.');
   if (!LOCATIONS.has(body.location)) throw new HttpError(400, 'Lieu de perte invalide.');
+  const lostTimeSlot = requiredText(body.lostTimeSlot, 'Le créneau horaire', 32);
+  if (!LOST_TIME_SLOTS.has(lostTimeSlot)) throw new HttpError(400, 'Créneau horaire invalide.');
   const parsedDate = typeof body.lostDate === 'string'
     ? new Date(`${body.lostDate}T00:00:00Z`)
     : null;
@@ -215,6 +218,7 @@ async function submit(config, body) {
         p_color: color,
         p_lost_location: body.location,
         p_lost_date: body.lostDate,
+        p_lost_time_slot: lostTimeSlot,
         p_bus_number: busNumber || null,
         p_photo_path: photoPath,
         p_ticket_path: ticketPath
@@ -254,6 +258,7 @@ async function track(config, body) {
   const history = await supabase(config, `/rest/v1/declaration_status_history?${params}`);
   return {
     trackingCode: declaration.tracking_code,
+    lostTimeSlot: declaration.lost_time_slot,
     status: declaration.status,
     updatedAt: declaration.updated_at,
     history,
@@ -267,7 +272,7 @@ async function track(config, body) {
 async function adminList(config, token) {
   await checkAdmin(config, token);
   const params = new URLSearchParams({
-    select: 'id,tracking_code,owner_name,phone,description,color,lost_location,lost_date,bus_number,photo_path,ticket_path,status,created_at,updated_at',
+    select: 'id,tracking_code,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at',
     order: 'created_at.desc',
     limit: '100'
   });
