@@ -6,6 +6,7 @@ Le suivi reste désactivé tant que Supabase, Upstash Redis et les informations 
 
 1. Créez un projet Supabase et gardez son URL et ses clés dans un gestionnaire sécurisé.
 2. Dans **SQL Editor**, exécutez le contenu de [`schema.sql`](./schema.sql).
+   Si le schéma a déjà été installé, exécutez aussi [`20261028_add_terminus_guediawaye.sql`](./migrations/20261028_add_terminus_guediawaye.sql) pour autoriser le nouveau lieu.
 3. Vérifiez que le bucket `declaration-photos` existe et qu’il est privé.
 4. Dans **Authentication**, créez le compte du personnel qui administrera les déclarations. Désactivez les inscriptions publiques et n’autorisez que les comptes du service.
 

@@ -6,7 +6,7 @@ create table if not exists public.declarations (
   phone text not null,
   description text not null,
   color text not null,
-  lost_location text not null check (lost_location in ('AIBD', 'HLM GRAND YOFF')),
+  lost_location text not null,
   lost_date date not null,
   bus_number text,
   photo_path text,
@@ -16,6 +16,12 @@ create table if not exists public.declarations (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.declarations
+  drop constraint if exists declarations_lost_location_check;
+alter table public.declarations
+  add constraint declarations_lost_location_check
+  check (lost_location in ('AIBD', 'HLM GRAND YOFF', 'TERMINUS GUEDIAWAYE'));
 
 create table if not exists public.declaration_status_history (
   id bigint generated always as identity primary key,
