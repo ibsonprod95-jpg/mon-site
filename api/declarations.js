@@ -11,7 +11,7 @@ const BUCKET = 'declaration-photos';
 const MAX_IMAGE_BYTES = 1024 * 1024;
 const MAX_BODY_BYTES = 3 * 1024 * 1024;
 const STATUSES = new Set(['received', 'searching', 'found', 'closed']);
-const LOCATIONS = new Set(['AIBD', 'HLM GRAND YOFF']);
+const LOCATIONS = new Set(['AIBD', 'HLM GRAND YOFF', 'TERMINUS GUEDIAWAYE']);
 
 function respond(res, status, body) {
   return res.status(status).json(body);
@@ -175,8 +175,8 @@ async function submit(config, body) {
   const ownerName = requiredText(body.ownerName, 'Le nom', 120);
   const phone = requiredText(body.phone, 'Le téléphone', 40);
   const description = requiredText(body.description, 'La description', 1200);
-  const color = requiredText(body.color, 'La couleur', 7);
-  if (!/^#[0-9a-f]{6}$/i.test(color)) throw new HttpError(400, 'Couleur invalide.');
+  const color = body.color === undefined ? '' : requiredText(body.color, 'La couleur', 7);
+  if (color && !/^#[0-9a-f]{6}$/i.test(color)) throw new HttpError(400, 'Couleur invalide.');
   if (!LOCATIONS.has(body.location)) throw new HttpError(400, 'Lieu de perte invalide.');
   const parsedDate = typeof body.lostDate === 'string'
     ? new Date(`${body.lostDate}T00:00:00Z`)
