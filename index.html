@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="system">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Objets et bagages perdus – AIBD Dem Dikk SA</title>
+<title>Objets et bagages perdus – AIBD DEM DIKK</title>
+<meta name="description" content="Découvrez le service objets et bagages perdus AIBD DEM DIKK et préparez une fiche de renseignements pour votre bagage.">
 <style>
 :root{
   /* Couleurs tirées du logo Dem Dikk */
@@ -14,6 +15,7 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){--bg:#0e1a13;--surface:#16271c;--text:#e8f2eb;--muted:#9bb2a3;--line:#274433;--brand:#1fb5ae;--brand-dark:#14948e;color-scheme:dark}
 }
+:root[data-theme="dark"]{--bg:#0e1a13;--surface:#16271c;--text:#e8f2eb;--muted:#9bb2a3;--line:#274433;--brand:#1fb5ae;--brand-dark:#14948e;--grey:#9bb2a3;color-scheme:dark}
 *{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -51,7 +53,40 @@ dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 
 .logo{display:inline-block;width:52px;height:52px;flex:none;background:var(--logo) center/contain no-repeat;border-radius:10px}
 .logo.sm{width:34px;height:34px;border-radius:7px}
-header .bar{display:flex;align-items:center;gap:14px;max-width:1000px;margin:0 auto}
+.home-banner{max-width:1200px;margin:18px auto 28px;padding:0 20px}
+.home-banner img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(23,66,59,.12)}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1000px;margin:0 auto}
+header .brand{display:flex;align-items:center;gap:14px}
+header nav{display:flex;flex-wrap:wrap;gap:8px 18px}
+header nav a{color:#fff;font-weight:700;text-decoration:none}
+header nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.language-picker{display:flex;align-items:center;gap:7px;margin:0;color:#fff;font-size:.85rem;font-weight:700}
+.language-picker select{width:auto;min-width:108px;padding:7px 9px;border-color:rgba(255,255,255,.55);background:rgba(0,0,0,.12);color:#fff}
+.language-picker select option{background:#fff;color:#19332f}
+select{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px}
+.hero,.presentation{max-width:1000px;margin:24px auto;padding:clamp(22px,5vw,48px)}
+.hero{display:grid;grid-template-columns:1.5fr 1fr;align-items:center;gap:28px;background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--accent);border-radius:12px}
+.hero-kicker{margin:0 0 8px;color:var(--brand);font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
+.hero h2{margin:0 0 14px;color:var(--text);font-size:clamp(2rem,5vw,3.3rem);line-height:1.08}
+.hero p{max-width:55ch;color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero-actions a{display:inline-block;width:auto;margin:0;padding:12px 18px;border-radius:6px;background:var(--brand);color:#fff;text-decoration:none;font-weight:700}
+.hero-actions a.secondary{border:1px solid var(--brand);background:transparent;color:var(--brand)}
+.hero-mark{display:grid;place-items:center;min-height:190px;border-radius:10px;background:linear-gradient(145deg,var(--brand),var(--brand-dark));color:#fff;text-align:center;padding:24px}
+.hero-mark strong{display:block;color:var(--accent);font-size:clamp(2rem,5vw,3rem);line-height:1}
+.hero-mark span{display:block;margin-top:10px;font-weight:700}
+.presentation{padding:0;background:transparent;border:0}
+.presentation h2{margin:0 0 14px;font-size:1.5rem;color:var(--text)}
+.presentation-intro{max-width:65ch;color:var(--muted)}
+.service-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.service-card{padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.service-card strong{display:block;margin-bottom:6px;color:var(--brand)}
+.service-card p{margin:0;color:var(--muted);font-size:.94rem}
+main{scroll-margin-top:16px}
+.form-note{padding:12px 14px;background:var(--bg);border-left:4px solid var(--accent);border-radius:4px;color:var(--muted);font-size:.9rem}
+footer{max-width:1000px;margin:0 auto;padding:12px 20px 36px;color:var(--muted);font-size:.85rem}
+footer p{margin:0}
+@media(max-width:760px){header .bar{align-items:flex-start;flex-direction:column}header nav{padding-left:0;gap:8px}.hero{grid-template-columns:1fr;margin:16px}.hero-mark{min-height:120px}.presentation{margin:24px 16px}.service-cards{grid-template-columns:1fr}main{grid-template-columns:1fr}}
 .fiche-head{display:flex;align-items:center;gap:10px}
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--logo) 0 0/110px 110px repeat;opacity:.06;pointer-events:none}
 @media print{body::before{display:none}}
@@ -61,96 +96,1152 @@ label.cam:hover{background:var(--brand);color:#fff}
 label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offset:1px}
 .photo.ticket{aspect-ratio:auto;min-height:70px;max-height:260px}
 .photo.ticket img{height:auto;max-height:260px}
+.assistant-widget{position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));z-index:10;font-family:Arial,sans-serif}
+.assistant-toggle{width:auto;margin:0;box-shadow:0 3px 14px rgba(0,0,0,.2)}
+.assistant-panel{position:absolute;right:0;bottom:calc(100% + .75rem);display:grid;grid-template-rows:auto minmax(10rem,1fr) auto auto;gap:.75rem;width:min(23rem,calc(100vw - 2rem));height:min(34rem,calc(100dvh - 7rem));padding:1rem;background:#fff;color:#243238;border:1px solid #cbd4d2;border-radius:8px;box-shadow:0 5px 24px rgba(0,0,0,.2)}
+.assistant-panel[hidden]{display:none}
+.assistant-header{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.assistant-header h2{margin:0;font:700 1.1rem Arial,sans-serif;color:var(--brand)}
+.assistant-close{width:auto;margin:0;padding:.3rem .6rem;background:transparent;color:var(--brand);border:1px solid var(--brand)}
+.assistant-messages{overflow-y:auto;display:flex;flex-direction:column;align-items:flex-start;gap:.6rem;padding:.25rem}
+.assistant-message{max-width:90%;margin:0;padding:.55rem .7rem;border-radius:8px;background:#f1f5f4;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.92rem}
+.assistant-message.user{align-self:flex-end;background:var(--brand);color:#fff}
+.assistant-status{min-height:1.2em;margin:0;color:var(--grey);font:.82rem Arial,sans-serif}
+.assistant-form{display:grid;gap:.5rem}
+.assistant-form label{margin:0}
+.assistant-form textarea{min-height:4.5rem;max-height:8rem;margin:0;font:.92rem Arial,sans-serif}
+.assistant-actions{display:flex;justify-content:flex-end;gap:.5rem}
+.assistant-form button{justify-self:end;width:auto;margin:0;padding:9px 14px}
+.assistant-privacy{margin:0;color:var(--grey);font:.75rem/1.4 Arial,sans-serif}
+@media(max-width:34rem){.assistant-widget{right:max(.75rem,env(safe-area-inset-right));bottom:max(.75rem,env(safe-area-inset-bottom))}.assistant-panel{position:fixed;right:.5rem;bottom:4.5rem;height:min(34rem,calc(100dvh - 6rem))}}
+.utility-drawer summary{position:fixed;z-index:42;left:0;top:42%;max-width:48vh;padding:14px 10px;border:0;border-radius:0 8px 8px 0;background:var(--brand);color:#fff;font-weight:700;writing-mode:vertical-rl;transform:rotate(180deg);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.utility-drawer summary::-webkit-details-marker{display:none}
+.utility-drawer summary:hover{background:var(--brand-dark)}
+.utility-drawer[open]{position:fixed;inset:0;z-index:40;background:rgba(12,28,26,.48)}
+.utility-backdrop{position:fixed;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;cursor:default}
+.utility-panel{position:fixed;z-index:41;inset:0 auto 0 0;display:grid;align-content:start;gap:20px;overflow-y:auto;width:min(23rem,calc(100vw - 2.5rem));padding:24px 20px max(24px,env(safe-area-inset-bottom));background:var(--surface);color:var(--text);border-right:1px solid var(--line);box-shadow:8px 0 32px rgba(0,0,0,.2)}
+.utility-panel[hidden]{display:none}
+.utility-panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.utility-panel h2{margin:0;font-size:1.35rem}
+.utility-close{width:auto;margin:0;padding:8px 12px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.settings-panel{display:grid;gap:12px}
+.settings-panel label{display:grid;gap:5px;margin:0;font-size:.9rem}
+.settings-panel select{width:100%;margin:0;background:var(--surface);color:var(--text)}
+.settings-panel .settings-check{display:flex;align-items:flex-start;gap:9px;font-weight:600}
+.settings-panel .settings-check input{flex:0 0 auto;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand)}
+.settings-panel .settings-help{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
+.utility-contact{padding-top:18px;border-top:1px solid var(--line)}
+.utility-contact h3{margin:0 0 8px;font-size:1.1rem}
+.utility-contact p{margin:0;color:var(--muted);font-size:.92rem}
+.utility-contact .contact-actions{display:grid;grid-template-columns:1fr}
+html[data-text-size="large"]{font-size:112.5%}
+html[data-text-size="xlarge"]{font-size:125%}
+html.reading-comfort body{letter-spacing:.015em}
+html.reading-comfort p,html.reading-comfort li,html.reading-comfort dd,html.reading-comfort .assistant-message{line-height:1.9}
+html.reading-comfort p{margin-bottom:1em}
+html.reading-comfort .presentation-intro,html.reading-comfort .service-card p,html.reading-comfort main p,html.reading-comfort .utility-contact p{max-width:70ch}
+:root[data-theme="light"]{
+  --bg:#f3f7f5;
+  --surface:#fff;
+  --text:#19332f;
+  --muted:#637773;
+  --line:#dce7e3;
+  --brand:#08766f;
+  --brand-dark:#055b56;
+  --accent:#f5ca45;
+  --grey:#637773;
+  color-scheme:light;
+}
+:root[data-theme="dark"] body{background:linear-gradient(180deg,#0e1a13 0,#101f17 450px,var(--bg) 100%)}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) body{background:linear-gradient(180deg,#0e1a13 0,#101f17 450px,var(--bg) 100%)}
+}
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+body{background:linear-gradient(180deg,#edf5f2 0,#f7f9f8 450px,var(--bg) 100%);color:var(--text)}
+header{position:relative;background:linear-gradient(115deg,#075e59,#0b8178);border-bottom:4px solid var(--accent);padding:16px 24px;box-shadow:0 5px 20px rgba(13,54,49,.12)}
+header .bar{min-height:54px}
+header .logo{background-color:#fff;padding:3px}
+header nav a{padding:9px 12px;border-radius:6px;transition:background .18s ease}
+header nav a:hover{background:rgba(255,255,255,.14);text-decoration:none}
+.contact-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.contact-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 18px;border:1px solid var(--brand);border-radius:8px;background:var(--brand);color:#fff;font-weight:700;text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.contact-actions a.whatsapp{border-color:#16834a;background:#16834a}
+.contact-actions a:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(19,54,49,.16)}
+.hero{position:relative;overflow:hidden;margin:34px auto 28px;padding:clamp(28px,5vw,58px);border:1px solid #dfeae6;border-top:4px solid var(--accent);border-radius:18px;box-shadow:0 18px 48px rgba(23,66,59,.09)}
+.hero-kicker{display:inline-block;padding:6px 11px;background:#e8f4f0;border:1px solid #d7eae3;border-radius:999px;font-size:.76rem}
+.hero h2{max-width:14ch;font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-.045em}
+.hero>div:first-child>p:not(.hero-kicker){font-size:1.08rem;line-height:1.75}
+.hero-mark{position:relative;overflow:hidden;min-height:260px;border-radius:14px;background:radial-gradient(circle at 82% 18%,rgba(245,202,69,.38),transparent 25%),linear-gradient(145deg,#075d58,#0b8b80);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.hero-mark:before,.hero-mark:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.15);border-radius:50%;width:260px;height:260px}
+.hero-mark:before{right:-90px;top:-105px}
+.hero-mark:after{left:-160px;bottom:-205px;width:340px;height:340px}
+.hero-mark strong{font-size:clamp(1.7rem,3.2vw,2.5rem);letter-spacing:.08em;line-height:1.2;text-wrap:balance}
+.hero-mark span{font-size:1.06rem}
+.hero-mark{min-height:0;padding:0;aspect-ratio:1323 / 1600}
+.hero-mark:before,.hero-mark:after{display:none}
+.hero-mark img{display:block;width:100%;height:100%;border-radius:inherit;object-fit:cover}
+.hero-image-brand{position:absolute;top:0;right:0;z-index:2;display:flex;width:52%;height:21%;box-sizing:border-box;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;padding:0 6%;background:#fbfaf6;color:#111;pointer-events:none}
+.hero-image-brand strong,.hero-image-brand span{display:block}
+.hero-image-brand strong{color:#111;text-align:left;font-size:clamp(.85rem,2vw,2rem);line-height:1.05;letter-spacing:-.03em}
+.hero-image-brand span{margin:0;color:#242424;text-align:left;font-size:clamp(.65rem,1.25vw,1.05rem);font-weight:500;line-height:1.2}
+.hero-image-credit{position:absolute;right:12px;bottom:12px;z-index:1;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.94);color:var(--brand-dark);font-size:.75rem;font-weight:700;text-decoration:none}
+.hero-actions{gap:12px}
+.hero-actions a{box-shadow:0 5px 12px rgba(8,118,111,.15);transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.hero-actions a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(8,118,111,.2)}
+.hero-actions a.secondary{box-shadow:none;background:#fff}
+.presentation{margin:0 auto 34px}
+.navette-info{width:min(1100px,calc(100% - 32px));margin:0 auto 34px;padding:clamp(22px,4vw,36px);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:16px;background:var(--surface);color:var(--text);box-shadow:0 10px 30px rgba(23,66,59,.055)}
+.navette-heading{max-width:760px}
+.navette-heading h2{margin:12px 0;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.2}
+.navette-heading>p:last-child{line-height:1.7;color:var(--muted)}
+.navette-details{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.navette-card{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.navette-card h3{margin:0 0 10px;font-size:1.05rem}
+.navette-card p{margin:0;color:var(--muted);line-height:1.65}
+.navette-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:22px}
+.navette-fare{margin:0}
+.navette-fare strong{color:var(--brand);font-size:1.55rem}
+.navette-benefits{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.navette-benefits li{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-weight:700}
+.navette-benefits li:before{content:"✓";margin-right:7px;color:var(--brand)}
+.navette-source{display:inline-block;margin-top:18px;font-weight:700}
+@media(max-width:760px){.navette-details{grid-template-columns:1fr}.navette-footer{align-items:flex-start;flex-direction:column}}
+.presentation h2{font-size:1.7rem;letter-spacing:-.02em}
+.presentation-intro{font-size:1.02rem;line-height:1.7}
+.service-cards{gap:16px;margin-top:24px}
+.service-card{position:relative;overflow:hidden;padding:22px;border-radius:12px;box-shadow:0 7px 22px rgba(23,66,59,.045);transition:transform .18s ease,box-shadow .18s ease}
+.service-card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--accent)}
+.service-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(23,66,59,.09)}
+.service-card strong{font-size:1.03rem}
+main{gap:18px;padding-top:8px;padding-bottom:30px}
+main>section{padding:clamp(20px,3vw,30px);border-radius:14px;box-shadow:0 10px 30px rgba(23,66,59,.055)}
+main h2{font-size:1.28rem;letter-spacing:-.02em}
+.form-note{margin:0 0 18px;border:1px solid #e5e9d8;border-left:4px solid var(--accent);background:#fffaf0;color:#586b67}
+label{margin-top:15px}
+input,textarea,select{border-color:#d6e2de;border-radius:8px;transition:border-color .16s ease,box-shadow .16s ease}
+input:hover,textarea:hover,select:hover{border-color:#9bbcb3}
+input:focus,textarea:focus,select:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px rgba(8,118,111,.13)}
+input[type="color"]{height:48px;padding:5px;cursor:pointer}
+input[type="file"]{font-size:.88rem}
+small{display:block;margin-top:5px;color:var(--muted);font-size:.82rem}
+button{border-radius:8px;transition:background .18s ease,transform .18s ease,box-shadow .18s ease}
+button:not(:disabled):hover{transform:translateY(-1px)}
+button:focus-visible,a:focus-visible{outline:3px solid #d5a900;outline-offset:3px}
+.fiche{border:1px solid #cfe0da;border-radius:12px;box-shadow:0 8px 22px rgba(23,66,59,.06)}
+.fiche-head{padding:13px 16px}
+.fiche-body{padding:18px}
+.photo{border-color:#cfddd8;border-radius:9px}
+body::before{opacity:.018;background-size:150px 150px}
+.assistant-widget{padding:0;border:0;border-radius:0;background:transparent}
+.assistant-toggle{box-shadow:0 8px 24px rgba(0,78,72,.25)}
+.assistant-panel{border-color:var(--line);box-shadow:0 18px 50px rgba(19,54,49,.2)}
+footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
+@media(max-width:760px){
+  header{padding:14px 16px}
+  header nav{padding-left:0}
+  .home-banner{margin:14px auto 22px;padding:0 16px}
+  .home-banner img{border-radius:10px}
+  .hero{margin:20px 16px 24px;padding:24px;border-radius:14px}
+  .hero h2{max-width:16ch}
+  .hero-mark{min-height:0}
+  .presentation{margin:0 16px 26px}
+  .service-cards{gap:12px}
+  main{padding:0 16px 28px}
+  main>section{padding:20px}
+  .contact-actions{display:grid;grid-template-columns:1fr}
+  .utility-drawer summary{top:auto;bottom:28%;max-width:55vh}
+  .utility-panel{width:min(23rem,calc(100vw - 2.5rem));padding:20px 16px max(20px,env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{scroll-behavior:auto!important;transition:none!important}
+}
+:root[data-theme="dark"] .assistant-panel,:root[data-theme="dark"] .assistant-message{background:var(--surface);color:var(--text)}
+:root[data-theme="dark"] .assistant-message.user{background:var(--brand);color:#fff}
+:root[data-theme="dark"] .hero-kicker{background:#18352d;border-color:#274433}
+:root[data-theme="dark"] .form-note{background:#282719;border-color:#4b4427;color:var(--text)}
+:root[data-theme="dark"] .hero-actions a.secondary{background:var(--surface);color:var(--text)}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .assistant-panel,:root:not([data-theme="light"]) .assistant-message{background:var(--surface);color:var(--text)}
+  :root:not([data-theme="light"]) .assistant-message.user{background:var(--brand);color:#fff}
+  :root:not([data-theme="light"]) .hero-kicker{background:#18352d;border-color:#274433}
+  :root:not([data-theme="light"]) .form-note{background:#282719;border-color:#4b4427;color:var(--text)}
+  :root:not([data-theme="light"]) .hero-actions a.secondary{background:var(--surface);color:var(--text)}
+}
 </style>
 </head>
 <body>
 <header>
-  <div class="bar"><span class="logo" role="img" aria-label="Logo Dem Dikk"></span>
-  <div><h1>Objets et bagages perdus</h1>
-  <p>AIBD · Dem Dikk SA</p></div></div>
+  <div class="bar">
+    <div class="brand">
+      <span class="logo" role="img" aria-label="Logo Dem Dikk"></span>
+      <div><h1>AIBD DEM DIKK</h1>
+      <p data-i18n="brandSubtitle">Objets et bagages perdus</p></div>
+    </div>
+    <nav aria-label="Navigation principale" data-i18n-aria="mainNav">
+      <a href="#service" data-i18n="navService">Le service</a>
+      <a href="#navettes" data-i18n="navShuttle">Navettes AIBD</a>
+      <a href="#declaration" data-i18n="navForm">Préparer ma fiche</a>
+      <a href="#suivi" data-track-key="navTracking">Suivre une déclaration</a>
+    </nav>
+  </div>
 </header>
-<main>
+<div class="home-banner">
+  <img src="assets/dem-dikk-encore-plus-proche.jpg" alt="Bus Dakar Dem Dikk et personne souriante avec le message « Encore plus proche de vous »" fetchpriority="high">
+</div>
+<details class="utility-drawer" id="utility-drawer">
+  <summary data-i18n="utilityTitle">Paramètres &amp; contact</summary>
+  <button class="utility-backdrop" type="button" aria-label="Fermer le panneau" data-i18n-aria="close"></button>
+  <aside class="utility-panel" aria-label="Paramètres et contact" data-i18n-aria="utilityTitle">
+    <div class="utility-panel-header">
+      <h2 data-i18n="utilityTitle">Paramètres &amp; contact</h2>
+      <button class="utility-close" id="utility-close" type="button" data-i18n="close">Fermer</button>
+    </div>
+    <section class="settings-panel" aria-label="Paramètres du site" data-i18n-aria="settingsTitle">
+      <h3 data-i18n="settingsTitle">Paramètres</h3>
+      <label for="language-select"><span data-i18n="languageLabel">Langue</span>
+        <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+          <option value="wo">Wolof</option>
+        </select>
+      </label>
+      <label for="theme-select"><span data-i18n="themeLabel">Thème</span>
+        <select id="theme-select">
+          <option value="system" data-i18n="themeSystem">Automatique</option>
+          <option value="light" data-i18n="themeLight">Clair</option>
+          <option value="dark" data-i18n="themeDark">Sombre</option>
+        </select>
+      </label>
+      <label for="text-size-select"><span data-i18n="textSizeLabel">Taille du texte</span>
+        <select id="text-size-select">
+          <option value="normal" data-i18n="textSizeNormal">Normale</option>
+          <option value="large" data-i18n="textSizeLarge">Grande</option>
+          <option value="xlarge" data-i18n="textSizeExtraLarge">Très grande</option>
+        </select>
+      </label>
+      <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
+      <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
+      <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
+    </section>
+    <section class="utility-contact" id="contact" aria-labelledby="titre-contact">
+      <h3 id="titre-contact" tabindex="-1" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h3>
+      <p data-i18n="contactText">Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.</p>
+      <div class="contact-actions">
+        <a class="whatsapp" href="https://wa.me/221775521291" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp" data-i18n="whatsapp">Écrire sur WhatsApp</a>
+        <a href="tel:+221775521291" aria-label="Appeler le service" data-i18n="call">Appeler</a>
+      </div>
+    </section>
+  </aside>
+</details>
+<section class="hero" aria-labelledby="titre-vitrine">
+  <div>
+    <p class="hero-kicker">AIBD DEM DIKK</p>
+    <h2 id="titre-vitrine" data-i18n="heroTitle">Voyagez l’esprit plus tranquille.</h2>
+    <p data-i18n="heroText">Un bagage égaré pendant votre trajet ? Retrouvez ici les informations utiles sur le service objets et bagages perdus et préparez une fiche avec les détails de votre bagage.</p>
+    <div class="hero-actions">
+      <a href="#declaration" data-i18n="heroForm">Préparer ma fiche</a>
+      <a class="secondary" href="#service" data-i18n="heroService">Découvrir le service</a>
+    </div>
+  </div>
+  <div class="hero-mark" aria-label="Service objets et bagages perdus" data-i18n-aria="heroMark">
+    <img src="assets/dem-dikk-express-aibd.jpg" alt="Affiche officielle de la navette Express AIBD de Dem Dikk, entre Dakar et l’aéroport Blaise-Diagne" fetchpriority="high">
+    <div class="hero-image-brand">
+      <strong>AIBD DEM DIKK</strong>
+      <span data-i18n="heroImageLabel">Navette Express AIBD</span>
+    </div>
+  </div>
+</section>
+<section class="navette-info" id="navettes" aria-labelledby="titre-navettes">
+  <div class="navette-heading">
+    <p class="hero-kicker" data-i18n="shuttleKicker">Navettes-Express AIBD</p>
+    <h2 id="titre-navettes" data-i18n="shuttleTitle">Rejoignez l’aéroport simplement et en toute sécurité</h2>
+    <p data-i18n="shuttleIntro">Dakar Dem Dikk met à votre disposition des navettes Express pour rallier l’Aéroport International Blaise Diagne (AIBD) ou rejoindre le centre-ville.</p>
+  </div>
+  <div class="navette-details">
+    <article class="navette-card">
+      <h3 data-i18n="shuttleToAirportTitle">Départ vers l’aéroport</h3>
+      <p data-i18n="shuttleToAirportText">Départ au terminus HLM Grand-Yoff, en face du Stade Léopold Sédar Senghor, une heure avant l’heure de convocation à l’aéroport.</p>
+    </article>
+    <article class="navette-card">
+      <h3 data-i18n="shuttleFromAirportTitle">Départ depuis l’AIBD</h3>
+      <p data-i18n="shuttleFromAirportText">Les bus partent une heure après l’atterrissage de votre vol et desservent le centre-ville.</p>
+    </article>
+    <article class="navette-card">
+      <h3 data-i18n="shuttleServiceTitle">Un service pratique</h3>
+      <p data-i18n="shuttleServiceText">Bus climatisés, passage par l’autoroute à péage, service disponible 24 h/24 et 7 j/7.</p>
+    </article>
+  </div>
+  <div class="navette-footer">
+    <p class="navette-fare"><strong data-i18n="shuttleFare">6 000 FCFA</strong> <span data-i18n="shuttleFareDetail">l’aller simple</span></p>
+    <ul class="navette-benefits" aria-label="Atouts du service" data-i18n-aria="shuttleBenefitsLabel">
+      <li data-i18n="shuttleReliable">Fiabilité</li>
+      <li data-i18n="shuttleSafe">Sécurité</li>
+      <li data-i18n="shuttleFlexible">Flexibilité</li>
+    </ul>
+  </div>
+  <a class="navette-source" href="https://demdikk.sn/offres-de-transport/" target="_blank" rel="noopener noreferrer" data-i18n="shuttleSource">Consulter les offres officielles de Dakar Dem Dikk</a>
+</section>
+<section class="presentation" id="service" aria-labelledby="titre-service">
+  <h2 id="titre-service" data-i18n="serviceTitle">À vos côtés pour vos déplacements</h2>
+  <p class="presentation-intro" data-i18n="serviceText">Dem Dikk accompagne les voyageurs dans leurs déplacements. Cette page vous aide à préparer les renseignements utiles lorsqu’un bagage est égaré.</p>
+  <div class="service-cards">
+    <article class="service-card">
+      <strong data-i18n="cardDescribeTitle">Décrivez le bagage</strong>
+      <p data-i18n="cardDescribeText">Décrivez ses signes distinctifs. Vous pouvez ajouter un justificatif si vous en avez un.</p>
+    </article>
+    <article class="service-card">
+      <strong data-i18n="cardJourneyTitle">Précisez le trajet</strong>
+      <p data-i18n="cardJourneyText">Choisissez le lieu et la date de la perte, puis ajoutez le numéro du bus si vous le connaissez.</p>
+    </article>
+    <article class="service-card">
+      <strong data-i18n="cardFormTitle">Préparez votre fiche</strong>
+      <p data-i18n="cardFormText">Renseignez vos coordonnées et exportez une fiche récapitulative en PDF depuis le formulaire.</p>
+    </article>
+  </div>
+</section>
+<main id="declaration">
   <section class="noprint">
-    <h2>Déclarer un bagage</h2>
-    <label for="nom">Nom du propriétaire</label>
-    <input id="nom" autocomplete="name">
-    <label for="tel">Téléphone</label>
-    <input id="tel" type="tel" autocomplete="tel">
-    <label for="desc">Description du bagage</label>
-    <textarea id="desc" placeholder="Couleur, taille, marque, signes distinctifs"></textarea>
-    <label for="lieu">Lieu et date de la perte</label>
-    <input id="lieu" placeholder="Ex. : Terminal AIBD, bus ligne 1, 27/10/2026">
-    <label for="tkt">Numéro du ticket de bus</label>
-    <input id="tkt" inputmode="text" placeholder="Ex. : DD-123456">
-    <label for="photo">Photo du bagage</label>
-    <input id="photo" type="file" accept="image/*">
-    <label class="cam" for="photo-cam">Prendre une photo du bagage</label>
-    <input id="photo-cam" class="sr" type="file" accept="image/*" capture="environment">
-    <label for="ticket">Importer le ticket de bus acheté</label>
-    <input id="ticket" type="file" accept="image/*">
-    <label class="cam" for="ticket-cam">Prendre une photo du ticket</label>
-    <input id="ticket-cam" class="sr" type="file" accept="image/*" capture="environment">
-    <button type="button" id="exp" class="alt">Exporter la fiche en PDF</button>
+    <h2 data-i18n="formTitle">Préparer ma fiche de déclaration</h2>
+    <p class="form-note" data-i18n="formNote">Remplissez les informations disponibles, puis choisissez « Exporter la fiche en PDF ». Cette page prépare une fiche sur votre appareil ; elle ne transmet pas automatiquement votre déclaration au service.</p>
+    <label for="nom" data-i18n="ownerLabel">Nom du propriétaire</label>
+    <input id="nom" autocomplete="name" maxlength="120">
+    <label for="tel" data-i18n="phoneLabel">Téléphone</label>
+    <input id="tel" type="tel" autocomplete="tel" maxlength="40">
+    <label for="desc" data-i18n="descriptionLabel">Description du bagage</label>
+    <textarea id="desc" maxlength="1200" placeholder="Taille, marque et signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
+    <label for="lieu" data-i18n="locationLabel">Lieu de la perte</label>
+    <select id="lieu">
+      <option value="" data-i18n="chooseLocation">Choisir un lieu</option>
+      <option value="AIBD">AIBD</option>
+      <option value="HLM GRAND YOFF">HLM GRAND YOFF</option>
+      <option value="TERMINUS GUEDIAWAYE">TERMINUS GUEDIAWAYE</option>
+    </select>
+    <label for="date-perte" data-i18n="dateLabel">Date de la perte</label>
+    <input id="date-perte" type="date">
+    <label for="time-slot" data-i18n="timeSlotLabel">Créneau horaire</label>
+    <select id="time-slot">
+      <option value="" data-i18n="chooseTimeSlot">Choisir un créneau</option>
+      <option value="07h00 – 15h00">07h00 – 15h00</option>
+      <option value="15h00 – 23h00">15h00 – 23h00</option>
+      <option value="23h00 – 07h00">23h00 – 07h00</option>
+    </select>
+    <label for="tkt" data-i18n="busLabel">Numéro du bus</label>
+    <input id="tkt" inputmode="text" maxlength="80" placeholder="Ex. : bus ligne 1" data-i18n-placeholder="busPlaceholder">
+    <label for="ticket" data-i18n="fileLabel">Ajouter un justificatif (facultatif)</label>
+    <input id="ticket" type="file" aria-describedby="aide-justificatif">
+    <small id="aide-justificatif" data-i18n="fileHelp">Tous les formats sont acceptés jusqu’à 15 Mo. La fiche PDF affiche le nom du fichier et son aperçu s’il s’agit d’une image. Pour transmettre le fichier original, envoyez-le séparément au service.</small>
+    <p id="file-status" class="tracking-status" role="status" aria-live="polite"></p>
+    <button type="button" id="exp" class="alt" data-i18n="exportPdf">Exporter la fiche en PDF</button>
+    <div class="online-submit">
+      <h3 data-track-key="submitTitle">Enregistrer ma déclaration en ligne</h3>
+      <p data-track-key="submitIntro">Pour obtenir un code de suivi, envoyez les renseignements ci-dessus au service. Les photos sont facultatives et seront envoyées avec la déclaration.</p>
+      <p><strong data-track-key="privacyHeading">Informations sur le traitement des données</strong><br><span id="declaration-privacy" role="status" aria-live="polite"></span></p>
+      <label class="consent-label"><input id="declaration-consent" type="checkbox">
+        <span data-track-key="consentText">J’accepte l’enregistrement de mes coordonnées et des renseignements de cette déclaration pour son traitement et son suivi. Je comprends que le code privé ne pourra pas être récupéré si je le perds.</span>
+      </label>
+      <button id="submit-declaration" type="button" disabled data-track-key="submitButton">Envoyer et créer mon suivi</button>
+      <p id="submit-status" class="tracking-status" role="status" aria-live="polite"></p>
+      <div id="created-tracking" class="tracking-result" hidden aria-live="polite"></div>
+    </div>
   </section>
 
   <section class="fiche-section">
-    <h2>Fiche du propriétaire</h2>
+    <h2 data-i18n="ownerSheet">Fiche du propriétaire</h2>
     <div class="fiche">
-      <div class="fiche-head"><span class="logo sm" role="img" aria-label="Logo Dem Dikk"></span>Objets et bagages perdus – AIBD Dem Dikk SA</div>
+      <div class="fiche-head"><span class="logo sm" role="img" aria-label="Logo Dem Dikk"></span><span data-i18n="pdfBrandTitle">AIBD DEM DIKK — Objets et bagages perdus</span></div>
       <div class="fiche-body">
-        <div class="photo" id="ph">Aucune photo ajoutée</div>
-        <div class="photo ticket" id="ph2">Aucun ticket importé</div>
+        <div class="photo ticket" id="ph2" data-i18n="noFile" role="status" aria-live="polite" aria-atomic="true">Aucun fichier ajouté</div>
         <dl>
-          <dt>Propriétaire</dt><dd id="o-nom">—</dd>
-          <dt>Téléphone</dt><dd id="o-tel">—</dd>
-          <dt>Bagage</dt><dd id="o-desc">—</dd>
-          <dt>Lieu et date</dt><dd id="o-lieu">—</dd>
-          <dt>N° du ticket</dt><dd id="o-tkt">—</dd>
+          <dt data-i18n="ownerLabel">Propriétaire</dt><dd id="o-nom">—</dd>
+          <dt data-i18n="phoneLabel">Téléphone</dt><dd id="o-tel">—</dd>
+          <dt data-i18n="baggageLabel">Bagage</dt><dd id="o-desc">—</dd>
+          <dt data-i18n="locationDate">Lieu et date</dt><dd id="o-lieu">—</dd>
+          <dt data-i18n="timeSlotLabel">Créneau horaire</dt><dd id="o-time-slot">—</dd>
+          <dt data-i18n="busNumber">N° du bus</dt><dd id="o-tkt">—</dd>
         </dl>
         <div class="ref" id="ref"></div>
       </div>
     </div>
   </section>
 </main>
+<style>
+.tracking-section,.online-submit{margin:24px auto;padding:24px;width:min(880px,calc(100% - 32px));border:1px solid var(--line,#d9e2e1);border-radius:16px;background:var(--surface,#fff);color:var(--text,#1d2b2a)}
+.online-submit{margin:26px 0 0;padding:20px}
+.online-submit h3,.tracking-section h2{margin-top:0}
+.online-submit button,.tracking-section button{margin-top:12px}
+.consent-label{display:flex;align-items:flex-start;gap:10px;margin:16px 0}
+.consent-label input{width:auto;margin-top:5px}
+.tracking-result,.tracking-card{margin-top:16px;padding:16px;border:1px solid var(--line,#d9e2e1);border-radius:12px;background:var(--surface,#fff)}
+.tracking-result code{display:block;overflow-wrap:anywhere;margin:8px 0;padding:10px;background:var(--background,#f2f6f5);border-radius:8px}
+.tracking-status{min-height:1.5em}
+.tracking-history{padding-left:22px}
+.tracking-photos{display:flex;flex-wrap:wrap;gap:12px}
+.tracking-photos a{display:block}
+.tracking-photos img{width:min(220px,40vw);max-height:220px;object-fit:contain;border:1px solid var(--line,#d9e2e1);border-radius:8px}
+.tracking-section input,.tracking-section label{display:block}
+.tracking-section input{width:100%;margin:6px 0 14px;padding:11px;border:1px solid var(--line,#9baead);border-radius:8px;background:var(--surface,#fff);color:var(--text,#1d2b2a)}
+@media print{.online-submit,.tracking-section{display:none!important}}
+</style>
+<section class="tracking-section noprint" id="suivi" aria-labelledby="tracking-title">
+  <h2 id="tracking-title" data-track-key="trackTitle">Suivre ma déclaration</h2>
+  <p data-track-key="trackIntro">Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.</p>
+  <form id="track-form">
+    <label for="tracking-code" data-track-key="trackingCodeLabel">Code de suivi</label>
+    <input id="tracking-code" name="trackingCode" autocomplete="off" required maxlength="40">
+    <label for="tracking-secret" data-track-key="trackingSecretLabel">Code privé</label>
+    <input id="tracking-secret" name="accessSecret" type="password" autocomplete="off" required maxlength="100">
+    <button id="track-button" type="submit" disabled data-track-key="trackButton">Consulter le dossier</button>
+  </form>
+  <p id="track-status" class="tracking-status" role="status" aria-live="polite"></p>
+  <div id="track-result" aria-live="polite"></div>
+</section>
 <script>
 (function(){
-  var ids=["nom","tel","desc","lieu","tkt"];
+  var copy={
+    fr:{submitTitle:"Enregistrer ma déclaration en ligne",submitIntro:"Pour obtenir un code de suivi, envoyez les renseignements ci-dessus au service. Seules les images peuvent être jointes au suivi en ligne. Pour les autres fichiers, exportez la fiche PDF et transmettez le fichier original séparément.",consentText:"J’accepte l’enregistrement de mes coordonnées et des renseignements de cette déclaration pour son traitement et son suivi. Je comprends que le code privé ne pourra pas être récupéré si je le perds.",submitButton:"Envoyer et créer mon suivi",trackTitle:"Suivre ma déclaration",trackIntro:"Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.",trackingCodeLabel:"Code de suivi",trackingSecretLabel:"Code privé",trackButton:"Consulter le dossier",working:"Envoi en cours…",loading:"Recherche du dossier…",missingFields:"Veuillez remplir votre nom, téléphone, description, lieu, date de perte et créneau horaire.",needConsent:"Veuillez accepter l’enregistrement des données avant l’envoi.",genericError:"Une erreur est survenue. Veuillez réessayer.",created:"Déclaration enregistrée. Conservez ces deux codes : ils ne seront affichés qu’une seule fois.",secretLabel:"Code privé (à garder secret)",trackingResult:"Dossier enregistré",status:"Statut",updated:"Dernière mise à jour",history:"Historique du dossier",noHistory:"Aucun historique pour le moment.",note:"Message du service",photos:"Fichiers joints",baggagePhoto:"Photo du bagage",ticketPhoto:"Justificatif",badPhoto:"Impossible de lire ce fichier.",largePhoto:"Choisissez une image de moins de 15 Mo pour pouvoir la joindre.",submitError:"Impossible d’enregistrer la déclaration.",notFound:"Dossier introuvable ou codes incorrects.",received:"Reçu",searching:"Recherche en cours",found:"Bagage retrouvé",closed:"Dossier clôturé"},
+    en:{submitTitle:"Submit a report online",submitIntro:"Send the details above to the service to receive a tracking code. Only images can be attached to online tracking. For other file types, export the PDF form and send the original file separately.",consentText:"I agree to storing my contact details and report information for processing and follow-up. I understand the private code cannot be recovered if I lose it.",submitButton:"Submit and create tracking",trackTitle:"Track my report",trackIntro:"Enter the tracking code and private code you received when submitting the report. Both are required to view it.",trackingCodeLabel:"Tracking code",trackingSecretLabel:"Private code",trackButton:"View report",working:"Submitting…",loading:"Looking up your report…",missingFields:"Enter your name, phone number, description, location, date of loss and time slot.",needConsent:"Please agree to data storage before submitting.",genericError:"Something went wrong. Please try again.",created:"Report saved. Keep both codes safe: they will only be shown once.",secretLabel:"Private code (keep it secret)",trackingResult:"Report saved",status:"Status",updated:"Last updated",history:"Report history",noHistory:"No history yet.",note:"Service message",photos:"Attached files",baggagePhoto:"Baggage photo",ticketPhoto:"Supporting file",badPhoto:"Could not read this file.",largePhoto:"Choose an image smaller than 15 MB to attach it.",submitError:"Could not save your report.",notFound:"Report not found or codes are incorrect.",received:"Received",searching:"Search in progress",found:"Baggage found",closed:"Case closed"},
+    wo:{submitTitle:"Yónnee kayit ci internet",submitIntro:"Yónnee xibaar yi ci kaw ngir jot kodu toppandoo. Foto yi amul solo te ñu mën nañu leen yónnee ak kayit bi.",consentText:"Nangu naa ñu denc sama koont ak xibaar yi ci kayit bi ngir liggéey ak toppandoo ko. Xam naa ne mëneesula delloo kodu sir bi bu ma ko réeree.",submitButton:"Yónnee te sos toppandoo",trackTitle:"Toppandoo sama kayit",trackIntro:"Dugalal kodu toppandoo ak kodu sir bi nga jot bi nga yónnee kayit bi. Ñaar ñépp lañu soxla ngir gis dosiye bi.",trackingCodeLabel:"Kodu toppandoo",trackingSecretLabel:"Kodu sir",trackButton:"Seet dosiye bi",working:"Mi ngi yónnee…",loading:"Mi ngi seet dosiye bi…",missingFields:"Dugalal sa tur, nimero telefon, melokaan, fu mu réer, bés bi ak waxtu bi.",needConsent:"Nangul denc xibaar yi bala ngay yónnee.",genericError:"Am na jafe-jafe. Jéemaatal.",created:"Kayit bi denc nañu ko. Dencal ñaar ñépp: kenn du la leen wone beneen yoon.",secretLabel:"Kodu sir (denc ko ci sir)",trackingResult:"Kayit bi denc nañu ko",status:"Taxawaay",updated:"Yeesal bu mujj",history:"Taarixu dosiye bi",noHistory:"Amagul taarix.",note:"Bataaxalu sarwiis bi",photos:"Foto yi",baggagePhoto:"Foto yëkkatu bi",ticketPhoto:"Foto tikke bi",badPhoto:"Mëneesula jàng foto bi.",largePhoto:"Tànnal nataal bu ndaw lu ëppul 15 Mo ngir yokk ko.",submitError:"Mëneesula denc kayit bi.",notFound:"Dosiye bi amul walla kode yi jubul.",received:"Jot nañu ko",searching:"Seet mi ngi dox",found:"Gis nañu yëkkatu bi",closed:"Dosiye bi tëj nañu ko"}
+  };
+  copy.fr.submitIntro="Si le suivi en ligne est activé, seules les images peuvent être jointes à la déclaration. Pour les autres formats, exportez la fiche PDF puis envoyez le fichier original séparément au service.";
+  copy.en.submitIntro="If online tracking is enabled, only images can be attached to a report. For other file types, export the PDF form and send the original file to the service separately.";
+  copy.wo.submitIntro="Su fekkee toppandoo bi dox na, nataal rekk lañu mën a yokk ci kayit bi. Ngir yeneen format, génneel kayit PDF bi te yónnee dencukaay bi ci boppam ci sarwiis bi.";
+  copy.fr.onlineFileUnsupported="Ce format ne peut pas être envoyé avec le suivi en ligne. Exportez la fiche PDF et transmettez le fichier original séparément au service.";
+  copy.en.onlineFileUnsupported="This file type cannot be sent with online tracking. Export the PDF form and send the original file to the service separately.";
+  copy.wo.onlineFileUnsupported="Mëneesula yónnee format bii ak toppandoo bi. Génneel kayit PDF bi te yónnee dencukaay bi ci sarwiis bi.";
+  copy.fr.badPhoto="Impossible de lire ce fichier.";
+  copy.en.badPhoto="Could not read this file.";
+  copy.wo.badPhoto="Mëneesula jàng dencukaay bii.";
+  copy.fr.serviceNotReady="Le suivi doit être configuré dans Supabase avant utilisation.";
+  copy.en.serviceNotReady="Online tracking must be configured in Supabase before use.";
+  copy.wo.serviceNotReady="War nañu jëfandikoo Supabase ngir toppandoo bi dox.";
+  copy.fr.privacyHeading="Informations sur le traitement des données";
+  copy.en.privacyHeading="Information about personal data";
+  copy.wo.privacyHeading="Xibaar ci denc xibaar yi";
+  copy.fr.navTracking="Suivre une déclaration";
+  copy.en.navTracking="Track a report";
+  copy.wo.navTracking="Toppandoo kayit";
+  copy.fr.lostTimeSlot="Créneau horaire";
+  copy.en.lostTimeSlot="Time slot";
+  copy.wo.lostTimeSlot="Waxtu bi";
+  var statusNames={received:"received",searching:"searching",found:"found",closed:"closed"};
+  var submitButton=document.getElementById("submit-declaration");
+  var submitStatus=document.getElementById("submit-status");
+  var createdResult=document.getElementById("created-tracking");
+  var trackForm=document.getElementById("track-form");
+  var trackButton=document.getElementById("track-button");
+  var trackStatus=document.getElementById("track-status");
+  var trackResult=document.getElementById("track-result");
+
+  function text(key){
+    var language=window.siteLanguage||"fr";
+    return (copy[language]&&copy[language][key])||copy.fr[key]||key;
+  }
+  function applyLanguage(){
+    document.querySelectorAll("[data-track-key]").forEach(function(element){
+      element.textContent=text(element.getAttribute("data-track-key"));
+    });
+    document.getElementById("tracking-code").setAttribute("aria-label",text("trackingCodeLabel"));
+    document.getElementById("tracking-secret").setAttribute("aria-label",text("trackingSecretLabel"));
+  }
+  window.addEventListener("aibd-language-changed",applyLanguage);
+  applyLanguage();
+
+  function api(body){
+    return fetch("/api/declarations",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(body)
+    }).then(async function(response){
+      var result;
+      try{result=await response.json()}catch(error){throw new Error(text("genericError"))}
+      if(!response.ok)throw new Error(result&&result.error||text("genericError"));
+      return result;
+    });
+  }
+
+  var healthRequest=0;
+  function checkService(){
+    var requestId=++healthRequest;
+    api({action:"health",language:window.siteLanguage||"fr"}).then(function(result){
+      if(requestId!==healthRequest)return;
+      document.getElementById("declaration-privacy").textContent=result.privacyNotice;
+      submitButton.disabled=false;
+      trackButton.disabled=false;
+      submitStatus.textContent="";
+      trackStatus.textContent="";
+    }).catch(function(error){
+      if(requestId!==healthRequest)return;
+      submitButton.disabled=true;
+      trackButton.disabled=true;
+      document.getElementById("declaration-privacy").textContent="";
+      var message=error.message||text("serviceNotReady");
+      if(/configur|confidentialit/i.test(message))message=text("serviceNotReady");
+      submitStatus.textContent=message;
+      trackStatus.textContent=message;
+    });
+  }
+  checkService();
+  window.addEventListener("aibd-language-changed",checkService);
+
+  function encodeImage(file){
+    return new Promise(function(resolve,reject){
+      if(file.size>15*1024*1024){reject(new Error(text("largePhoto")));return}
+      var source=URL.createObjectURL(file);
+      var image=new Image();
+      image.onload=function(){
+        URL.revokeObjectURL(source);
+        if(!image.naturalWidth||!image.naturalHeight){reject(new Error(text("badPhoto")));return}
+        var canvas=document.createElement("canvas");
+        var context=canvas.getContext("2d");
+        if(!context){reject(new Error(text("badPhoto")));return}
+        var quality=0.82;
+        var maxDimension=1500;
+        function resize(){
+          var scale=Math.min(1,maxDimension/Math.max(image.naturalWidth,image.naturalHeight));
+          canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));
+          canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+          context.fillStyle="#ffffff";
+          context.fillRect(0,0,canvas.width,canvas.height);
+          context.drawImage(image,0,0,canvas.width,canvas.height);
+        }
+        resize();
+        function encode(){
+          canvas.toBlob(function(blob){
+            if(!blob){reject(new Error(text("badPhoto")));return}
+            if(blob.size>1024*1024){
+              if(quality>0.46){quality-=0.12;encode();return}
+              if(maxDimension>600){maxDimension=Math.max(600,Math.round(maxDimension*0.8));quality=0.78;resize();encode();return}
+              reject(new Error(text("largePhoto")));
+              return;
+            }
+            var reader=new FileReader();
+            reader.onload=function(){resolve(reader.result)};
+            reader.onerror=function(){reject(new Error(text("badPhoto")))};
+            reader.readAsDataURL(blob);
+          },"image/jpeg",quality);
+        }
+        encode();
+      };
+      image.onerror=function(){URL.revokeObjectURL(source);reject(new Error(text("badPhoto")))};
+      image.src=source;
+    });
+  }
+
+  function statusName(value){
+    return text(statusNames[value]||"received");
+  }
+
+  function safeDate(value){
+    var date=new Date(value);
+    if(Number.isNaN(date.getTime()))return value||"";
+    var locale={fr:"fr-FR",en:"en-GB",wo:"wo-SN"}[window.siteLanguage]||"fr-FR";
+    return date.toLocaleString(locale);
+  }
+
+  function appendPhoto(container,url,label){
+    if(typeof url!=="string")return;
+    try{
+      if(new URL(url).protocol!=="https:")return;
+    }catch(error){return}
+    var link=document.createElement("a");
+    link.href=url;
+    link.target="_blank";
+    link.rel="noopener noreferrer";
+    link.setAttribute("aria-label",label);
+    var image=document.createElement("img");
+    image.src=url;
+    image.alt=label;
+    link.appendChild(image);
+    container.appendChild(link);
+  }
+
+  function renderTracking(result){
+    trackResult.replaceChildren();
+    var card=document.createElement("article");
+    card.className="tracking-card";
+    var heading=document.createElement("h3");
+    heading.textContent=text("trackingResult")+" — "+result.trackingCode;
+    card.appendChild(heading);
+    var current=document.createElement("p");
+    current.textContent=text("status")+": "+statusName(result.status);
+    card.appendChild(current);
+    if(result.lostTimeSlot){
+      var timeSlot=document.createElement("p");
+      timeSlot.textContent=text("lostTimeSlot")+": "+result.lostTimeSlot;
+      card.appendChild(timeSlot);
+    }
+    var updated=document.createElement("p");
+    updated.textContent=text("updated")+": "+safeDate(result.updatedAt);
+    card.appendChild(updated);
+    var historyTitle=document.createElement("h4");
+    historyTitle.textContent=text("history");
+    card.appendChild(historyTitle);
+    var history=document.createElement("ol");
+    history.className="tracking-history";
+    if(!Array.isArray(result.history)||!result.history.length){
+      var empty=document.createElement("li");
+      empty.textContent=text("noHistory");
+      history.appendChild(empty);
+    }else{
+      result.history.forEach(function(entry){
+        var item=document.createElement("li");
+        item.appendChild(document.createTextNode(safeDate(entry.created_at)+" — "+statusName(entry.status)));
+        if(entry.note){
+          var note=document.createElement("p");
+          note.textContent=text("note")+": "+entry.note;
+          item.appendChild(note);
+        }
+        history.appendChild(item);
+      });
+    }
+    card.appendChild(history);
+    var photos=document.createElement("div");
+    photos.className="tracking-photos";
+    appendPhoto(photos,result.photos&&result.photos.baggage,text("baggagePhoto"));
+    appendPhoto(photos,result.photos&&result.photos.ticket,text("ticketPhoto"));
+    if(photos.childNodes.length){
+      var photoHeading=document.createElement("h4");
+      photoHeading.textContent=text("photos");
+      card.appendChild(photoHeading);
+      card.appendChild(photos);
+    }
+    trackResult.appendChild(card);
+  }
+
+  submitButton.addEventListener("click",async function(){
+    var consent=document.getElementById("declaration-consent").checked;
+    if(!consent){submitStatus.textContent=text("needConsent");return}
+    var ticket=document.getElementById("ticket").files[0]||null;
+    if(ticket&&!ticket.type.startsWith("image/")){
+      submitStatus.textContent=text("onlineFileUnsupported");
+      document.getElementById("file-status").textContent=text("onlineFileUnsupported");
+      return;
+    }
+    var fields={
+      ownerName:document.getElementById("nom").value.trim(),
+      phone:document.getElementById("tel").value.trim(),
+      description:document.getElementById("desc").value.trim(),
+      location:document.getElementById("lieu").value,
+      lostDate:document.getElementById("date-perte").value,
+      lostTimeSlot:document.getElementById("time-slot").value,
+      busNumber:document.getElementById("tkt").value.trim()
+    };
+    if(!fields.ownerName||!fields.phone||!fields.description||!fields.location||!fields.lostDate||!fields.lostTimeSlot){
+      submitStatus.textContent=text("missingFields");return;
+    }
+    submitButton.disabled=true;
+    submitStatus.textContent=text("working");
+    document.getElementById("file-status").textContent="";
+    createdResult.hidden=true;
+    try{
+      var result=await api({
+        action:"submit",
+        consent:consent,
+        ownerName:fields.ownerName,
+        phone:fields.phone,
+        description:fields.description,
+        location:fields.location,
+        lostDate:fields.lostDate,
+        lostTimeSlot:fields.lostTimeSlot,
+        busNumber:fields.busNumber,
+        photo:null,
+        ticketPhoto:ticket?await encodeImage(ticket):null
+      });
+      createdResult.replaceChildren();
+      var heading=document.createElement("h3");
+      heading.textContent=text("created");
+      createdResult.appendChild(heading);
+      var code=document.createElement("code");
+      code.textContent=result.trackingCode;
+      code.setAttribute("aria-label",text("trackingCodeLabel"));
+      createdResult.appendChild(code);
+      var label=document.createElement("p");
+      label.textContent=text("secretLabel");
+      createdResult.appendChild(label);
+      var secret=document.createElement("code");
+      secret.textContent=result.accessSecret;
+      createdResult.appendChild(secret);
+      createdResult.hidden=false;
+      submitStatus.textContent="";
+      document.getElementById("declaration-consent").checked=false;
+    }catch(error){
+      submitStatus.textContent=error.message||text("submitError");
+    }finally{
+      submitButton.disabled=false;
+    }
+  });
+
+  trackForm.addEventListener("submit",async function(event){
+    event.preventDefault();
+    if(trackButton.disabled)return;
+    trackButton.disabled=true;
+    trackStatus.textContent=text("loading");
+    trackResult.replaceChildren();
+    try{
+      var result=await api({
+        action:"track",
+        trackingCode:document.getElementById("tracking-code").value.trim(),
+        accessSecret:document.getElementById("tracking-secret").value
+      });
+      renderTracking(result);
+      trackStatus.textContent="";
+    }catch(error){
+      trackStatus.textContent=error.message||text("genericError");
+    }finally{
+      trackButton.disabled=false;
+    }
+  });
+})();
+</script>
+<section class="assistant-widget noprint" aria-label="Assistant IA" data-i18n-aria="assistantRegion">
+  <div class="assistant-panel" id="assistant-panel" hidden>
+    <div class="assistant-header">
+      <h2 id="assistant-title" data-i18n="assistantTitle">Assistant objets perdus</h2>
+      <button class="assistant-close" id="assistant-close" type="button" aria-label="Fermer l’assistant" data-i18n="close">Fermer</button>
+    </div>
+    <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
+      <p class="assistant-message" data-i18n="assistantWelcome">Bonjour ! Je peux répondre aux questions sur cette page et vous guider pour préparer une déclaration. N’écrivez pas de nom, de numéro de téléphone ni de numéro de ticket dans le chat.</p>
+    </div>
+    <p class="assistant-status" id="assistant-status" role="status" aria-live="polite"></p>
+    <form class="assistant-form" id="assistant-form">
+      <label for="assistant-input" data-i18n="questionLabel">Votre question</label>
+      <textarea id="assistant-input" maxlength="1200" required placeholder="Ex. : comment préparer ma déclaration ?" data-i18n-placeholder="questionPlaceholder"></textarea>
+      <div class="assistant-actions">
+        <button id="assistant-voice" type="button" aria-label="Dicter votre question" data-i18n="voiceInput" data-i18n-aria="voiceInputAria">Parler</button>
+        <button id="assistant-send" type="submit" data-i18n="send">Envoyer</button>
+      </div>
+    </form>
+    <p class="assistant-privacy" data-i18n="assistantPrivacy">Seuls les messages du chat sont envoyés à un service d’IA pour générer une réponse. N’y partagez aucune donnée personnelle.</p>
+  </div>
+  <button class="assistant-toggle" id="assistant-toggle" type="button" aria-expanded="false" aria-controls="assistant-panel" data-i18n="needHelp">Besoin d’aide ?</button>
+</section>
+<script>
+(function(){
+  var t={
+    fr:{pageTitle:"Objets et bagages perdus – AIBD DEM DIKK",metaDescription:"Découvrez le service objets et bagages perdus AIBD DEM DIKK et préparez une fiche de renseignements pour votre bagage.",brandSubtitle:"Objets et bagages perdus",pdfBrandTitle:"AIBD DEM DIKK — Objets et bagages perdus",mainNav:"Navigation principale",navService:"Le service",navForm:"Préparer ma fiche",navContact:"Nous contacter",languageLabel:"Langue",heroTitle:"Voyagez l’esprit plus tranquille.",heroText:"Un bagage égaré pendant votre trajet ? Retrouvez ici les informations utiles sur le service objets et bagages perdus et préparez une fiche avec les détails de votre bagage.",heroForm:"Préparer ma fiche",heroService:"Découvrir le service",heroMark:"Service objets et bagages perdus",serviceTitle:"À vos côtés pour vos déplacements",serviceText:"Dem Dikk accompagne les voyageurs dans leurs déplacements. Cette page vous aide à préparer les renseignements utiles lorsqu’un bagage est égaré.",cardDescribeTitle:"Décrivez le bagage",cardDescribeText:"Indiquez ses signes distinctifs, sa couleur et, si possible, ajoutez une photo pour faciliter son identification.",cardJourneyTitle:"Précisez le trajet",cardJourneyText:"Choisissez le lieu et la date de la perte, puis ajoutez le numéro du bus si vous le connaissez.",cardFormTitle:"Préparez votre fiche",cardFormText:"Renseignez vos coordonnées et exportez une fiche récapitulative en PDF depuis le formulaire.",formTitle:"Préparer ma fiche de déclaration",formNote:"Remplissez les informations disponibles, puis choisissez « Exporter la fiche en PDF ». Cette page prépare une fiche sur votre appareil ; elle ne transmet pas automatiquement votre déclaration au service.",ownerLabel:"Nom du propriétaire",phoneLabel:"Téléphone",descriptionLabel:"Description du bagage",descriptionPlaceholder:"Couleur, taille, marque, signes distinctifs",colorLabel:"Couleur du bagage",colorHelp:"Choisissez une couleur dans le sélecteur. Vous pouvez sélectionner toutes les couleurs.",locationLabel:"Lieu de la perte",chooseLocation:"Choisir un lieu",dateLabel:"Date de la perte",busLabel:"Numéro du bus",busPlaceholder:"Ex. : bus ligne 1",photoLabel:"Photo du bagage",takePhoto:"Prendre une photo du bagage",ticketLabel:"Importer le ticket de bus acheté",takeTicketPhoto:"Prendre une photo du ticket",exportPdf:"Exporter la fiche en PDF",ownerSheet:"Fiche du propriétaire",noPhoto:"Aucune photo ajoutée",noTicket:"Aucun ticket importé",baggageLabel:"Bagage",locationDate:"Lieu et date",busNumber:"N° du bus",assistantRegion:"Assistant IA",assistantTitle:"Assistant objets perdus",close:"Fermer",assistantWelcome:"Bonjour ! Je peux répondre aux questions sur cette page et vous guider pour préparer une déclaration. N’écrivez pas de nom, de numéro de téléphone ni de numéro de ticket dans le chat.",questionLabel:"Votre question",questionPlaceholder:"Ex. : comment préparer ma déclaration ?",send:"Envoyer",assistantPrivacy:"Seuls les messages du chat sont envoyés à un service d’IA pour générer une réponse. N’y partagez aucune donnée personnelle.",needHelp:"Besoin d’aide ?",contactTitle:"Besoin d’aide ? Contactez-nous.",contactText:"Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.",whatsapp:"Écrire sur WhatsApp",call:"Appeler le 77 552 12 91",whatsappAria:"Nous contacter sur WhatsApp au 77 552 12 91",callAria:"Appeler le 77 552 12 91",footerText:"AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.",footerContact:"Contacter le service",notSpecified:"Non précisée",photoAlt:"Photo du bagage",cameraAlt:"Photo prise avec l’appareil",ticketAlt:"Ticket de bus",refPrefix:"Fiche n° ",refEdited:" · éditée le ",thinking:"Je prépare une réponse…",invalidResponse:"Le service a renvoyé une réponse invalide. Réessayez.",unavailable:"L’assistant est indisponible ici. Ouvrez le site publié et réessayez.",serviceUnavailable:"Le service est momentanément indisponible.",connectionError:"Impossible de contacter l’assistant. Vérifiez votre connexion et réessayez.",serverErrors:{notConfigured:"L’assistant n’est pas encore configuré.",invalidConversation:"Format de conversation invalide.",invalidMessage:"Un message est vide ou trop long.",mustEndWithQuestion:"La conversation doit se terminer par une question.",invalidOrigin:"Origine de requête invalide.",notAllowed:"Méthode non autorisée.",originNotAllowed:"Origine de requête non autorisée.",aiConnectionError:"Impossible de joindre le service IA pour le moment.",aiError:"Le service IA a rencontré une erreur. Réessayez plus tard.",aiInvalidJson:"Le service IA a renvoyé une réponse invalide.",aiNoReply:"Le service IA n’a pas fourni de réponse."},exportedOn:"éditée le "},
+    en:{pageTitle:"Lost property and baggage – AIBD DEM DIKK",metaDescription:"Discover the AIBD DEM DIKK lost property service and prepare an information sheet for your baggage.",brandSubtitle:"Lost property and baggage",mainNav:"Main navigation",navService:"The service",navForm:"Prepare my form",navContact:"Contact us",languageLabel:"Language",heroTitle:"Travel with greater peace of mind.",heroText:"Lost a bag during your journey? Find useful information about the lost property service and prepare a form with your baggage details.",heroForm:"Prepare my form",heroService:"Discover the service",heroMark:"Lost property and baggage service",serviceTitle:"Here to support your journey",serviceText:"Dem Dikk accompanies passengers on their journeys. This page helps you prepare the information needed if your baggage goes missing.",cardDescribeTitle:"Describe your baggage",cardDescribeText:"Add identifying features and its colour, and, if possible, a photo to help identify it.",cardJourneyTitle:"Add your journey details",cardJourneyText:"Choose where and when it was lost, then add the bus number if you know it.",cardFormTitle:"Prepare your form",cardFormText:"Enter your contact details and export a summary sheet as a PDF using the form.",formTitle:"Prepare a lost baggage form",formNote:"Fill in the information you have, then select “Export form as PDF”. This page prepares a form on your device; it does not automatically send your report to the service.",ownerLabel:"Owner’s name",phoneLabel:"Phone number",descriptionLabel:"Baggage description",descriptionPlaceholder:"Colour, size, brand and identifying features",colorLabel:"Baggage colour",colorHelp:"Choose a colour using the picker. Any colour can be selected.",locationLabel:"Place where it was lost",chooseLocation:"Choose a location",dateLabel:"Date it was lost",busLabel:"Bus number",busPlaceholder:"E.g. bus route 1",photoLabel:"Baggage photo",takePhoto:"Take a photo of the baggage",ticketLabel:"Upload the bus ticket",takeTicketPhoto:"Take a photo of the ticket",exportPdf:"Export form as PDF",ownerSheet:"Owner’s information sheet",noPhoto:"No photo added",noTicket:"No ticket uploaded",baggageLabel:"Baggage",locationDate:"Place and date",busNumber:"Bus number",assistantRegion:"AI assistant",assistantTitle:"Lost property assistant",close:"Close",assistantWelcome:"Hello! I can answer questions about this page and help you prepare a report. Please do not enter a name, phone number or ticket number in the chat.",questionLabel:"Your question",questionPlaceholder:"E.g. how do I prepare my report?",send:"Send",assistantPrivacy:"Only chat messages are sent to an AI service to generate a reply. Do not share personal information here.",needHelp:"Need help?",contactTitle:"Need help? Contact us.",contactText:"If you have a question about your baggage, message us on WhatsApp or call us directly.",whatsapp:"Message us on WhatsApp",call:"Call 77 552 12 91",whatsappAria:"Contact us on WhatsApp at 77 552 12 91",callAria:"Call 77 552 12 91",footerText:"AIBD DEM DIKK — Information and form preparation for lost property and baggage.",footerContact:"Contact the service",notSpecified:"Not specified",photoAlt:"Baggage photo",cameraAlt:"Photo taken with the camera",ticketAlt:"Bus ticket",refPrefix:"Form no. ",refEdited:" · issued on ",thinking:"Preparing a reply…",invalidResponse:"The service returned an invalid response. Please try again.",unavailable:"The assistant is unavailable here. Open the published website and try again.",serviceUnavailable:"The service is temporarily unavailable.",connectionError:"Could not contact the assistant. Check your connection and try again.",serverErrors:{notConfigured:"The assistant has not been configured yet.",invalidConversation:"Invalid conversation format.",invalidMessage:"A message is empty or too long.",mustEndWithQuestion:"The conversation must end with a question.",invalidOrigin:"Invalid request origin.",notAllowed:"Method not allowed.",originNotAllowed:"Request origin not allowed.",aiConnectionError:"Could not reach the AI service. Please try again later.",aiError:"The AI service encountered an error. Please try again later.",aiInvalidJson:"The AI service returned an invalid response.",aiNoReply:"The AI service did not provide a reply."},exportedOn:"issued on "},
+    wo:{pageTitle:"Yëkkatu yi ñu réer – AIBD DEM DIKK",metaDescription:"Xamleel sa bopp ci yëkkatu yi ñu réer ak defar kayitu sa yëkkatu ci AIBD DEM DIKK.",brandSubtitle:"Yëkkatu yi ñu réer",mainNav:"Toppatoo bu njëkk",navService:"Liñuy joxe",navForm:"Defar sama kayit",navContact:"Jokkoo ak nun",languageLabel:"Làkk",heroTitle:"Tukki ak xel mu dal.",heroText:"Sa yëkkatu réer na ci sa tukki ? Fi nga nekk, man nga am xibaar ci yëkkatu yi ñu réer te defar kayit bu am leeral yi ci sa yëkkatu.",heroForm:"Defar sama kayit",heroService:"Xool liñuy joxe",heroMark:"Sarwiis yëkkatu yi ñu réer",serviceTitle:"Nun ngi ci sa wet ci sa tukki",serviceText:"Dem Dikk ngi ànd ak tukkiy yi. Xët wii dina la dimbali nga waajal xibaar yi ñuy soxla bu yëkkatu réer.",cardDescribeTitle:"Waxal ni sa yëkkatu mel",cardDescribeText:"Waxal melokaanam ak meloom, te su fekkee mënees na, yokk nataal ngir ñu mën ko ràññee.",cardJourneyTitle:"Waxal sa yoon",cardJourneyText:"Tànnal fu mu réer ak bés bi, te yokk nimero bas bi su fekkee xam nga ko.",cardFormTitle:"Waajal sa kayit",cardFormText:"Dugalal sa xibaaru jokkoo te génne kayit bu gàtt ci PDF ci formileer bi.",formTitle:"Waajal kayitu yëkkatu bi réer",formNote:"Dugalal xibaar yi nga am, te tànn « Génne kayit bi ci PDF ». Xët wii dafay defar kayit ci sa aparey; du yónnee sa xibaar ci sarwiis bi.",ownerLabel:"Tur wu boroom bi",phoneLabel:"Nimero telefon",descriptionLabel:"Ni yëkkatu bi mel",descriptionPlaceholder:"Melo, rëyaay, marka ak misaal yu koy ràññee",colorLabel:"Melo wu yëkkatu bi",colorHelp:"Tànnal benn melo ci palet bi. Mën nga tànn bépp melo.",locationLabel:"Fu mu réer",chooseLocation:"Tànnal fu mu réer",dateLabel:"Bés bi mu réer",busLabel:"Nimero bas bi",busPlaceholder:"Misaal: bas ligne 1",photoLabel:"Nataalu yëkkatu bi",takePhoto:"Jëlal nataal bu yëkkatu bi",ticketLabel:"Yebbi tikke bu bas bi",takeTicketPhoto:"Jëlal nataal bu tikke bi",exportPdf:"Génne kayit bi ci PDF",ownerSheet:"Kayitu boroom bi",noPhoto:"Amul nataal",noTicket:"Amul tikke bu ñu yebbi",baggageLabel:"Yëkkatu",locationDate:"Fu mu réer ak bés bi",busNumber:"Nimero bas bi",assistantRegion:"Dimbali bu IA",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",close:"Tëj",assistantWelcome:"Nanga def ! Mën naa tontu la ci laaj yi jëm ci xët wii te dimbali la nga waajal sa xibaar. Bul bind tur, nimero telefon walla nimero tikke ci waxtaan wi.",questionLabel:"Sa laaj",questionPlaceholder:"Misaal: naka laay waajee sama xibaar?",send:"Yónnee",assistantPrivacy:"Waxtaan bi rekk lañuy yónnee ci sarwiisu IA ngir mu tontu. Bul séddoo xibaaru bopp ci fii.",needHelp:"Soxla nga dimbali?",contactTitle:"Soxla nga dimbali? Jokkoo ak nun.",contactText:"Su amee laaj ci sa yëkkatu, bindal nu ci WhatsApp walla woo nu.",whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu ci 77 552 12 91",whatsappAria:"Jokkoo ak nun ci WhatsApp: 77 552 12 91",callAria:"Woo 77 552 12 91",footerText:"AIBD DEM DIKK — Xibaar ak waajal kayit ci yëkkatu yi ñu réer.",footerContact:"Jokkoo ak sarwiis bi",notSpecified:"Ñu waxul",photoAlt:"Nataalu yëkkatu bi",cameraAlt:"Nataal bu kamera bi jël",ticketAlt:"Tikke bu bas bi",refPrefix:"Kayit nimero ",refEdited:" · bindees ko ci ",thinking:"Maa ngi waajal tontu…",invalidResponse:"Sarwiis bi delloo tontu bu baaxul. Jéemaatal.",unavailable:"Dimbali bi doxul fii. Ubbi site bi ñu siiwal te jéemaatal.",serviceUnavailable:"Sarwiis bi doxul léegi. Jéemaatal ci kanam.",connectionError:"Mëneesula jokkoo ak dimbali bi. Seetal sa internet te jéemaatal.",serverErrors:{notConfigured:"Dimbali bi ñu paregul.",invalidConversation:"Melokaanu waxtaan wi baaxul.",invalidMessage:"Benn bataaxal dafa féex walla dafa gudd lool.",mustEndWithQuestion:"Waxtaan wi war na jeex ak laaj.",invalidOrigin:"Bunt bu ñu yónnee laaj bi baaxul.",notAllowed:"Jëf ji kenn mayuko.",originNotAllowed:"Bunt bii kenn mayuko.",aiConnectionError:"Mëneesula jot ci sarwiisu IA. Jéemaatal ci kanam.",aiError:"Sarwiisu IA am na jafe-jafe. Jéemaatal ci kanam.",aiInvalidJson:"Sarwiisu IA delloo tontu bu baaxul.",aiNoReply:"Sarwiisu IA tontuwul."},exportedOn:"bindees ko ci "}
+  };
+  Object.assign(t.fr,{settingsTitle:"Paramètres",themeLabel:"Thème",themeSystem:"Automatique",themeLight:"Clair",themeDark:"Sombre",textSizeLabel:"Taille du texte",textSizeNormal:"Normale",textSizeLarge:"Grande",textSizeExtraLarge:"Très grande",voiceSetting:"Autoriser la dictée vocale",readingComfort:"Confort de lecture (espacement accru)",settingsSaved:"Ces préférences sont enregistrées uniquement dans ce navigateur.",assistantRegion:"Assistant en ligne",assistantTitle:"Assistant objets perdus",assistantWelcome:"Bonjour ! Je suis l’assistant automatique du site. Je peux vous guider pour préparer une déclaration et répondre aux questions fréquentes. Pour une vérification personnelle, contactez le service avec les boutons ci-dessous. Ne partagez pas de données personnelles dans le chat.",assistantPrivacy:"Selon la configuration du site, vos messages peuvent être traités par un service d’IA. Ne partagez aucune donnée personnelle dans le chat.",automaticReply:"Réponse automatique du site."});
+  Object.assign(t.fr,{timeSlotLabel:"Créneau horaire",chooseTimeSlot:"Choisir un créneau"});
+  Object.assign(t.en,{timeSlotLabel:"Time slot",chooseTimeSlot:"Choose a time slot"});
+  Object.assign(t.wo,{timeSlotLabel:"Waxtu bi",chooseTimeSlot:"Tànnal waxtu bi"});
+  Object.assign(t.fr,{cardJourneyText:"Choisissez le lieu, la date et le créneau horaire de la perte, puis ajoutez le numéro du bus si vous le connaissez."});
+  Object.assign(t.en,{cardJourneyText:"Choose where, when and during which time slot the baggage was lost, then add the bus number if you know it."});
+  Object.assign(t.wo,{cardJourneyText:"Tànnal fu mu réer, bés bi ak waxtu bi, te yokk nimero bas bi su fekkee xam nga ko."});
+  Object.assign(t.en,{settingsTitle:"Settings",themeLabel:"Theme",themeSystem:"System default",themeLight:"Light",themeDark:"Dark",textSizeLabel:"Text size",textSizeNormal:"Normal",textSizeLarge:"Large",textSizeExtraLarge:"Extra large",voiceSetting:"Allow voice dictation",readingComfort:"Reading comfort (more spacing)",settingsSaved:"These preferences are saved only in this browser.",assistantRegion:"Online assistant",assistantTitle:"Lost property assistant",assistantWelcome:"Hello! I am the website’s automatic assistant. I can guide you through preparing a report and answer common questions. For a personal follow-up, contact the service using the buttons below. Do not share personal information in the chat.",assistantPrivacy:"Depending on the site configuration, your messages may be processed by an AI service. Do not share personal information in the chat.",automaticReply:"Automatic website reply."});
+  Object.assign(t.wo,{settingsTitle:"Toppatoo",themeLabel:"Melokaan",themeSystem:"Ni aparey bi bëgge",themeLight:"Leer",themeDark:"Lëndëm",textSizeLabel:"Rëyaayu mbind mi",textSizeNormal:"Dëkkandoo",textSizeLarge:"Mag",textSizeExtraLarge:"Mag lool",voiceSetting:"May wax ci mikóro",readingComfort:"Jàng bu yomb (dend bi gën a yaatu)",settingsSaved:"Toppatoo yii dañu leen denc rekk ci navigateur bii.",assistantRegion:"Dimbali ci internet",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",assistantWelcome:"Nanga def! Dimbali bu otomatik laa ci site bi. Mën naa la dimbali nga waajal kayit te tontu laaj yi ñu faral di laaj. Ngir jokkoo ak sarwiis bi, tànnal butoŋ yi ci suuf. Bul bind xibaaru bopp ci waxtaan wi.",assistantPrivacy:"Ci ni site bi ñu sampare, mën nañu jëfandikoo sa bataaxal ci sarwiisu IA. Bul bind xibaaru bopp ci waxtaan wi.",automaticReply:"Tontu bu otomatik ci site bi."});
+  Object.assign(t.fr,{voiceInput:"Parler",voiceInputAria:"Dicter votre question",stopVoice:"Arrêter",voiceListening:"Je vous écoute… Parlez maintenant.",voiceReady:"Dictée terminée. Vous pouvez relire puis envoyer votre question.",voiceUnsupported:"La dictée vocale n’est pas prise en charge par ce navigateur. Vous pouvez écrire votre question.",voiceDenied:"L’accès au microphone a été refusé. Autorisez-le dans les paramètres du navigateur.",voiceNoSpeech:"Aucune parole détectée. Réessayez ou écrivez votre question.",voiceNetwork:"La dictée vocale est indisponible. Vérifiez votre connexion et réessayez.",voiceError:"La dictée vocale n’a pas fonctionné. Réessayez ou écrivez votre question.",assistantPrivacy:"La dictée utilise le service de reconnaissance vocale du navigateur, qui peut traiter l’audio. Le texte reconnu est envoyé au chat et peut être traité par un service d’IA. Ne partagez aucune donnée personnelle."});
+  Object.assign(t.en,{voiceInput:"Speak",voiceInputAria:"Dictate your question",stopVoice:"Stop",voiceListening:"Listening… Speak now.",voiceReady:"Dictation finished. Review your question and send it when ready.",voiceUnsupported:"Voice dictation is not supported by this browser. You can type your question instead.",voiceDenied:"Microphone access was denied. Allow it in your browser settings.",voiceNoSpeech:"No speech was detected. Try again or type your question.",voiceNetwork:"Voice dictation is unavailable. Check your connection and try again.",voiceError:"Voice dictation did not work. Try again or type your question.",assistantPrivacy:"Dictation uses your browser’s speech recognition service, which may process audio. Recognized text is sent to the chat and may be processed by an AI service. Do not share personal information."});
+  Object.assign(t.wo,{voiceInput:"Waxal",voiceInputAria:"Waxal sa laaj",stopVoice:"Taxawal",voiceListening:"Maa ngi déglu… Waxal léegi.",voiceReady:"Wax bi jeex na. Seetal sa laaj te yónnee ko.",voiceUnsupported:"Mëneesula jëfandikoo wax ci navigateur bii. Mën nga bind sa laaj.",voiceDenied:"Ñu mayul jot ci mikóro bi. Mayal ko ci réglage navigateur bi.",voiceNoSpeech:"Déggunu wax. Jéemaatal walla bind sa laaj.",voiceNetwork:"Wax ci mikóro doxul. Seetal internet bi te jéemaatal.",voiceError:"Wax ci mikóro bi doxul. Jéemaatal walla bind sa laaj.",assistantPrivacy:"Wax ci mikóro dafay jëfandikoo sarwiisu navigateur bi, te mën nañu jëfandikoo awdio bi. Bataaxal bu ñu dégg lañuy yónnee ci waxtaan wi, te sarwiisu IA mën na ko jëfandikoo. Bul bind xibaaru bopp."});
+  Object.assign(t.fr,{whatsapp:"Écrire sur WhatsApp",call:"Appeler",whatsappAria:"Nous contacter sur WhatsApp",callAria:"Appeler le service"});
+  Object.assign(t.en,{whatsapp:"Message us on WhatsApp",call:"Call us",whatsappAria:"Contact us on WhatsApp",callAria:"Call the service"});
+  Object.assign(t.wo,{whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu",whatsappAria:"Jokkoo ak nun ci WhatsApp",callAria:"Woo sarwiis bi"});
+  Object.assign(t.fr,{utilityTitle:"Paramètres et contact"});
+  Object.assign(t.en,{utilityTitle:"Settings & contact"});
+  Object.assign(t.wo,{utilityTitle:"Toppatoo ak jokkoo"});
+  t.en.pdfBrandTitle="AIBD DEM DIKK — Lost property and baggage";
+  t.wo.pdfBrandTitle="AIBD DEM DIKK — Yëkkatu yi ñu réer";
+  Object.assign(t.fr,{heroImageLabel:"Navette Express AIBD"});
+  Object.assign(t.en,{heroImageLabel:"AIBD Express Shuttle"});
+  Object.assign(t.wo,{heroImageLabel:"Navet-Express AIBD"});
+  Object.assign(t.fr,{
+    navShuttle:"Navettes AIBD",
+    shuttleKicker:"Navettes-Express AIBD",
+    shuttleTitle:"Rejoignez l’aéroport simplement et en toute sécurité",
+    shuttleIntro:"Dakar Dem Dikk met à votre disposition des navettes Express pour rallier l’Aéroport International Blaise Diagne (AIBD) ou rejoindre le centre-ville.",
+    shuttleToAirportTitle:"Départ vers l’aéroport",
+    shuttleToAirportText:"Départ au terminus HLM Grand-Yoff, en face du Stade Léopold Sédar Senghor, une heure avant l’heure de convocation à l’aéroport.",
+    shuttleFromAirportTitle:"Départ depuis l’AIBD",
+    shuttleFromAirportText:"Les bus partent une heure après l’atterrissage de votre vol et desservent le centre-ville.",
+    shuttleServiceTitle:"Un service pratique",
+    shuttleServiceText:"Bus climatisés, passage par l’autoroute à péage, service disponible 24 h/24 et 7 j/7.",
+    shuttleFare:"6 000 FCFA",
+    shuttleFareDetail:"l’aller simple",
+    shuttleBenefitsLabel:"Atouts du service",
+    shuttleReliable:"Fiabilité",
+    shuttleSafe:"Sécurité",
+    shuttleFlexible:"Flexibilité",
+    shuttleSource:"Consulter les offres officielles de Dakar Dem Dikk"
+  });
+  Object.assign(t.en,{
+    navShuttle:"AIBD shuttles",
+    shuttleKicker:"AIBD Express Shuttles",
+    shuttleTitle:"Reach the airport easily and safely",
+    shuttleIntro:"Dakar Dem Dikk operates Express shuttles to Blaise Diagne International Airport (AIBD) and back to downtown Dakar.",
+    shuttleToAirportTitle:"Departures to the airport",
+    shuttleToAirportText:"Depart from the HLM Grand-Yoff terminus, opposite Léopold Sédar Senghor Stadium, one hour before your airport check-in time.",
+    shuttleFromAirportTitle:"Departures from AIBD",
+    shuttleFromAirportText:"Buses depart one hour after your flight lands and serve downtown Dakar.",
+    shuttleServiceTitle:"A convenient service",
+    shuttleServiceText:"Air-conditioned buses use the toll highway. Service runs 24 hours a day, 7 days a week.",
+    shuttleFare:"6,000 FCFA",
+    shuttleFareDetail:"one way",
+    shuttleBenefitsLabel:"Service benefits",
+    shuttleReliable:"Reliable",
+    shuttleSafe:"Safe",
+    shuttleFlexible:"Flexible",
+    shuttleSource:"View official Dakar Dem Dikk transport offers"
+  });
+  Object.assign(t.wo,{
+    navShuttle:"Navet yi AIBD",
+    shuttleKicker:"Navet-Express AIBD",
+    shuttleTitle:"Demal aeroport bi ci yoon wu yomb te am kaaraange",
+    shuttleIntro:"Dakar Dem Dikk dafay joxe navet Express ngir dem ci Aeroport International Blaise Diagne (AIBD) walla dellu ci dëkk bi.",
+    shuttleToAirportTitle:"Tukki ci aeroport",
+    shuttleToAirportText:"Navet bi dafay génn terminus HLM Grand-Yoff, ca kanam Stade Léopold Sédar Senghor, benn waxtu bala sa waxtu jàppandi ci aeroport.",
+    shuttleFromAirportTitle:"Tukki jóge AIBD",
+    shuttleFromAirportText:"Bas yi dañuy génn benn waxtu gannaaw sa gaal bi wàcc, te dañuy dem ci dëkk bi.",
+    shuttleServiceTitle:"Sarwiis bu yomb",
+    shuttleServiceText:"Bas yi am nañu kondisioneer te dañuy jaar ci autoroute bu toll. Sarwiis bi dafay dox 24 waxtu ci bis bi, 7 fan ci ayu-bis.",
+    shuttleFare:"6 000 FCFA",
+    shuttleFareDetail:"benn yoon",
+    shuttleBenefitsLabel:"Njariñu sarwiis bi",
+    shuttleReliable:"Wóor",
+    shuttleSafe:"Kaaraange",
+    shuttleFlexible:"Yomb",
+    shuttleSource:"Xoolal offres officielles yi ci Dakar Dem Dikk"
+  });
+  var select=document.getElementById("language-select");
+  var themeSelect=document.getElementById("theme-select");
+  var textSizeSelect=document.getElementById("text-size-select");
+  var voiceSetting=document.getElementById("voice-setting");
+  var readingComfortSetting=document.getElementById("reading-comfort-setting");
+  var utilityDrawer=document.getElementById("utility-drawer");
+  var utilityClose=document.getElementById("utility-close");
+  var utilitySummary=utilityDrawer.querySelector("summary");
+  var focusContactOnOpen=false;
+  var language="fr";
+  try{
+    var saved=localStorage.getItem("aibd-language");
+    if(saved&&t[saved])language=saved;
+  }catch(error){}
+  function readPreference(key,fallback,allowed){
+    try{
+      var value=localStorage.getItem("aibd-"+key);
+      return allowed.indexOf(value)!==-1?value:fallback;
+    }catch(error){return fallback}
+  }
+  function savePreference(key,value){
+    try{localStorage.setItem("aibd-"+key,value)}catch(error){}
+  }
+  themeSelect.value=readPreference("theme","system",["system","light","dark"]);
+  textSizeSelect.value=readPreference("text-size","normal",["normal","large","xlarge"]);
+  voiceSetting.checked=readPreference("voice-input","on",["on","off"])==="on";
+  readingComfortSetting.checked=readPreference("reading-comfort","off",["on","off"])==="on";
+  document.documentElement.setAttribute("data-theme",themeSelect.value);
+  document.documentElement.setAttribute("data-text-size",textSizeSelect.value);
+  document.documentElement.classList.toggle("reading-comfort",readingComfortSetting.checked);
+  select.value=language;
+  t.fr.cardDescribeText="Décrivez ses signes distinctifs. Vous pouvez ajouter un justificatif si vous en avez un.";
+  t.en.cardDescribeText="Describe its identifying features. You can add supporting material if you have any.";
+  t.wo.cardDescribeText="Waxal màndargay xamle yi. Boo amee kayit, mën nga ko yokk.";
+  t.fr.descriptionPlaceholder="Taille, marque et signes distinctifs";
+  t.en.descriptionPlaceholder="Size, brand and identifying features";
+  t.wo.descriptionPlaceholder="Dayo, marka ak màndargay xamle";
+  t.fr.formNote="Remplissez les informations disponibles. Vous pouvez ajouter un fichier de tout format (15 Mo maximum) ; la fiche PDF affichera son nom et l’aperçu s’il s’agit d’une image. Le fichier original ne sera pas transmis : envoyez-le séparément au service.";
+  t.en.formNote="Fill in the information you have. You can add a file in any format (up to 15 MB); the PDF form will show its name and preview it if it is an image. The original file is not sent: send it to the service separately.";
+  t.wo.formNote="Dugalal xibaar yi nga am. Mën nga yokk dencukaay ci bépp format (15 Mo mu ëppul); kayit PDF bi dina wone turam ak nataalam su fekkee nataal la. Dencukaay bi duñu ko yónnee: yónnee ko ci sarwiis bi ci boppam.";
+  t.fr.fileLabel="Ajouter un justificatif (facultatif)";
+  t.en.fileLabel="Add a supporting file (optional)";
+  t.wo.fileLabel="Yokk kayit (du war)";
+  t.fr.fileHelp="Tous les formats sont acceptés jusqu’à 15 Mo. La fiche PDF affiche le nom du fichier et son aperçu s’il s’agit d’une image. Pour transmettre le fichier original, envoyez-le séparément au service.";
+  t.en.fileHelp="All file types are accepted up to 15 MB. The PDF form shows the file name and a preview for images. To send the original file, contact the service separately.";
+  t.wo.fileHelp="Nangu nañu bépp format ba 15 Mo. Kayit PDF bi dina wone turu dencukaay bi ak nataalam su fekkee nataal la. Ngir yónnee dencukaay bi ci boppam, jokkool ak sarwiis bi.";
+  t.fr.noFile="Aucun fichier ajouté";
+  t.en.noFile="No file added";
+  t.wo.noFile="Amul dencukaay bu ñu yokk";
+  t.fr.attachmentPreviewAlt="Aperçu du justificatif";
+  t.en.attachmentPreviewAlt="Supporting file preview";
+  t.wo.attachmentPreviewAlt="Nataalu kayit bi";
+  t.fr.fileTooLarge="Choisissez un fichier de 15 Mo maximum.";
+  t.en.fileTooLarge="Choose a file up to 15 MB.";
+  t.wo.fileTooLarge="Tànnal dencukaay bu 15 Mo walla lu ko ëppul.";
+  window.siteLanguage=language;
+  window.siteTranslations=t;
+  window.siteText=function(key){return t[window.siteLanguage][key]||t.fr[key]||key};
+  function applyLanguage(){
+    language=select.value;
+    window.siteLanguage=language;
+    var d=t[language];
+    document.documentElement.lang=language;
+    document.title=d.pageTitle;
+    document.querySelector('meta[name="description"]').content=d.metaDescription;
+    document.querySelectorAll("[data-i18n]").forEach(function(element){
+      if(element.id==="ph2"&&(element.querySelector("img")||element.dataset.fileName))return;
+      element.textContent=d[element.getAttribute("data-i18n")];
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(element){element.placeholder=d[element.getAttribute("data-i18n-placeholder")]});
+    document.querySelectorAll("[data-i18n-aria]").forEach(function(element){element.setAttribute("aria-label",d[element.getAttribute("data-i18n-aria")])});
+    document.querySelector("#contact .whatsapp").setAttribute("aria-label",d.whatsappAria);
+    document.querySelector('#contact a[href^="tel:"]').setAttribute("aria-label",d.callAria);
+    try{localStorage.setItem("aibd-language",language)}catch(error){}
+    if(window.updateBagPreview)window.updateBagPreview();
+    window.dispatchEvent(new CustomEvent("aibd-language-changed"));
+  }
+  select.addEventListener("change",applyLanguage);
+  themeSelect.addEventListener("change",function(){
+    document.documentElement.setAttribute("data-theme",themeSelect.value);
+    savePreference("theme",themeSelect.value);
+  });
+  textSizeSelect.addEventListener("change",function(){
+    document.documentElement.setAttribute("data-text-size",textSizeSelect.value);
+    savePreference("text-size",textSizeSelect.value);
+  });
+  voiceSetting.addEventListener("change",function(){
+    savePreference("voice-input",voiceSetting.checked?"on":"off");
+    window.dispatchEvent(new CustomEvent("aibd-voice-setting",{detail:{enabled:voiceSetting.checked}}));
+  });
+  readingComfortSetting.addEventListener("change",function(){
+    document.documentElement.classList.toggle("reading-comfort",readingComfortSetting.checked);
+    savePreference("reading-comfort",readingComfortSetting.checked?"on":"off");
+  });
+  utilityClose.addEventListener("click",function(){utilityDrawer.open=false});
+  utilityDrawer.querySelector(".utility-backdrop").addEventListener("click",function(){utilityDrawer.open=false});
+  utilityDrawer.addEventListener("toggle",function(){
+    if(utilityDrawer.open){
+      if(focusContactOnOpen){
+        focusContactOnOpen=false;
+        window.setTimeout(function(){
+          var heading=document.getElementById("titre-contact");
+          heading.focus();
+          heading.scrollIntoView({block:"start"});
+        },0);
+      }else utilityClose.focus();
+    }else utilitySummary.focus();
+  });
+  document.addEventListener("keydown",function(event){
+    if(event.key==="Escape"&&utilityDrawer.open)utilityDrawer.open=false;
+  });
+  document.addEventListener("click",function(event){
+    var link=event.target.closest('a[href="#contact"]');
+    if(!link)return;
+    event.preventDefault();
+    if(utilityDrawer.open){
+      var heading=document.getElementById("titre-contact");
+      heading.focus();
+      heading.scrollIntoView({block:"start"});
+      return;
+    }
+    focusContactOnOpen=true;
+    utilityDrawer.open=true;
+    history.replaceState(null,"","#contact");
+  });
+  document.addEventListener("DOMContentLoaded",applyLanguage);
+})();
+</script>
+<script>
+(function(){
+  var ids=["nom","tel","desc","tkt"];
   function maj(){
     ids.forEach(function(i){
       document.getElementById("o-"+i).textContent=document.getElementById(i).value.trim()||"—";
     });
+    var lieu=document.getElementById("lieu").value;
+    var datePerte=document.getElementById("date-perte").value;
+    var locale=window.siteLanguage==="en"?"en-GB":window.siteLanguage==="wo"?"wo-SN":"fr-FR";
+    var dateAffichee=datePerte
+      ?new Date(datePerte+"T00:00:00").toLocaleDateString(locale)
+      :"";
+    document.getElementById("o-lieu").textContent=[lieu,dateAffichee].filter(Boolean).join(" · ")||"—";
+    document.getElementById("o-time-slot").textContent=document.getElementById("time-slot").value||"—";
   }
+  window.updateBagPreview=maj;
   ids.forEach(function(i){document.getElementById(i).addEventListener("input",maj)});
-  document.getElementById("photo").addEventListener("change",function(e){
-    var f=e.target.files&&e.target.files[0], ph=document.getElementById("ph");
-    if(!f){ph.textContent="Aucune photo ajoutée";return}
-    var r=new FileReader();
-    r.onload=function(){var im=new Image();im.alt="Photo du bagage";im.src=r.result;ph.textContent="";ph.appendChild(im)};
-    r.readAsDataURL(f);
-  });
-  [["photo-cam","ph"],["ticket-cam","ph2"]].forEach(function(c){
-    document.getElementById(c[0]).addEventListener("change",function(e){
-      var f=e.target.files&&e.target.files[0], ph=document.getElementById(c[1]);
-      if(!f)return;
-      var r=new FileReader();
-      r.onload=function(){var im=new Image();im.alt="Photo prise avec l'appareil";im.src=r.result;ph.textContent="";ph.appendChild(im)};
-      r.readAsDataURL(f);
-    });
-  });
+  document.getElementById("lieu").addEventListener("change",maj);
+  document.getElementById("date-perte").addEventListener("input",maj);
+  document.getElementById("time-slot").addEventListener("change",maj);
+  document.getElementById("tkt").addEventListener("change",maj);
   document.getElementById("ticket").addEventListener("change",function(e){
-    var f=e.target.files&&e.target.files[0], ph=document.getElementById("ph2");
-    if(!f){ph.textContent="Aucun ticket importé";return}
-    var r=new FileReader();
-    r.onload=function(){var im=new Image();im.alt="Ticket de bus";im.src=r.result;ph.textContent="";ph.appendChild(im)};
-    r.readAsDataURL(f);
+    var file=e.target.files&&e.target.files[0];
+    var preview=document.getElementById("ph2");
+    var status=document.getElementById("file-status");
+    status.textContent="";
+    preview.replaceChildren();
+    delete preview.dataset.fileName;
+    if(!file){
+      preview.textContent=window.siteText("noFile");
+      return;
+    }
+    if(file.size>15*1024*1024){
+      e.target.value="";
+      preview.textContent=window.siteText("noFile");
+      status.textContent=window.siteText("fileTooLarge");
+      return;
+    }
+    preview.dataset.fileName=file.name;
+    preview.textContent=file.name+" ("+Math.ceil(file.size/1024)+" Ko)";
+    if(file.type.startsWith("image/")){
+      var reader=new FileReader();
+      reader.onload=function(){
+        var image=new Image();
+        image.alt=window.siteText("attachmentPreviewAlt");
+        image.src=reader.result;
+        preview.prepend(image);
+      };
+      reader.onerror=function(){status.textContent=window.siteText("badPhoto")};
+      reader.readAsDataURL(file);
+    }
   });
   document.getElementById("exp").addEventListener("click",function(){
-    var d=new Date(), ref="Fiche n° "+d.getFullYear()+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.floor(1000+Math.random()*9000)+" · éditée le "+d.toLocaleDateString("fr-FR");
+    var locale=window.siteLanguage==="en"?"en-GB":window.siteLanguage==="wo"?"wo-SN":"fr-FR";
+    var d=new Date(), ref=window.siteText("refPrefix")+d.getFullYear()+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.floor(1000+Math.random()*9000)+window.siteText("refEdited")+d.toLocaleDateString(locale);
     document.getElementById("ref").textContent=ref;
     window.print();
   });
   maj();
 })();
 </script>
+<script>
+(function(){
+  var toggle=document.getElementById("assistant-toggle");
+  var panel=document.getElementById("assistant-panel");
+  var close=document.getElementById("assistant-close");
+  var form=document.getElementById("assistant-form");
+  var input=document.getElementById("assistant-input");
+  var send=document.getElementById("assistant-send");
+  var voiceButton=document.getElementById("assistant-voice");
+  var messagesElement=document.getElementById("assistant-messages");
+  var status=document.getElementById("assistant-status");
+  var messages=[];
+  var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var recognition=SpeechRecognition?new SpeechRecognition():null;
+  var isListening=false;
+  var isSending=false;
+  var voiceEnabled=document.getElementById("voice-setting").checked;
+  var voicePrefix="";
+  voiceButton.disabled=!voiceEnabled;
+
+  if(recognition){
+    recognition.continuous=false;
+    recognition.interimResults=true;
+    recognition.maxAlternatives=1;
+    recognition.onstart=function(){
+      isListening=true;
+      voiceButton.textContent=window.siteText("stopVoice");
+      voiceButton.setAttribute("aria-label",window.siteText("stopVoice"));
+      send.disabled=true;
+      status.textContent=window.siteText("voiceListening");
+    };
+    recognition.onresult=function(event){
+      var finalTranscript="";
+      var interimTranscript="";
+      for(var i=0;i<event.results.length;i++){
+        var transcript=event.results[i][0].transcript;
+        if(event.results[i].isFinal)finalTranscript+=transcript;
+        else interimTranscript+=transcript;
+      }
+      var transcript=finalTranscript||interimTranscript;
+      if(transcript)input.value=voicePrefix+(voicePrefix?" ":"")+transcript.trim();
+    };
+    recognition.onerror=function(event){
+      var errorKey=event.error==="not-allowed"||event.error==="service-not-allowed"
+        ?"voiceDenied"
+        :event.error==="no-speech"?"voiceNoSpeech"
+        :event.error==="network"?"voiceNetwork"
+        :"voiceError";
+      status.textContent=window.siteText(errorKey);
+    };
+    recognition.onend=function(){
+      isListening=false;
+      voiceButton.textContent=window.siteText("voiceInput");
+      voiceButton.setAttribute("aria-label",window.siteText("voiceInputAria"));
+      voiceButton.disabled=isSending||!voiceEnabled;
+      send.disabled=isSending;
+      if(status.textContent===window.siteText("voiceListening")){
+        status.textContent=input.value.trim()?window.siteText("voiceReady"):"";
+      }
+    };
+  }
+
+  function setOpen(open){
+    panel.hidden=!open;
+    toggle.setAttribute("aria-expanded",String(open));
+    if(open)input.focus();
+    else toggle.focus();
+  }
+
+  function addMessage(role,text){
+    var message=document.createElement("p");
+    message.className="assistant-message"+(role==="user"?" user":"");
+    message.textContent=text;
+    messagesElement.appendChild(message);
+    messagesElement.scrollTop=messagesElement.scrollHeight;
+  }
+
+  toggle.addEventListener("click",function(){setOpen(panel.hidden)});
+  close.addEventListener("click",function(){setOpen(false)});
+  window.addEventListener("aibd-voice-setting",function(event){
+    voiceEnabled=event.detail.enabled;
+    voiceButton.disabled=!voiceEnabled||isSending;
+    if(!voiceEnabled&&isListening)recognition.stop();
+  });
+  voiceButton.addEventListener("click",function(){
+    if(!voiceEnabled)return;
+    if(!recognition){
+      status.textContent=window.siteText("voiceUnsupported");
+      return;
+    }
+    if(isListening){
+      recognition.stop();
+      return;
+    }
+    recognition.lang={fr:"fr-FR",en:"en-US",wo:"wo-SN"}[window.siteLanguage]||"fr-FR";
+    voicePrefix=input.value.trim();
+    try{
+      recognition.start();
+    }catch(error){
+      status.textContent=window.siteText("voiceError");
+    }
+  });
+  form.addEventListener("submit",async function(event){
+    event.preventDefault();
+    var text=input.value.trim();
+    if(!text||send.disabled)return;
+    messages.push({role:"user",content:text});
+    messages=messages.slice(-12);
+    addMessage("user",text);
+    input.value="";
+    input.disabled=true;
+    send.disabled=true;
+    voiceButton.disabled=true;
+    isSending=true;
+    status.textContent=window.siteText("thinking");
+    try{
+      var response=await fetch("/api/chat",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({messages:messages,language:window.siteLanguage})
+      });
+      var result;
+      try{
+        result=await response.json();
+      }catch(parseError){
+        throw new Error(response.ok
+          ?window.siteText("invalidResponse")
+          :window.siteText("unavailable"));
+      }
+      if(!response.ok)throw new Error((result&&result.error)||window.siteText("serviceUnavailable"));
+      if(typeof result.reply!=="string"||!result.reply.trim())throw new Error(window.siteText("invalidResponse"));
+      messages.push({role:"assistant",content:result.reply});
+      messages=messages.slice(-12);
+      addMessage("assistant",result.reply+(result.mode==="automatic"?"\n\n"+window.siteText("automaticReply"):""));
+      status.textContent="";
+    }catch(error){
+      status.textContent=error.message||window.siteText("connectionError");
+    }finally{
+      input.disabled=false;
+      isSending=false;
+      send.disabled=isListening;
+      voiceButton.disabled=!voiceEnabled;
+      input.focus();
+    }
+  });
+})();
+</script>
+<footer>
+  <p><span data-i18n="footerText">AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.</span> <a href="#contact" data-i18n="footerContact">Contacter le service</a></p>
+</footer>
 </body>
 </html>

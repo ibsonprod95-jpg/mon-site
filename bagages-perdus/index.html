@@ -152,6 +152,63 @@
 
     .barre { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
     .note { font-size: 0.9rem; color: var(--discret); margin-top: 2rem; }
+
+    .assistant-widget {
+      position: fixed;
+      right: max(1rem, env(safe-area-inset-right));
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      z-index: 10;
+      font-family: Arial, sans-serif;
+    }
+    .assistant-toggle { box-shadow: 0 3px 14px rgba(0, 0, 0, 0.2); }
+    .assistant-panel {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 0.75rem);
+      display: grid;
+      grid-template-rows: auto minmax(10rem, 1fr) auto auto;
+      gap: 0.75rem;
+      width: min(23rem, calc(100vw - 2rem));
+      height: min(34rem, calc(100dvh - 7rem));
+      padding: 1rem;
+      background: var(--carte);
+      color: var(--texte);
+      border: 1px solid var(--trait);
+      border-radius: 8px;
+      box-shadow: 0 5px 24px rgba(0, 0, 0, 0.2);
+    }
+    .assistant-panel[hidden] { display: none; }
+    .assistant-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .assistant-header h2 { margin: 0; font: bold 1.1rem Arial, sans-serif; color: var(--accent); }
+    .assistant-close { padding: 0.3rem 0.6rem; }
+    .assistant-messages {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.25rem;
+    }
+    .assistant-message {
+      max-width: 90%;
+      margin: 0;
+      padding: 0.55rem 0.7rem;
+      border-radius: 8px;
+      background: var(--fond);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 0.92rem;
+    }
+    .assistant-message.user { align-self: flex-end; background: var(--accent); color: var(--fond); }
+    .assistant-status { min-height: 1.2em; margin: 0; color: var(--discret); font: 0.82rem Arial, sans-serif; }
+    .assistant-form { display: grid; gap: 0.5rem; }
+    .assistant-form textarea { min-height: 4.5rem; max-height: 8rem; font: 0.92rem Arial, sans-serif; }
+    .assistant-form button { justify-self: end; }
+    .assistant-privacy { margin: 0; color: var(--discret); font: 0.75rem/1.4 Arial, sans-serif; }
+    @media (max-width: 34rem) {
+      .assistant-widget { right: max(0.75rem, env(safe-area-inset-right)); bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+      .assistant-panel { position: fixed; right: 0.5rem; bottom: 4.5rem; height: min(34rem, calc(100dvh - 6rem)); }
+    }
   </style>
 </head>
 <body>
@@ -238,6 +295,26 @@
 
     <p class="note">Les déclarations sont enregistrées uniquement sur cet appareil, dans ce navigateur. Elles ne sont pas partagées avec les autres appareils de l’équipe.</p>
   </main>
+
+  <section class="assistant-widget" aria-label="Assistant IA">
+    <div class="assistant-panel" id="assistant-panel" hidden>
+      <div class="assistant-header">
+        <h2 id="assistant-title">Assistant objets perdus</h2>
+        <button class="secondaire assistant-close" id="assistant-close" type="button" aria-label="Fermer l’assistant">Fermer</button>
+      </div>
+      <div class="assistant-messages" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions">
+        <p class="assistant-message">Bonjour ! Je peux répondre aux questions sur cette page et vous guider pour préparer une déclaration. N’écrivez pas de nom ni de numéro de téléphone ici ; utilisez plutôt le formulaire.</p>
+      </div>
+      <p class="assistant-status" id="assistant-status" role="status" aria-live="polite"></p>
+      <form class="assistant-form" id="assistant-form">
+        <label for="assistant-input">Votre question</label>
+        <textarea id="assistant-input" maxlength="1200" required placeholder="Ex. : quelles informations préparer ?"></textarea>
+        <button id="assistant-send" type="submit">Envoyer</button>
+      </form>
+      <p class="assistant-privacy">Les questions sont envoyées à un service d’IA pour générer une réponse. N’y partagez aucune donnée personnelle.</p>
+    </div>
+    <button class="assistant-toggle" id="assistant-toggle" type="button" aria-expanded="false" aria-controls="assistant-panel">Besoin d’aide ?</button>
+  </section>
 
   <script>
     (function () {
@@ -406,6 +483,83 @@
 
       champDate.value = aujourdhui();
       rendre();
+    })();
+  </script>
+  <script>
+    (function () {
+      var toggle = document.getElementById('assistant-toggle');
+      var panel = document.getElementById('assistant-panel');
+      var close = document.getElementById('assistant-close');
+      var form = document.getElementById('assistant-form');
+      var input = document.getElementById('assistant-input');
+      var send = document.getElementById('assistant-send');
+      var messagesElement = document.getElementById('assistant-messages');
+      var status = document.getElementById('assistant-status');
+      var messages = [];
+
+      function setOpen(open) {
+        panel.hidden = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+        if (open) input.focus();
+        else toggle.focus();
+      }
+
+      function addMessage(role, text) {
+        var message = document.createElement('p');
+        message.className = 'assistant-message' + (role === 'user' ? ' user' : '');
+        message.textContent = text;
+        messagesElement.appendChild(message);
+        messagesElement.scrollTop = messagesElement.scrollHeight;
+      }
+
+      toggle.addEventListener('click', function () { setOpen(panel.hidden); });
+      close.addEventListener('click', function () { setOpen(false); });
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        var text = input.value.trim();
+        if (!text || send.disabled) return;
+
+        messages.push({ role: 'user', content: text });
+        messages = messages.slice(-12);
+        addMessage('user', text);
+        input.value = '';
+        input.disabled = true;
+        send.disabled = true;
+        status.textContent = 'Je prépare une réponse…';
+
+        try {
+          var response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: messages })
+          });
+          var result;
+          try {
+            result = await response.json();
+          } catch (parseError) {
+            throw new Error(response.ok
+              ? 'Le service a renvoyé une réponse invalide. Réessayez.'
+              : 'L’assistant est indisponible ici. Ouvrez le site publié et réessayez.');
+          }
+          if (!response.ok) {
+            throw new Error((result && result.error) || 'Le service est momentanément indisponible.');
+          }
+          if (typeof result.reply !== 'string' || !result.reply.trim()) {
+            throw new Error('Le service a renvoyé une réponse invalide. Réessayez.');
+          }
+          messages.push({ role: 'assistant', content: result.reply });
+          messages = messages.slice(-12);
+          addMessage('assistant', result.reply);
+          status.textContent = '';
+        } catch (error) {
+          status.textContent = error.message || 'Impossible de contacter l’assistant. Vérifiez votre connexion et réessayez.';
+        } finally {
+          input.disabled = false;
+          send.disabled = false;
+          input.focus();
+        }
+      });
     })();
   </script>
 </body>

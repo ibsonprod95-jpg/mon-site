@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Administration des déclarations – AIBD DEM DIKK</title>
+  <style>
+    :root{font:16px/1.5 system-ui,sans-serif;color:#172321;background:#f2f6f5}
+    body{margin:0;padding:24px}
+    main{max-width:980px;margin:auto}
+    section,.case{background:#fff;border:1px solid #d5e0df;border-radius:12px;padding:20px;margin:16px 0}
+    label{display:block;font-weight:650;margin:12px 0 4px}
+    input,textarea,select,button{font:inherit}
+    input,textarea,select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #879997;border-radius:7px}
+    textarea{min-height:76px}
+    button{padding:10px 16px;margin-top:12px;border:0;border-radius:7px;background:#006e68;color:white;font-weight:700;cursor:pointer}
+    button:disabled{opacity:.6;cursor:wait}
+    .case h2{margin-top:0}
+    .case-actions{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+    .case-actions label{flex:1;min-width:220px}
+    .photo-list{display:flex;gap:12px;flex-wrap:wrap}
+    .photo-list img{max-width:260px;max-height:240px;object-fit:contain}
+    [role=status]{min-height:1.5em}
+    .muted{color:#4d5c59}
+    @media(max-width:600px){body{padding:14px}.case-actions{display:block}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Gestion des déclarations</h1>
+    <p class="muted">Espace réservé au compte de service autorisé. Les données consultées ici sont confidentielles.</p>
+    <section id="login-panel">
+      <h2>Connexion du service</h2>
+      <form id="login-form">
+        <label for="email">Adresse e-mail</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <button id="login-button" type="submit">Se connecter</button>
+      </form>
+    </section>
+    <section id="dashboard" hidden>
+      <div class="case-actions">
+        <button id="refresh-button" type="button">Actualiser les dossiers</button>
+        <button id="logout-button" type="button">Se déconnecter</button>
+      </div>
+      <p id="dashboard-status" role="status" aria-live="polite"></p>
+      <div id="cases"></div>
+    </section>
+    <p id="login-status" role="status" aria-live="polite"></p>
+  </main>
+  <script>
+    (function(){
+      var token=null;
+      var loginPanel=document.getElementById("login-panel");
+      var dashboard=document.getElementById("dashboard");
+      var loginForm=document.getElementById("login-form");
+      var loginStatus=document.getElementById("login-status");
+      var dashboardStatus=document.getElementById("dashboard-status");
+      var casesElement=document.getElementById("cases");
+      var loginButton=document.getElementById("login-button");
+      var refreshButton=document.getElementById("refresh-button");
+
+      async function api(body){
+        var response=await fetch("/api/declarations",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify(body)
+        });
+        var result;
+        try{result=await response.json()}catch(error){throw new Error("Réponse invalide du serveur.")}
+        if(!response.ok)throw new Error(result&&result.error||"La requête a échoué.");
+        return result;
+      }
+
+      function showDashboard(){
+        loginPanel.hidden=Boolean(token);
+        dashboard.hidden=!token;
+        document.getElementById("login-status").textContent="";
+      }
+
+      function textValue(label,value){
+        var paragraph=document.createElement("p");
+        var strong=document.createElement("strong");
+        strong.textContent=label+": ";
+        paragraph.appendChild(strong);
+        paragraph.appendChild(document.createTextNode(value||"—"));
+        return paragraph;
+      }
+
+      function addPhotoButton(container,record,kind,label){
+        var button=document.createElement("button");
+        button.type="button";
+        button.textContent=label;
+        button.addEventListener("click",async function(){
+          button.disabled=true;
+          dashboardStatus.textContent="Chargement de la photo…";
+          try{
+            var result=await api({action:"admin-photo",token:token,id:record.id,kind:kind});
+            var photoUrl=new URL(result.url);
+            if(photoUrl.protocol!=="https:")throw new Error("Adresse de photo invalide.");
+            var image=document.createElement("img");
+            image.src=photoUrl.href;
+            image.alt=label;
+            image.loading="lazy";
+            var link=document.createElement("a");
+            link.href=photoUrl.href;
+            link.target="_blank";
+            link.rel="noopener noreferrer";
+            link.appendChild(image);
+            container.appendChild(link);
+            dashboardStatus.textContent="";
+          }catch(error){
+            dashboardStatus.textContent=error.message||"Impossible de charger la photo.";
+          }finally{
+            button.disabled=false;
+          }
+        });
+        container.appendChild(button);
+      }
+
+      function renderCases(records){
+        casesElement.replaceChildren();
+        if(!records.length){
+          casesElement.textContent="Aucune déclaration enregistrée.";
+          return;
+        }
+        records.forEach(function(record){
+          var card=document.createElement("article");
+          card.className="case";
+          var title=document.createElement("h2");
+          title.textContent=record.tracking_code;
+          card.appendChild(title);
+          card.appendChild(textValue("Propriétaire",record.owner_name));
+          card.appendChild(textValue("Téléphone",record.phone));
+          card.appendChild(textValue("Description",record.description));
+          card.appendChild(textValue("Couleur",record.color));
+          card.appendChild(textValue("Lieu",record.lost_location));
+          card.appendChild(textValue("Date de perte",record.lost_date));
+          card.appendChild(textValue("Créneau horaire",record.lost_time_slot));
+          card.appendChild(textValue("Bus",record.bus_number));
+          card.appendChild(textValue("Reçu le",new Date(record.created_at).toLocaleString("fr-FR")));
+
+          var controls=document.createElement("div");
+          controls.className="case-actions";
+          var statusLabel=document.createElement("label");
+          statusLabel.textContent="Statut";
+          var statusSelect=document.createElement("select");
+          [["received","Reçu"],["searching","Recherche en cours"],["found","Bagage retrouvé"],["closed","Dossier clôturé"]].forEach(function(optionData){
+            var option=document.createElement("option");
+            option.value=optionData[0];
+            option.textContent=optionData[1];
+            statusSelect.appendChild(option);
+          });
+          statusSelect.value=record.status;
+          statusLabel.appendChild(statusSelect);
+          var noteLabel=document.createElement("label");
+          noteLabel.textContent="Message visible par le client (facultatif)";
+          var note=document.createElement("textarea");
+          note.maxLength=500;
+          note.placeholder="N’inscrivez aucune donnée personnelle dans ce message.";
+          noteLabel.appendChild(note);
+          var saveButton=document.createElement("button");
+          saveButton.type="button";
+          saveButton.textContent="Enregistrer le statut";
+          saveButton.addEventListener("click",async function(){
+            saveButton.disabled=true;
+            dashboardStatus.textContent="Enregistrement du statut…";
+            try{
+              await api({action:"admin-update",token:token,id:record.id,status:statusSelect.value,note:note.value});
+              dashboardStatus.textContent="Statut mis à jour.";
+              note.value="";
+              await loadCases();
+            }catch(error){
+              dashboardStatus.textContent=error.message||"Impossible de mettre à jour le statut.";
+            }finally{
+              saveButton.disabled=false;
+            }
+          });
+          controls.appendChild(statusLabel);
+          controls.appendChild(noteLabel);
+          controls.appendChild(saveButton);
+          card.appendChild(controls);
+
+          var photoButtons=document.createElement("div");
+          photoButtons.className="case-actions";
+          if(record.photo_path)addPhotoButton(photoButtons,record,"baggage","Voir la photo du bagage");
+          if(record.ticket_path)addPhotoButton(photoButtons,record,"ticket","Voir la photo du ticket");
+          card.appendChild(photoButtons);
+          casesElement.appendChild(card);
+        });
+      }
+
+      async function loadCases(){
+        refreshButton.disabled=true;
+        dashboardStatus.textContent="Chargement des dossiers…";
+        try{
+          var records=await api({action:"admin-list",token:token});
+          renderCases(records);
+          dashboardStatus.textContent=records.length===100
+            ?"Affichage des 100 dernières déclarations."
+            :"Dossiers chargés.";
+        }catch(error){
+          dashboardStatus.textContent=error.message||"Impossible de charger les dossiers.";
+          if(error.message&&error.message.indexOf("Session expirée")===0){
+            token=null;
+            showDashboard();
+          }
+        }finally{
+          refreshButton.disabled=false;
+        }
+      }
+
+      loginForm.addEventListener("submit",async function(event){
+        event.preventDefault();
+        loginButton.disabled=true;
+        loginStatus.textContent="Connexion en cours…";
+        try{
+          var result=await api({
+            action:"admin-login",
+            email:document.getElementById("email").value.trim(),
+            password:document.getElementById("password").value
+          });
+          token=result.token;
+          document.getElementById("password").value="";
+          showDashboard();
+          await loadCases();
+        }catch(error){
+          loginStatus.textContent=error.message||"Connexion impossible.";
+        }finally{
+          loginButton.disabled=false;
+        }
+      });
+
+      refreshButton.addEventListener("click",loadCases);
+      document.getElementById("logout-button").addEventListener("click",function(){
+        token=null;
+        casesElement.replaceChildren();
+        showDashboard();
+        document.getElementById("email").focus();
+      });
+    })();
+  </script>
+</body>
+</html>
