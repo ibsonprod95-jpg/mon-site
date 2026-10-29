@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const {
+ const{
   HttpError,
   checkRateLimitStorage,
   getConfig,
