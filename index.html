@@ -547,10 +547,13 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   window.addEventListener("aibd-language-changed",applyLanguage);
   applyLanguage();
 
+  var declarationFunctionUrl="https://yivapnpnitcrwcyuqqze.supabase.co/functions/v1/declarations";
+  var declarationPublishableKey="sb_publishable_L6V88nAo_rLmAqs3mIIK0A__-i7YuKD";
+
   function api(body){
-    return fetch("/api/declarations",{
+    return fetch(declarationFunctionUrl,{
       method:"POST",
-      headers:{"Content-Type":"application/json"},
+      headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
       body:JSON.stringify(body)
     }).then(async function(response){
       var result;

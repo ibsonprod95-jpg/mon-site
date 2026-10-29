@@ -63,10 +63,13 @@
       var loginButton=document.getElementById("login-button");
       var refreshButton=document.getElementById("refresh-button");
 
+      var declarationFunctionUrl="https://yivapnpnitcrwcyuqqze.supabase.co/functions/v1/declarations";
+      var declarationPublishableKey="sb_publishable_L6V88nAo_rLmAqs3mIIK0A__-i7YuKD";
+
       async function api(body){
-        var response=await fetch("/api/declarations",{
+        var response=await fetch(declarationFunctionUrl,{
           method:"POST",
-          headers:{"Content-Type":"application/json"},
+          headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
           body:JSON.stringify(body)
         });
         var result;
