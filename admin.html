@@ -14,6 +14,7 @@
     label{display:block;font-weight:650;margin:12px 0 4px}
     input,textarea,select,button{font:inherit}
     input,textarea,select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #879997;border-radius:7px}
+    .link-button{background:transparent;color:#006e68;text-decoration:underline;padding:4px 0}
     textarea{min-height:76px}
     button{padding:10px 16px;margin-top:12px;border:0;border-radius:7px;background:#006e68;color:white;font-weight:700;cursor:pointer}
     button:disabled{opacity:.6;cursor:wait}
@@ -40,6 +41,23 @@
         <input id="password" type="password" autocomplete="current-password" required>
         <button id="login-button" type="submit">Se connecter</button>
       </form>
+      <button id="forgot-password-button" type="button" class="link-button">Mot de passe oublié ?</button>
+      <form id="recovery-form" hidden>
+        <h2>Réinitialiser le mot de passe</h2>
+        <p class="muted">Nous enverrons un lien à l’adresse indiquée. Ouvre-le pour choisir un nouveau mot de passe.</p>
+        <label for="recovery-email">Adresse e-mail du compte</label>
+        <input id="recovery-email" type="email" autocomplete="email" required>
+        <button id="recovery-button" type="submit">Envoyer le lien</button>
+        <button id="back-to-login-button" type="button" class="link-button">Retour à la connexion</button>
+      </form>
+      <form id="new-password-form" hidden>
+        <h2>Choisir un nouveau mot de passe</h2>
+        <label for="new-password">Nouveau mot de passe</label>
+        <input id="new-password" type="password" autocomplete="new-password" minlength="8" required>
+        <label for="confirm-password">Confirmer le mot de passe</label>
+        <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required>
+        <button id="save-password-button" type="submit">Enregistrer le nouveau mot de passe</button>
+      </form>
     </section>
     <section id="dashboard" hidden>
       <div class="case-actions">
@@ -57,6 +75,8 @@
       var loginPanel=document.getElementById("login-panel");
       var dashboard=document.getElementById("dashboard");
       var loginForm=document.getElementById("login-form");
+      var recoveryForm=document.getElementById("recovery-form");
+      var newPasswordForm=document.getElementById("new-password-form");
       var loginStatus=document.getElementById("login-status");
       var dashboardStatus=document.getElementById("dashboard-status");
       var casesElement=document.getElementById("cases");
@@ -65,6 +85,85 @@
 
       var declarationFunctionUrl="https://yivapnpnitcrwcyuqqze.supabase.co/functions/v1/declarations";
       var declarationPublishableKey="sb_publishable_L6V88nAo_rLmAqs3mIIK0A__-i7YuKD";
+      var authUrl="https://yivapnpnitcrwcyuqqze.supabase.co/auth/v1";
+      var recoveryToken="";
+
+      function showLoginMode(mode){
+        loginForm.hidden=mode!=="login";
+        recoveryForm.hidden=mode!=="recovery";
+        newPasswordForm.hidden=mode!=="new-password";
+        document.getElementById("forgot-password-button").hidden=mode!=="login";
+        loginStatus.textContent="";
+      }
+
+      function checkRecoveryLink(){
+        var params=new URLSearchParams(window.location.hash.slice(1));
+        if(params.get("type")==="recovery"&&params.get("access_token")){
+          recoveryToken=params.get("access_token");
+          showLoginMode("new-password");
+          loginStatus.textContent="Le lien est valide. Choisis maintenant un nouveau mot de passe.";
+          window.history.replaceState(null,"",window.location.pathname+"?recovery=1");
+          return true;
+        }
+        if(window.location.search.indexOf("recovery=1")!==-1){
+          showLoginMode("new-password");
+          loginStatus.textContent="Le lien de réinitialisation est invalide ou expiré. Demande-en un nouveau.";
+          return true;
+        }
+        return false;
+      }
+
+      document.getElementById("forgot-password-button").addEventListener("click",function(){
+        document.getElementById("recovery-email").value=document.getElementById("email").value.trim();
+        showLoginMode("recovery");
+      });
+      document.getElementById("back-to-login-button").addEventListener("click",function(){showLoginMode("login")});
+      recoveryForm.addEventListener("submit",async function(event){
+        event.preventDefault();
+        var button=document.getElementById("recovery-button");
+        button.disabled=true;
+        loginStatus.textContent="Envoi du lien en cours…";
+        try{
+          var redirectTo=window.location.origin+window.location.pathname;
+          var response=await fetch(authUrl+"/recover?redirect_to="+encodeURIComponent(redirectTo),{
+            method:"POST",
+            headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
+            body:JSON.stringify({email:document.getElementById("recovery-email").value.trim()})
+          });
+          if(!response.ok){
+            var result=await response.json().catch(function(){return {}});
+            throw new Error(result.msg||result.message||"Impossible d’envoyer le lien. Vérifie les réglages de redirection Supabase.");
+          }
+          loginStatus.textContent="Si l’adresse correspond au compte, un lien vient d’être envoyé. Vérifie aussi les courriers indésirables.";
+        }catch(error){loginStatus.textContent=error.message||"Impossible d’envoyer le lien."}
+        finally{button.disabled=false}
+      });
+      newPasswordForm.addEventListener("submit",async function(event){
+        event.preventDefault();
+        var password=document.getElementById("new-password").value;
+        if(password!==document.getElementById("confirm-password").value){
+          loginStatus.textContent="Les deux mots de passe ne correspondent pas.";
+          return;
+        }
+        var button=document.getElementById("save-password-button");
+        button.disabled=true;
+        loginStatus.textContent="Enregistrement du mot de passe…";
+        try{
+          var response=await fetch(authUrl+"/user",{
+            method:"PUT",
+            headers:{"Content-Type":"application/json","apikey":declarationPublishableKey,"Authorization":"Bearer "+recoveryToken},
+            body:JSON.stringify({password:password})
+          });
+          var result=await response.json().catch(function(){return {}});
+          if(!response.ok)throw new Error(result.msg||result.message||"Le mot de passe n’a pas pu être modifié.");
+          recoveryToken="";
+          newPasswordForm.reset();
+          window.history.replaceState(null,"",window.location.pathname);
+          showLoginMode("login");
+          loginStatus.textContent="Mot de passe mis à jour. Tu peux maintenant te connecter.";
+        }catch(error){loginStatus.textContent=error.message||"Le mot de passe n’a pas pu être modifié."}
+        finally{button.disabled=false}
+      });
 
       async function api(body){
         var response=await fetch(declarationFunctionUrl,{
@@ -244,6 +343,7 @@
         showDashboard();
         document.getElementById("email").focus();
       });
+      checkRecoveryLink();
     })();
   </script>
 </body>
