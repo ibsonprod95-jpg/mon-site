@@ -55,7 +55,7 @@ dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 .logo.sm{width:34px;height:34px;border-radius:7px}
 .home-banner{max-width:1200px;margin:18px auto 28px;padding:0 20px}
 .home-banner img{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(23,66,59,.12)}
-header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1000px;margin:0 auto}
+header .bar{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:1000px;margin:0 auto;padding-right:66px}
 header .brand{display:flex;align-items:center;gap:14px}
 header nav{display:flex;flex-wrap:wrap;gap:8px 18px}
 header nav a{color:#fff;font-weight:700;text-decoration:none}
@@ -285,55 +285,55 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       <a href="#suivi" data-track-key="navTracking">Suivre une déclaration</a>
     </nav>
   </div>
+  <details class="utility-drawer" id="utility-drawer">
+    <summary class="utility-menu-button" aria-label="Ouvrir les paramètres et le contact" data-i18n-aria="utilityTitle"><span class="utility-menu-label" aria-hidden="true">Paramètres et contact</span><span class="utility-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span></summary>
+    <button class="utility-backdrop" type="button" aria-label="Fermer le panneau" data-i18n-aria="close"></button>
+    <aside class="utility-panel" aria-label="Paramètres et contact" data-i18n-aria="utilityTitle">
+      <div class="utility-panel-header">
+        <h2 data-i18n="utilityTitle">Paramètres &amp; contact</h2>
+        <button class="utility-close" id="utility-close" type="button" data-i18n="close">Fermer</button>
+      </div>
+      <section class="settings-panel" aria-label="Paramètres du site" data-i18n-aria="settingsTitle">
+        <h3 data-i18n="settingsTitle">Paramètres</h3>
+        <label for="language-select"><span data-i18n="languageLabel">Langue</span>
+          <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="wo">Wolof</option>
+          </select>
+        </label>
+        <label for="theme-select"><span data-i18n="themeLabel">Thème</span>
+          <select id="theme-select">
+            <option value="system" data-i18n="themeSystem">Automatique</option>
+            <option value="light" data-i18n="themeLight">Clair</option>
+            <option value="dark" data-i18n="themeDark">Sombre</option>
+          </select>
+        </label>
+        <label for="text-size-select"><span data-i18n="textSizeLabel">Taille du texte</span>
+          <select id="text-size-select">
+            <option value="normal" data-i18n="textSizeNormal">Normale</option>
+            <option value="large" data-i18n="textSizeLarge">Grande</option>
+            <option value="xlarge" data-i18n="textSizeExtraLarge">Très grande</option>
+          </select>
+        </label>
+        <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
+        <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
+        <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
+      </section>
+      <section class="utility-contact" id="contact" aria-labelledby="titre-contact">
+        <h3 id="titre-contact" tabindex="-1" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h3>
+        <p data-i18n="contactText">Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.</p>
+        <div class="contact-actions">
+          <a class="whatsapp" href="https://wa.me/221775521291" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp" data-i18n="whatsapp">Écrire sur WhatsApp</a>
+          <a href="tel:+221775521291" aria-label="Appeler le service" data-i18n="call">Appeler</a>
+        </div>
+      </section>
+    </aside>
+  </details>
 </header>
 <div class="home-banner">
   <img src="assets/dem-dikk-encore-plus-proche.jpg" alt="Bus Dakar Dem Dikk et personne souriante avec le message « Encore plus proche de vous »" fetchpriority="high">
 </div>
-<details class="utility-drawer" id="utility-drawer">
-  <summary data-i18n="utilityTitle">Paramètres &amp; contact</summary>
-  <button class="utility-backdrop" type="button" aria-label="Fermer le panneau" data-i18n-aria="close"></button>
-  <aside class="utility-panel" aria-label="Paramètres et contact" data-i18n-aria="utilityTitle">
-    <div class="utility-panel-header">
-      <h2 data-i18n="utilityTitle">Paramètres &amp; contact</h2>
-      <button class="utility-close" id="utility-close" type="button" data-i18n="close">Fermer</button>
-    </div>
-    <section class="settings-panel" aria-label="Paramètres du site" data-i18n-aria="settingsTitle">
-      <h3 data-i18n="settingsTitle">Paramètres</h3>
-      <label for="language-select"><span data-i18n="languageLabel">Langue</span>
-        <select id="language-select" aria-label="Langue" data-i18n-aria="languageLabel">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-          <option value="wo">Wolof</option>
-        </select>
-      </label>
-      <label for="theme-select"><span data-i18n="themeLabel">Thème</span>
-        <select id="theme-select">
-          <option value="system" data-i18n="themeSystem">Automatique</option>
-          <option value="light" data-i18n="themeLight">Clair</option>
-          <option value="dark" data-i18n="themeDark">Sombre</option>
-        </select>
-      </label>
-      <label for="text-size-select"><span data-i18n="textSizeLabel">Taille du texte</span>
-        <select id="text-size-select">
-          <option value="normal" data-i18n="textSizeNormal">Normale</option>
-          <option value="large" data-i18n="textSizeLarge">Grande</option>
-          <option value="xlarge" data-i18n="textSizeExtraLarge">Très grande</option>
-        </select>
-      </label>
-      <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
-      <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
-      <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
-    </section>
-    <section class="utility-contact" id="contact" aria-labelledby="titre-contact">
-      <h3 id="titre-contact" tabindex="-1" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h3>
-      <p data-i18n="contactText">Pour toute question concernant votre bagage, écrivez-nous sur WhatsApp ou appelez-nous directement.</p>
-      <div class="contact-actions">
-        <a class="whatsapp" href="https://wa.me/221775521291" target="_blank" rel="noopener noreferrer" aria-label="Nous contacter sur WhatsApp" data-i18n="whatsapp">Écrire sur WhatsApp</a>
-        <a href="tel:+221775521291" aria-label="Appeler le service" data-i18n="call">Appeler</a>
-      </div>
-    </section>
-  </aside>
-</details>
 <section class="hero" aria-labelledby="titre-vitrine">
   <div>
     <p class="hero-kicker">AIBD DEM DIKK</p>
@@ -482,7 +482,15 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 .tracking-section input,.tracking-section label{display:block}
 .tracking-section input{width:100%;margin:6px 0 14px;padding:11px;border:1px solid var(--line,#9baead);border-radius:8px;background:var(--surface,#fff);color:var(--text,#1d2b2a)}
 @media print{.online-submit,.tracking-section{display:none!important}}
-</style>
+/* Menu hamburger en haut à droite, inspiré de la référence fournie */
+.utility-drawer summary.utility-menu-button{position:absolute;z-index:42;top:16px;right:24px;left:auto;display:grid;place-items:center;width:52px;height:52px;max-width:none;padding:10px;border:1px solid rgba(255,255,255,.42);border-radius:10px;background:var(--surface);color:var(--brand);writing-mode:initial;transform:none;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer}
+.utility-drawer summary.utility-menu-button:hover{background:var(--brand-dark)}
+.utility-drawer summary.utility-menu-button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.utility-menu-icon{display:grid;gap:5px;width:27px}
+.utility-menu-icon i{display:block;width:27px;height:3px;border-radius:2px;background:currentColor}
+.utility-menu-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.utility-panel{inset:0 0 0 auto;border-right:0;border-left:1px solid var(--line);box-shadow:-8px 0 32px rgba(0,0,0,.2)}
+@media(max-width:760px){header .bar{padding-right:58px}.utility-drawer summary.utility-menu-button{top:14px;right:12px;bottom:auto;left:auto;width:48px;height:48px;max-width:none;padding:9px;writing-mode:initial;transform:none}.utility-panel{width:min(23rem,calc(100vw - 2.5rem));padding:20px 16px max(20px,env(safe-area-inset-bottom))}}</style>
 <section class="tracking-section noprint" id="suivi" aria-labelledby="tracking-title">
   <h2 id="tracking-title" data-track-key="trackTitle">Suivre ma déclaration</h2>
   <p data-track-key="trackIntro">Saisissez le code de suivi et le code privé reçus lors de l’enregistrement. Ces deux codes sont nécessaires pour consulter le dossier.</p>
