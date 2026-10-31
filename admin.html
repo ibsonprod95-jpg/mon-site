@@ -290,7 +290,8 @@
 
           var photoButtons=document.createElement("div");
           photoButtons.className="case-actions";
-          if(record.photo_path)addPhotoButton(photoButtons,record,"baggage","Voir la photo du bagage");
+          if(record.photo_path)addPhotoButton(photoButtons,record,"baggage","Voir la photo du bagage déclaré");
+          if(record.taken_photo_path)addPhotoButton(photoButtons,record,"taken-baggage","Voir la photo du bagage pris par erreur");
           if(record.ticket_path)addPhotoButton(photoButtons,record,"ticket","Voir la photo du ticket");
           card.appendChild(photoButtons);
           casesElement.appendChild(card);

@@ -96,6 +96,9 @@ label.cam:hover{background:var(--brand);color:#fff}
 label.cam:has(+ .sr:focus-visible){outline:3px solid var(--accent);outline-offset:1px}
 .photo.ticket{aspect-ratio:auto;min-height:70px;max-height:260px}
 .photo.ticket img{height:auto;max-height:260px}
+.bag-photo-preview{max-width:260px;margin:8px 0 14px}
+.bag-photo-preview[hidden]{display:none}
+.bag-photo-preview img{display:block;width:100%;max-height:220px;object-fit:contain;border:1px solid var(--line);border-radius:6px}
 .assistant-widget{position:fixed;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));z-index:10;font-family:Arial,sans-serif}
 .assistant-toggle{width:auto;margin:0;box-shadow:0 3px 14px rgba(0,0,0,.2)}
 .assistant-panel{position:absolute;right:0;bottom:calc(100% + .75rem);display:grid;grid-template-rows:auto minmax(10rem,1fr) auto auto;gap:.75rem;width:min(23rem,calc(100vw - 2rem));height:min(34rem,calc(100dvh - 7rem));padding:1rem;background:#fff;color:#243238;border:1px solid #cbd4d2;border-radius:8px;box-shadow:0 5px 24px rgba(0,0,0,.2)}
@@ -413,9 +416,17 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <input id="tel" type="tel" autocomplete="tel" maxlength="40">
     <label for="desc" data-i18n="descriptionLabel">Description du bagage</label>
     <textarea id="desc" maxlength="1200" placeholder="Taille, marque et signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
+    <label for="baggage-photo" data-track-key="baggagePhotoUploadLabel">Photo de votre bagage (facultatif)</label>
+    <input id="baggage-photo" type="file" accept="image/*" capture="environment" aria-describedby="baggage-photo-help">
+    <small id="baggage-photo-help" data-track-key="imageUploadHelp">Ajoutez une photo pour aider le service à reconnaître le bagage.</small>
+    <div class="bag-photo-preview" id="baggage-photo-preview" hidden><img alt="Aperçu de la photo de votre bagage"></div>
     <div id="taken-baggage-wrap" hidden>
       <label for="taken-description" data-track-key="takenDescriptionLabel">Description du bagage pris par erreur</label>
       <textarea id="taken-description" maxlength="1200" data-track-placeholder="takenDescriptionPlaceholder" placeholder="Ex. : sac bleu à roulettes, poignée noire"></textarea>
+      <label for="taken-baggage-photo" data-track-key="takenBaggagePhotoUploadLabel">Photo du bagage pris par erreur (facultatif)</label>
+      <input id="taken-baggage-photo" type="file" accept="image/*" capture="environment" aria-describedby="taken-baggage-photo-help">
+      <small id="taken-baggage-photo-help" data-track-key="imageUploadHelp">Ajoutez une photo pour aider le service à reconnaître le bagage.</small>
+      <div class="bag-photo-preview" id="taken-baggage-photo-preview" hidden><img alt="Aperçu de la photo du bagage pris par erreur"></div>
     </div>
     <label for="lieu" data-i18n="locationLabel">Lieu de la perte</label>
     <select id="lieu">
@@ -540,6 +551,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   copy.fr.lostTimeSlot="Créneau horaire";
   copy.en.lostTimeSlot="Time slot";
   copy.wo.lostTimeSlot="Waxtu bi";
+  Object.assign(copy.fr,{baggagePhotoUploadLabel:"Photo de votre bagage (facultatif)",takenBaggagePhotoUploadLabel:"Photo du bagage pris par erreur (facultatif)",imageUploadHelp:"Ajoutez une photo pour aider le service à reconnaître le bagage.",takenBaggagePhoto:"Photo du bagage pris par erreur"});
+  Object.assign(copy.en,{baggagePhotoUploadLabel:"Photo of your baggage (optional)",takenBaggagePhotoUploadLabel:"Photo of the bag taken by mistake (optional)",imageUploadHelp:"Add a photo to help the service identify the bag.",takenBaggagePhoto:"Photo of the bag taken by mistake"});
+  Object.assign(copy.wo,{baggagePhotoUploadLabel:"Nataalu sa yëkkatu (amul solo)",takenBaggagePhotoUploadLabel:"Nataalu yëkkatu bi ñu jël ci njuumte (amul solo)",imageUploadHelp:"Yokk nataal ngir sarwiis bi mën xam yëkkatu bi.",takenBaggagePhoto:"Nataalu yëkkatu bi ñu jël ci njuumte"});
   Object.assign(copy.fr,{reportTypeLabel:"Type de signalement",reportConfused:"Signaler un bagage confondu",lostOption:"Bagage perdu",confusedOption:"Bagage confondu",takenDescriptionLabel:"Description du bagage pris par erreur",takenDescriptionPlaceholder:"Ex. : sac bleu à roulettes, poignée noire",missingConfusedFields:"Décrivez aussi le bagage pris par erreur.",reportedBag:"Votre bagage",takenBag:"Bagage pris par erreur"});
   Object.assign(copy.en,{reportTypeLabel:"Report type",reportConfused:"Report a mixed-up bag",lostOption:"Lost baggage",confusedOption:"Mixed-up baggage",takenDescriptionLabel:"Description of the bag taken by mistake",takenDescriptionPlaceholder:"E.g. blue wheeled bag with a black handle",missingConfusedFields:"Please also describe the bag taken by mistake.",reportedBag:"Your baggage",takenBag:"Bag taken by mistake"});
   Object.assign(copy.wo,{reportTypeLabel:"Xeetu kayit",reportConfused:"Yónnee xibaar ci yëkkatu ju ñu jaxasoo",lostOption:"Yëkkatu réer",confusedOption:"Yëkkatu ju ñu jaxasoo",takenDescriptionLabel:"Melokaanu yëkkatu bi ñu jël ci njuumte",takenDescriptionPlaceholder:"Misaal: saaku bu bul, ak rotiir",missingConfusedFields:"Waxal it ni yëkkatu bi ñu jël ci njuumte mel.",reportedBag:"Sa yëkkatu",takenBag:"Yëkkatu bi ñu jël ci njuumte"});
@@ -686,6 +700,27 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     container.appendChild(link);
   }
 
+  function updateBagPhotoPreview(inputId,previewId,altKey){
+    var input=document.getElementById(inputId);
+    var preview=document.getElementById(previewId);
+    var file=input.files&&input.files[0];
+    preview.replaceChildren();
+    preview.hidden=!file;
+    if(!file)return;
+    if(!file.type.startsWith("image/")||file.size>15*1024*1024){
+      input.value="";
+      preview.hidden=true;
+      submitStatus.textContent=file.size>15*1024*1024?text("largePhoto"):text("onlineFileUnsupported");
+      return;
+    }
+    var image=document.createElement("img");
+    image.alt=text(altKey);
+    image.src=URL.createObjectURL(file);
+    preview.appendChild(image);
+  }
+  document.getElementById("baggage-photo").addEventListener("change",function(){updateBagPhotoPreview("baggage-photo","baggage-photo-preview","baggagePhoto")});
+  document.getElementById("taken-baggage-photo").addEventListener("change",function(){updateBagPhotoPreview("taken-baggage-photo","taken-baggage-photo-preview","takenBaggagePhoto")});
+
   function renderTracking(result){
     trackResult.replaceChildren();
     var card=document.createElement("article");
@@ -737,6 +772,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     var photos=document.createElement("div");
     photos.className="tracking-photos";
     appendPhoto(photos,result.photos&&result.photos.baggage,text("baggagePhoto"));
+    appendPhoto(photos,result.photos&&result.photos.takenBaggage,text("takenBaggagePhoto"));
     appendPhoto(photos,result.photos&&result.photos.ticket,text("ticketPhoto"));
     if(photos.childNodes.length){
       var photoHeading=document.createElement("h4");
@@ -751,6 +787,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     var consent=document.getElementById("declaration-consent").checked;
     if(!consent){submitStatus.textContent=text("needConsent");return}
     var ticket=document.getElementById("ticket").files[0]||null;
+    var baggagePhoto=document.getElementById("baggage-photo").files[0]||null;
+    var takenBaggagePhoto=document.getElementById("taken-baggage-photo").files[0]||null;
+    if(declarationType.value!=="confused")takenBaggagePhoto=null;
     if(ticket&&!ticket.type.startsWith("image/")){
       submitStatus.textContent=text("onlineFileUnsupported");
       document.getElementById("file-status").textContent=text("onlineFileUnsupported");
@@ -788,7 +827,8 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
         busNumber:fields.busNumber,
         declarationType:fields.declarationType,
         takenDescription:fields.takenDescription,
-        photo:null,
+        photo:baggagePhoto?await encodeImage(baggagePhoto):null,
+        takenBaggagePhoto:takenBaggagePhoto?await encodeImage(takenBaggagePhoto):null,
         ticketPhoto:ticket?await encodeImage(ticket):null
       });
       createdResult.replaceChildren();

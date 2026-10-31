@@ -149,9 +149,9 @@ Deno.serve(async (request: Request) => {
 
   try {
     const length = Number(request.headers.get("content-length") || 0);
-    if (length > 3_000_000) return json(413, { error: "Requête trop volumineuse." }, origin);
+    if (length > 5_000_000) return json(413, { error: "Requête trop volumineuse." }, origin);
     const raw = await request.text();
-    if (raw.length > 3_000_000) return json(413, { error: "Requête trop volumineuse." }, origin);
+    if (raw.length > 5_000_000) return json(413, { error: "Requête trop volumineuse." }, origin);
     let body: Record<string, unknown>;
     try { body = JSON.parse(raw); } catch { return json(400, { error: "Requête invalide." }, origin); }
     const action = body.action;
@@ -196,11 +196,18 @@ Deno.serve(async (request: Request) => {
         return json(400, { error: "Vérifiez les renseignements obligatoires." }, origin);
       }
 
-      const photoPath = await uploadImage(crypto.randomUUID() + "/baggage", body.photo);
+      let photoPath: string | null = null;
+      let takenPhotoPath: string | null = null;
       let ticketPath: string | null = null;
-      try { ticketPath = await uploadImage(crypto.randomUUID() + "/ticket", body.ticketPhoto); }
-      catch (error) {
-        if (photoPath) await supabase.storage.from(bucket).remove([photoPath]);
+      try {
+        photoPath = await uploadImage(crypto.randomUUID() + "/baggage", body.photo);
+        takenPhotoPath = declarationType === "confused"
+          ? await uploadImage(crypto.randomUUID() + "/taken-baggage", body.takenBaggagePhoto)
+          : null;
+        ticketPath = await uploadImage(crypto.randomUUID() + "/ticket", body.ticketPhoto);
+      } catch (error) {
+        const uploaded = [photoPath, takenPhotoPath, ticketPath].filter(Boolean) as string[];
+        if (uploaded.length) await supabase.storage.from(bucket).remove(uploaded);
         throw error;
       }
 
@@ -227,13 +234,14 @@ Deno.serve(async (request: Request) => {
           p_ticket_path: ticketPath,
           p_declaration_type: declarationType,
           p_taken_description: declarationType === "confused" ? takenDescription : null,
+          p_taken_photo_path: takenPhotoPath,
         });
         if (!error) { created = data as Record<string, unknown>; dbError = null; break; }
         dbError = error;
         if ((error as { code?: string }).code !== "23505") break;
       }
       if (!created) {
-        const paths = [photoPath, ticketPath].filter(Boolean) as string[];
+        const paths = [photoPath, takenPhotoPath, ticketPath].filter(Boolean) as string[];
         if (paths.length) await supabase.storage.from(bucket).remove(paths);
         console.error("create_lost_declaration failed", dbError);
         return json(500, { error: "Impossible d’enregistrer la déclaration pour le moment." }, origin);
@@ -248,7 +256,7 @@ Deno.serve(async (request: Request) => {
         return json(404, { error: "Dossier introuvable ou codes incorrects." }, origin);
       }
       const { data: row, error } = await supabase.from("declarations")
-        .select("id,tracking_code,access_secret_hash,declaration_type,description,taken_description,status,lost_time_slot,updated_at,photo_path,ticket_path")
+        .select("id,tracking_code,access_secret_hash,declaration_type,description,taken_description,status,lost_time_slot,updated_at,photo_path,taken_photo_path,ticket_path")
         .eq("tracking_code", trackingCode).maybeSingle();
       if (error || !row || !(await verifySecret(accessSecret, row.access_secret_hash))) {
         return json(404, { error: "Dossier introuvable ou codes incorrects." }, origin);
@@ -256,7 +264,9 @@ Deno.serve(async (request: Request) => {
       const { data: history, error: historyError } = await supabase.from("declaration_status_history")
         .select("status,note,created_at").eq("declaration_id", row.id).order("created_at", { ascending: true });
       if (historyError) console.error("status history read failed", historyError);
-      const [baggage, ticket] = await Promise.all([signedPhoto(row.photo_path), signedPhoto(row.ticket_path)]);
+      const [baggage, takenBaggage, ticket] = await Promise.all([
+        signedPhoto(row.photo_path), signedPhoto(row.taken_photo_path), signedPhoto(row.ticket_path),
+      ]);
       return json(200, {
         trackingCode: row.tracking_code,
         declarationType: row.declaration_type || "lost",
@@ -266,7 +276,7 @@ Deno.serve(async (request: Request) => {
         lostTimeSlot: row.lost_time_slot,
         updatedAt: row.updated_at,
         history: history || [],
-        photos: { baggage, ticket },
+        photos: { baggage, takenBaggage, ticket },
       }, origin);
     }
 
@@ -306,7 +316,7 @@ Deno.serve(async (request: Request) => {
       if (allowlistError) return json(503, { error: "Vérification du compte impossible. Réessayez." }, origin);
       if (!allowedAdmin) return json(403, { error: "Accès réservé au compte autorisé." }, origin);
       const { data: records, error } = await supabase.from("declarations")
-        .select("id,tracking_code,declaration_type,taken_description,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at")
+        .select("id,tracking_code,declaration_type,taken_description,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,taken_photo_path,ticket_path,status,created_at,updated_at")
         .order("created_at", { ascending: false }).limit(100);
       if (error) throw error;
       return json(200, records || [], origin);
@@ -347,15 +357,15 @@ Deno.serve(async (request: Request) => {
       if (allowlistError) return json(503, { error: "Vérification du compte impossible. Réessayez." }, origin);
       if (!allowedAdmin) return json(403, { error: "Accès réservé au compte autorisé." }, origin);
       const id = typeof body.id === "string" ? body.id : "";
-      const kind = body.kind === "baggage" || body.kind === "ticket" ? body.kind : "";
+      const kind = body.kind === "baggage" || body.kind === "taken-baggage" || body.kind === "ticket" ? body.kind : "";
       if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) || !kind) {
         return json(400, { error: "Photo invalide." }, origin);
       }
       const { data: record, error } = await supabase.from("declarations")
-        .select("photo_path,ticket_path").eq("id", id).maybeSingle();
+        .select("photo_path,taken_photo_path,ticket_path").eq("id", id).maybeSingle();
       if (error) throw error;
       if (!record) return json(404, { error: "Dossier introuvable." }, origin);
-      const path = kind === "baggage" ? record.photo_path : record.ticket_path;
+      const path = kind === "baggage" ? record.photo_path : kind === "taken-baggage" ? record.taken_photo_path : record.ticket_path;
       if (!path) return json(404, { error: "Aucune photo pour ce dossier." }, origin);
       const url = await signedPhoto(path);
       if (!url) throw new Error("Impossible de charger la photo pour le moment.");
