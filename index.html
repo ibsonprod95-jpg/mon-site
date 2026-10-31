@@ -86,7 +86,9 @@ main{scroll-margin-top:16px}
 .form-note{padding:12px 14px;background:var(--bg);border-left:4px solid var(--accent);border-radius:4px;color:var(--muted);font-size:.9rem}
 footer{max-width:1000px;margin:0 auto;padding:12px 20px 36px;color:var(--muted);font-size:.85rem}
 footer p{margin:0}
-@media(max-width:760px){header .bar{align-items:flex-start;flex-direction:column}header nav{padding-left:0;gap:8px}.hero{grid-template-columns:1fr;margin:16px}.hero-mark{min-height:120px}.presentation{margin:24px 16px}.service-cards{grid-template-columns:1fr}main{grid-template-columns:1fr}}
+@media(max-width:760px){header .bar{align-items:center;flex-direction:row;flex-wrap:wrap}header nav{padding-left:0;gap:8px}.hero{grid-template-columns:1fr;margin:16px}.hero-mark{min-height:120px}.presentation{margin:24px 16px}.service-cards{grid-template-columns:1fr}main{grid-template-columns:1fr}}
+.nav-toggle{display:none}
+@media(max-width:760px){header .bar{position:relative}.nav-toggle{position:absolute;top:0;right:70px;display:grid;place-items:center;width:46px;height:46px;margin:0;padding:0;border:1px solid rgba(255,255,255,.42);border-radius:10px;background:var(--surface);color:var(--brand);font-size:1.4rem;line-height:1}.bar nav{display:none;flex-basis:100%;flex-direction:column;gap:2px;padding:8px 0 0}.bar.nav-open nav{display:flex}.bar nav a{padding:10px 12px;border-radius:6px}.bar nav a:hover{background:rgba(255,255,255,.14)}header .bar{padding-right:0}}
 .fiche-head{display:flex;align-items:center;gap:10px}
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--logo) 0 0/110px 110px repeat;opacity:.06;pointer-events:none}
 @media print{body::before{display:none}}
@@ -281,7 +283,8 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       <div><h1>AIBD DEM DIKK</h1>
       <p data-i18n="brandSubtitle">Objets et bagages perdus</p></div>
     </div>
-    <nav aria-label="Navigation principale" data-i18n-aria="mainNav">
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Ouvrir le menu">☰</button>
+    <nav id="primary-navigation" aria-label="Navigation principale" data-i18n-aria="mainNav">
       <a href="#service" data-i18n="navService">Le service</a>
       <a href="#navettes" data-i18n="navShuttle">Navettes AIBD</a>
       <a href="#declaration" data-i18n="navForm">Préparer ma fiche</a>
@@ -334,6 +337,23 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     </aside>
   </details>
 </header>
+  <script>
+    (function(){
+      var button=document.getElementById("nav-toggle");
+      var bar=button&&button.closest(".bar");
+      var navigation=document.getElementById("primary-navigation");
+      if(!button||!bar||!navigation)return;
+      function closeMenu(){bar.classList.remove("nav-open");button.setAttribute("aria-expanded","false");button.setAttribute("aria-label","Ouvrir le menu");button.textContent="☰";}
+      button.addEventListener("click",function(){
+        var isOpen=button.getAttribute("aria-expanded")==="true";
+        if(isOpen){closeMenu();return;}
+        bar.classList.add("nav-open");button.setAttribute("aria-expanded","true");button.setAttribute("aria-label","Fermer le menu");button.textContent="×";
+      });
+      navigation.addEventListener("click",function(event){if(event.target.closest("a"))closeMenu();});
+      document.addEventListener("keydown",function(event){if(event.key==="Escape")closeMenu();});
+      window.addEventListener("resize",function(){if(window.innerWidth>760)closeMenu();});
+    })();
+  </script>
 <div class="home-banner">
   <img src="assets/dem-dikk-encore-plus-proche.jpg" alt="Bus Dakar Dem Dikk et personne souriante avec le message « Encore plus proche de vous »" fetchpriority="high">
 </div>
