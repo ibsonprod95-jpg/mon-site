@@ -111,7 +111,7 @@ async function signedPhoto(config, path) {
 
 async function findDeclaration(config, trackingCode) {
   const params = new URLSearchParams({
-    select: 'id,tracking_code,access_secret_hash,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at',
+    select: 'id,tracking_code,declaration_type,taken_description,access_secret_hash,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at',
     tracking_code: `eq.${trackingCode}`,
     limit: '1'
   });
@@ -173,9 +173,14 @@ async function checkAdmin(config, token) {
 
 async function submit(config, body) {
   if (body.consent !== true) throw new HttpError(400, 'Votre consentement est nécessaire pour enregistrer la déclaration.');
+  const declarationType = body.declarationType === undefined ? 'lost' : body.declarationType;
+  if (!['lost', 'confused'].includes(declarationType)) throw new HttpError(400, 'Type de déclaration invalide.');
   const ownerName = requiredText(body.ownerName, 'Le nom', 120);
   const phone = requiredText(body.phone, 'Le téléphone', 40);
   const description = requiredText(body.description, 'La description', 1200);
+  const takenDescription = declarationType === 'confused'
+    ? requiredText(body.takenDescription, 'La description du bagage pris par erreur', 1200)
+    : '';
   const color = body.color === undefined ? '' : requiredText(body.color, 'La couleur', 7);
   if (color && !/^#[0-9a-f]{6}$/i.test(color)) throw new HttpError(400, 'Couleur invalide.');
   if (!LOCATIONS.has(body.location)) throw new HttpError(400, 'Lieu de perte invalide.');
@@ -221,7 +226,9 @@ async function submit(config, body) {
         p_lost_time_slot: lostTimeSlot,
         p_bus_number: busNumber || null,
         p_photo_path: photoPath,
-        p_ticket_path: ticketPath
+        p_ticket_path: ticketPath,
+        p_declaration_type: declarationType,
+        p_taken_description: takenDescription || null
       })
     });
     const declaration = Array.isArray(rows) ? rows[0] : rows;
@@ -258,6 +265,9 @@ async function track(config, body) {
   const history = await supabase(config, `/rest/v1/declaration_status_history?${params}`);
   return {
     trackingCode: declaration.tracking_code,
+    declarationType: declaration.declaration_type || 'lost',
+    description: declaration.description,
+    takenDescription: declaration.taken_description,
     lostTimeSlot: declaration.lost_time_slot,
     status: declaration.status,
     updatedAt: declaration.updated_at,
@@ -272,7 +282,7 @@ async function track(config, body) {
 async function adminList(config, token) {
   await checkAdmin(config, token);
   const params = new URLSearchParams({
-    select: 'id,tracking_code,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at',
+    select: 'id,tracking_code,declaration_type,taken_description,owner_name,phone,description,color,lost_location,lost_date,lost_time_slot,bus_number,photo_path,ticket_path,status,created_at,updated_at',
     order: 'created_at.desc',
     limit: '100'
   });

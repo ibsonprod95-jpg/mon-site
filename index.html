@@ -341,6 +341,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <p data-i18n="heroText">Un bagage égaré pendant votre trajet ? Retrouvez ici les informations utiles sur le service objets et bagages perdus et préparez une fiche avec les détails de votre bagage.</p>
     <div class="hero-actions">
       <a href="#declaration" data-i18n="heroForm">Préparer ma fiche</a>
+      <a class="secondary" id="hero-confused-report" href="#declaration" data-track-key="reportConfused">Signaler un bagage confondu</a>
       <a class="secondary" href="#service" data-i18n="heroService">Découvrir le service</a>
     </div>
   </div>
@@ -403,6 +404,8 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 <main id="declaration">
   <section class="noprint">
     <h2 data-i18n="formTitle">Préparer ma fiche de déclaration</h2>
+    <label for="declaration-type" data-track-key="reportTypeLabel">Type de signalement</label>
+    <select id="declaration-type"><option value="lost" data-track-key="lostOption">Bagage perdu</option><option value="confused" data-track-key="confusedOption">Bagage confondu</option></select>
     <p class="form-note" data-i18n="formNote">Remplissez les informations disponibles, puis choisissez « Exporter la fiche en PDF ». Cette page prépare une fiche sur votre appareil ; elle ne transmet pas automatiquement votre déclaration au service.</p>
     <label for="nom" data-i18n="ownerLabel">Nom du propriétaire</label>
     <input id="nom" autocomplete="name" maxlength="120">
@@ -410,6 +413,10 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <input id="tel" type="tel" autocomplete="tel" maxlength="40">
     <label for="desc" data-i18n="descriptionLabel">Description du bagage</label>
     <textarea id="desc" maxlength="1200" placeholder="Taille, marque et signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
+    <div id="taken-baggage-wrap" hidden>
+      <label for="taken-description" data-track-key="takenDescriptionLabel">Description du bagage pris par erreur</label>
+      <textarea id="taken-description" maxlength="1200" data-track-placeholder="takenDescriptionPlaceholder" placeholder="Ex. : sac bleu à roulettes, poignée noire"></textarea>
+    </div>
     <label for="lieu" data-i18n="locationLabel">Lieu de la perte</label>
     <select id="lieu">
       <option value="" data-i18n="chooseLocation">Choisir un lieu</option>
@@ -533,6 +540,9 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
   copy.fr.lostTimeSlot="Créneau horaire";
   copy.en.lostTimeSlot="Time slot";
   copy.wo.lostTimeSlot="Waxtu bi";
+  Object.assign(copy.fr,{reportTypeLabel:"Type de signalement",reportConfused:"Signaler un bagage confondu",lostOption:"Bagage perdu",confusedOption:"Bagage confondu",takenDescriptionLabel:"Description du bagage pris par erreur",takenDescriptionPlaceholder:"Ex. : sac bleu à roulettes, poignée noire",missingConfusedFields:"Décrivez aussi le bagage pris par erreur.",reportedBag:"Votre bagage",takenBag:"Bagage pris par erreur"});
+  Object.assign(copy.en,{reportTypeLabel:"Report type",reportConfused:"Report a mixed-up bag",lostOption:"Lost baggage",confusedOption:"Mixed-up baggage",takenDescriptionLabel:"Description of the bag taken by mistake",takenDescriptionPlaceholder:"E.g. blue wheeled bag with a black handle",missingConfusedFields:"Please also describe the bag taken by mistake.",reportedBag:"Your baggage",takenBag:"Bag taken by mistake"});
+  Object.assign(copy.wo,{reportTypeLabel:"Xeetu kayit",reportConfused:"Yónnee xibaar ci yëkkatu ju ñu jaxasoo",lostOption:"Yëkkatu réer",confusedOption:"Yëkkatu ju ñu jaxasoo",takenDescriptionLabel:"Melokaanu yëkkatu bi ñu jël ci njuumte",takenDescriptionPlaceholder:"Misaal: saaku bu bul, ak rotiir",missingConfusedFields:"Waxal it ni yëkkatu bi ñu jël ci njuumte mel.",reportedBag:"Sa yëkkatu",takenBag:"Yëkkatu bi ñu jël ci njuumte"});
   var statusNames={received:"received",searching:"searching",found:"found",closed:"closed"};
   var submitButton=document.getElementById("submit-declaration");
   var submitStatus=document.getElementById("submit-status");
@@ -552,9 +562,17 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     });
     document.getElementById("tracking-code").setAttribute("aria-label",text("trackingCodeLabel"));
     document.getElementById("tracking-secret").setAttribute("aria-label",text("trackingSecretLabel"));
+    document.querySelectorAll("[data-track-placeholder]").forEach(function(element){element.placeholder=text(element.getAttribute("data-track-placeholder"))});
   }
   window.addEventListener("aibd-language-changed",applyLanguage);
   applyLanguage();
+  var declarationType=document.getElementById("declaration-type");
+  var takenBaggageWrap=document.getElementById("taken-baggage-wrap");
+  function updateDeclarationType(){takenBaggageWrap.hidden=declarationType.value!=="confused";document.getElementById("taken-description").required=declarationType.value==="confused"}
+  declarationType.addEventListener("change",updateDeclarationType);
+  document.getElementById("hero-confused-report").addEventListener("click",function(){declarationType.value="confused";updateDeclarationType()});
+  window.addEventListener("aibd-language-changed",applyLanguage);
+  updateDeclarationType();
 
   var declarationFunctionUrl="https://yivapnpnitcrwcyuqqze.supabase.co/functions/v1/declarations";
   var declarationPublishableKey="sb_publishable_L6V88nAo_rLmAqs3mIIK0A__-i7YuKD";
@@ -675,6 +693,14 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     var heading=document.createElement("h3");
     heading.textContent=text("trackingResult")+" — "+result.trackingCode;
     card.appendChild(heading);
+    if(result.declarationType==="confused"){
+      var report=document.createElement("p");
+      report.textContent=text("reportedBag")+": "+(result.description||"");
+      card.appendChild(report);
+      var taken=document.createElement("p");
+      taken.textContent=text("takenBag")+": "+(result.takenDescription||"");
+      card.appendChild(taken);
+    }
     var current=document.createElement("p");
     current.textContent=text("status")+": "+statusName(result.status);
     card.appendChild(current);
@@ -737,11 +763,14 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       location:document.getElementById("lieu").value,
       lostDate:document.getElementById("date-perte").value,
       lostTimeSlot:document.getElementById("time-slot").value,
-      busNumber:document.getElementById("tkt").value.trim()
+      busNumber:document.getElementById("tkt").value.trim(),
+      declarationType:declarationType.value,
+      takenDescription:document.getElementById("taken-description").value.trim()
     };
     if(!fields.ownerName||!fields.phone||!fields.description||!fields.location||!fields.lostDate||!fields.lostTimeSlot){
       submitStatus.textContent=text("missingFields");return;
     }
+    if(fields.declarationType==="confused"&&!fields.takenDescription){submitStatus.textContent=text("missingConfusedFields");return;}
     submitButton.disabled=true;
     submitStatus.textContent=text("working");
     document.getElementById("file-status").textContent="";
@@ -757,6 +786,8 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
         lostDate:fields.lostDate,
         lostTimeSlot:fields.lostTimeSlot,
         busNumber:fields.busNumber,
+        declarationType:fields.declarationType,
+        takenDescription:fields.takenDescription,
         photo:null,
         ticketPhoto:ticket?await encodeImage(ticket):null
       });

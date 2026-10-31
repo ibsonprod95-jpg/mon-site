@@ -235,9 +235,11 @@
           var title=document.createElement("h2");
           title.textContent=record.tracking_code;
           card.appendChild(title);
+          if(record.declaration_type==="confused")card.appendChild(textValue("Type de signalement","Bagage confondu"));
           card.appendChild(textValue("Propriétaire",record.owner_name));
           card.appendChild(textValue("Téléphone",record.phone));
           card.appendChild(textValue("Description",record.description));
+          if(record.taken_description)card.appendChild(textValue("Bagage pris par erreur",record.taken_description));
           card.appendChild(textValue("Couleur",record.color));
           card.appendChild(textValue("Lieu",record.lost_location));
           card.appendChild(textValue("Date de perte",record.lost_date));
