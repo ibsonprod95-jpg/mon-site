@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Objets et bagages perdus – AIBD DEM DIKK</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#075e59">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bagages AIBD">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <meta name="description" content="Découvrez le service objets et bagages perdus AIBD DEM DIKK et préparez une fiche de renseignements pour votre bagage.">
 <style>
 :root{
@@ -289,7 +297,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
       <a href="#declaration"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="13" rx="2.2"/><path d="M9 7V4.5h6V7"/><path d="M9.5 11v5.5M14.5 11v5.5"/></svg><span data-i18n="navForm">Préparer ma fiche</span></a>
       <a href="#declaration" id="nav-report"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20.5 20.5-5.3-5.3"/></svg><span data-track-key="navReport">Signaler un bagage</span></a>
       <a href="#service"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="2.2"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/></svg><span data-i18n="navInfo">Consulter les informations</span></a>
-      <a href="#contact" id="nav-contact"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4h3.3l1.7 4.4-2.2 1.4a11 11 0 0 0 5.4 5.4l1.4-2.2 4.4 1.7v3.3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3.5 6.2 2 2 0 0 1 5.5 4z"/></svg><span data-i18n="navContact">Contact et assistance</span></a>
+      <a href="#contact" id="nav-contact"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4h3.3l1.7 4.4-2.2 1.4a11 11 0 0 0 5.4 5.4l1.4-2.2 4.4 1.7v3.3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3.5 6.2 2 2 0 0 1 5.5 4z"/></svg><span data-i18n="navContact">Contact et paramètres</span></a>
     </nav>
   </div>
   <details class="utility-drawer" id="utility-drawer">
@@ -326,6 +334,12 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
         <label class="settings-check"><input id="voice-setting" type="checkbox" checked><span data-i18n="voiceSetting">Autoriser la dictée vocale</span></label>
         <label class="settings-check"><input id="reading-comfort-setting" type="checkbox"><span data-i18n="readingComfort">Confort de lecture (espacement accru)</span></label>
         <p class="settings-help" data-i18n="settingsSaved">Ces préférences sont enregistrées uniquement dans ce navigateur.</p>
+      </section>
+      <section class="install-panel" id="install-panel" hidden aria-label="Installer l’application" data-i18n-aria="installTitle">
+        <h3 data-i18n="installTitle">Installer l’application</h3>
+        <p class="settings-help" id="install-text" data-i18n="installText">Ajoutez le site à l’écran d’accueil de votre téléphone pour l’ouvrir comme une application.</p>
+        <button type="button" id="install-app" hidden data-i18n="installButton">Installer l’application</button>
+        <p class="settings-help" id="install-ios" hidden data-i18n="installIos">Sur iPhone : touchez le bouton Partager de Safari, puis « Sur l’écran d’accueil ».</p>
       </section>
       <section class="utility-contact" id="contact" aria-labelledby="titre-contact">
         <h3 id="titre-contact" tabindex="-1" data-i18n="contactTitle">Besoin d’aide ? Contactez-nous.</h3>
@@ -537,6 +551,11 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 .utility-menu-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .utility-panel{inset:0 0 0 auto;border-right:0;border-left:1px solid var(--line);box-shadow:-8px 0 32px rgba(0,0,0,.2)}
 @media(max-width:760px){header .bar{padding-right:58px}.utility-drawer summary.utility-menu-button{top:14px;right:12px;bottom:auto;left:auto;width:48px;height:48px;max-width:none;padding:9px;writing-mode:initial;transform:none}.utility-panel{width:min(23rem,calc(100vw - 2.5rem));padding:20px 16px max(20px,env(safe-area-inset-bottom))}}
+.install-panel{display:grid;gap:10px;padding-top:18px;border-top:1px solid var(--line)}
+.install-panel[hidden],.install-panel [hidden]{display:none}
+.install-panel h3{margin:0;font-size:1.1rem}
+.install-panel button{margin-top:0}
+@media print{.install-panel{display:none!important}}
 /* Menu : un seul bouton ; panneau déroulant sur téléphone */
 .utility-drawer summary.utility-menu-button{display:none!important}
 header .bar{padding-right:0}
@@ -981,9 +1000,9 @@ header .bar{padding-right:0}
     en:{pageTitle:"Lost property and baggage – AIBD DEM DIKK",metaDescription:"Discover the AIBD DEM DIKK lost property service and prepare an information sheet for your baggage.",brandSubtitle:"Lost property and baggage",mainNav:"Main navigation",navService:"The service",navForm:"Prepare my form",navContact:"Contact us",languageLabel:"Language",heroTitle:"Travel with greater peace of mind.",heroText:"Lost a bag during your journey? Find useful information about the lost property service and prepare a form with your baggage details.",heroForm:"Prepare my form",heroService:"Discover the service",heroMark:"Lost property and baggage service",serviceTitle:"Here to support your journey",serviceText:"Dem Dikk accompanies passengers on their journeys. This page helps you prepare the information needed if your baggage goes missing.",cardDescribeTitle:"Describe your baggage",cardDescribeText:"Add identifying features and its colour, and, if possible, a photo to help identify it.",cardJourneyTitle:"Add your journey details",cardJourneyText:"Choose where and when it was lost, then add the bus number if you know it.",cardFormTitle:"Prepare your form",cardFormText:"Enter your contact details and export a summary sheet as a PDF using the form.",formTitle:"Prepare a lost baggage form",formNote:"Fill in the information you have, then select “Export form as PDF”. This page prepares a form on your device; it does not automatically send your report to the service.",ownerLabel:"Owner’s name",phoneLabel:"Phone number",descriptionLabel:"Baggage description",descriptionPlaceholder:"Colour, size, brand and identifying features",colorLabel:"Baggage colour",colorHelp:"Choose a colour using the picker. Any colour can be selected.",locationLabel:"Place where it was lost",chooseLocation:"Choose a location",dateLabel:"Date it was lost",busLabel:"Bus number",busPlaceholder:"E.g. bus route 1",photoLabel:"Baggage photo",takePhoto:"Take a photo of the baggage",ticketLabel:"Upload the bus ticket",takeTicketPhoto:"Take a photo of the ticket",exportPdf:"Export form as PDF",ownerSheet:"Owner’s information sheet",noPhoto:"No photo added",noTicket:"No ticket uploaded",baggageLabel:"Baggage",locationDate:"Place and date",busNumber:"Bus number",assistantRegion:"AI assistant",assistantTitle:"Lost property assistant",close:"Close",assistantWelcome:"Hello! I can answer questions about this page and help you prepare a report. Please do not enter a name, phone number or ticket number in the chat.",questionLabel:"Your question",questionPlaceholder:"E.g. how do I prepare my report?",send:"Send",assistantPrivacy:"Only chat messages are sent to an AI service to generate a reply. Do not share personal information here.",needHelp:"Need help?",contactTitle:"Need help? Contact us.",contactText:"If you have a question about your baggage, message us on WhatsApp or call us directly.",whatsapp:"Message us on WhatsApp",call:"Call 77 552 12 91",whatsappAria:"Contact us on WhatsApp at 77 552 12 91",callAria:"Call 77 552 12 91",footerText:"AIBD DEM DIKK — Information and form preparation for lost property and baggage.",footerContact:"Contact the service",notSpecified:"Not specified",photoAlt:"Baggage photo",cameraAlt:"Photo taken with the camera",ticketAlt:"Bus ticket",refPrefix:"Form no. ",refEdited:" · issued on ",thinking:"Preparing a reply…",invalidResponse:"The service returned an invalid response. Please try again.",unavailable:"The assistant is unavailable here. Open the published website and try again.",serviceUnavailable:"The service is temporarily unavailable.",connectionError:"Could not contact the assistant. Check your connection and try again.",serverErrors:{notConfigured:"The assistant has not been configured yet.",invalidConversation:"Invalid conversation format.",invalidMessage:"A message is empty or too long.",mustEndWithQuestion:"The conversation must end with a question.",invalidOrigin:"Invalid request origin.",notAllowed:"Method not allowed.",originNotAllowed:"Request origin not allowed.",aiConnectionError:"Could not reach the AI service. Please try again later.",aiError:"The AI service encountered an error. Please try again later.",aiInvalidJson:"The AI service returned an invalid response.",aiNoReply:"The AI service did not provide a reply."},exportedOn:"issued on "},
     wo:{pageTitle:"Yëkkatu yi ñu réer – AIBD DEM DIKK",metaDescription:"Xamleel sa bopp ci yëkkatu yi ñu réer ak defar kayitu sa yëkkatu ci AIBD DEM DIKK.",brandSubtitle:"Yëkkatu yi ñu réer",mainNav:"Toppatoo bu njëkk",navService:"Liñuy joxe",navForm:"Defar sama kayit",navContact:"Jokkoo ak nun",languageLabel:"Làkk",heroTitle:"Tukki ak xel mu dal.",heroText:"Sa yëkkatu réer na ci sa tukki ? Fi nga nekk, man nga am xibaar ci yëkkatu yi ñu réer te defar kayit bu am leeral yi ci sa yëkkatu.",heroForm:"Defar sama kayit",heroService:"Xool liñuy joxe",heroMark:"Sarwiis yëkkatu yi ñu réer",serviceTitle:"Nun ngi ci sa wet ci sa tukki",serviceText:"Dem Dikk ngi ànd ak tukkiy yi. Xët wii dina la dimbali nga waajal xibaar yi ñuy soxla bu yëkkatu réer.",cardDescribeTitle:"Waxal ni sa yëkkatu mel",cardDescribeText:"Waxal melokaanam ak meloom, te su fekkee mënees na, yokk nataal ngir ñu mën ko ràññee.",cardJourneyTitle:"Waxal sa yoon",cardJourneyText:"Tànnal fu mu réer ak bés bi, te yokk nimero bas bi su fekkee xam nga ko.",cardFormTitle:"Waajal sa kayit",cardFormText:"Dugalal sa xibaaru jokkoo te génne kayit bu gàtt ci PDF ci formileer bi.",formTitle:"Waajal kayitu yëkkatu bi réer",formNote:"Dugalal xibaar yi nga am, te tànn « Génne kayit bi ci PDF ». Xët wii dafay defar kayit ci sa aparey; du yónnee sa xibaar ci sarwiis bi.",ownerLabel:"Tur wu boroom bi",phoneLabel:"Nimero telefon",descriptionLabel:"Ni yëkkatu bi mel",descriptionPlaceholder:"Melo, rëyaay, marka ak misaal yu koy ràññee",colorLabel:"Melo wu yëkkatu bi",colorHelp:"Tànnal benn melo ci palet bi. Mën nga tànn bépp melo.",locationLabel:"Fu mu réer",chooseLocation:"Tànnal fu mu réer",dateLabel:"Bés bi mu réer",busLabel:"Nimero bas bi",busPlaceholder:"Misaal: bas ligne 1",photoLabel:"Nataalu yëkkatu bi",takePhoto:"Jëlal nataal bu yëkkatu bi",ticketLabel:"Yebbi tikke bu bas bi",takeTicketPhoto:"Jëlal nataal bu tikke bi",exportPdf:"Génne kayit bi ci PDF",ownerSheet:"Kayitu boroom bi",noPhoto:"Amul nataal",noTicket:"Amul tikke bu ñu yebbi",baggageLabel:"Yëkkatu",locationDate:"Fu mu réer ak bés bi",busNumber:"Nimero bas bi",assistantRegion:"Dimbali bu IA",assistantTitle:"Dimbali ci yëkkatu yi ñu réer",close:"Tëj",assistantWelcome:"Nanga def ! Mën naa tontu la ci laaj yi jëm ci xët wii te dimbali la nga waajal sa xibaar. Bul bind tur, nimero telefon walla nimero tikke ci waxtaan wi.",questionLabel:"Sa laaj",questionPlaceholder:"Misaal: naka laay waajee sama xibaar?",send:"Yónnee",assistantPrivacy:"Waxtaan bi rekk lañuy yónnee ci sarwiisu IA ngir mu tontu. Bul séddoo xibaaru bopp ci fii.",needHelp:"Soxla nga dimbali?",contactTitle:"Soxla nga dimbali? Jokkoo ak nun.",contactText:"Su amee laaj ci sa yëkkatu, bindal nu ci WhatsApp walla woo nu.",whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu ci 77 552 12 91",whatsappAria:"Jokkoo ak nun ci WhatsApp: 77 552 12 91",callAria:"Woo 77 552 12 91",footerText:"AIBD DEM DIKK — Xibaar ak waajal kayit ci yëkkatu yi ñu réer.",footerContact:"Jokkoo ak sarwiis bi",notSpecified:"Ñu waxul",photoAlt:"Nataalu yëkkatu bi",cameraAlt:"Nataal bu kamera bi jël",ticketAlt:"Tikke bu bas bi",refPrefix:"Kayit nimero ",refEdited:" · bindees ko ci ",thinking:"Maa ngi waajal tontu…",invalidResponse:"Sarwiis bi delloo tontu bu baaxul. Jéemaatal.",unavailable:"Dimbali bi doxul fii. Ubbi site bi ñu siiwal te jéemaatal.",serviceUnavailable:"Sarwiis bi doxul léegi. Jéemaatal ci kanam.",connectionError:"Mëneesula jokkoo ak dimbali bi. Seetal sa internet te jéemaatal.",serverErrors:{notConfigured:"Dimbali bi ñu paregul.",invalidConversation:"Melokaanu waxtaan wi baaxul.",invalidMessage:"Benn bataaxal dafa féex walla dafa gudd lool.",mustEndWithQuestion:"Waxtaan wi war na jeex ak laaj.",invalidOrigin:"Bunt bu ñu yónnee laaj bi baaxul.",notAllowed:"Jëf ji kenn mayuko.",originNotAllowed:"Bunt bii kenn mayuko.",aiConnectionError:"Mëneesula jot ci sarwiisu IA. Jéemaatal ci kanam.",aiError:"Sarwiisu IA am na jafe-jafe. Jéemaatal ci kanam.",aiInvalidJson:"Sarwiisu IA delloo tontu bu baaxul.",aiNoReply:"Sarwiisu IA tontuwul."},exportedOn:"bindees ko ci "}
   };
-  Object.assign(t.fr,{navHome:"Accueil",navForm:"Préparer ma fiche",navInfo:"Consulter les informations",navContact:"Contact et assistance"});
-  Object.assign(t.en,{navHome:"Home",navForm:"Prepare my form",navInfo:"View information",navContact:"Contact and support"});
-  Object.assign(t.wo,{navHome:"Dalal",navForm:"Waajal sama kayit",navInfo:"Xool xibaar yi",navContact:"Jokkoo ak ndimbal"});
+  Object.assign(t.fr,{navHome:"Accueil",navForm:"Préparer ma fiche",navInfo:"Consulter les informations",navContact:"Contact et paramètres"});
+  Object.assign(t.en,{navHome:"Home",navForm:"Prepare my form",navInfo:"View information",navContact:"Contact and settings"});
+  Object.assign(t.wo,{navHome:"Dalal",navForm:"Waajal sama kayit",navInfo:"Xool xibaar yi",navContact:"Jokkoo ak toppatoo"});
   Object.assign(t.fr,{settingsTitle:"Paramètres",themeLabel:"Thème",themeSystem:"Automatique",themeLight:"Clair",themeDark:"Sombre",textSizeLabel:"Taille du texte",textSizeNormal:"Normale",textSizeLarge:"Grande",textSizeExtraLarge:"Très grande",voiceSetting:"Autoriser la dictée vocale",readingComfort:"Confort de lecture (espacement accru)",settingsSaved:"Ces préférences sont enregistrées uniquement dans ce navigateur.",assistantRegion:"Assistant en ligne",assistantTitle:"Assistant objets perdus",assistantWelcome:"Bonjour ! Je suis l’assistant automatique du site. Je peux vous guider pour préparer une déclaration et répondre aux questions fréquentes. Pour une vérification personnelle, contactez le service avec les boutons ci-dessous. Ne partagez pas de données personnelles dans le chat.",assistantPrivacy:"Selon la configuration du site, vos messages peuvent être traités par un service d’IA. Ne partagez aucune donnée personnelle dans le chat.",automaticReply:"Réponse automatique du site."});
   Object.assign(t.fr,{timeSlotLabel:"Créneau horaire",chooseTimeSlot:"Choisir un créneau"});
   Object.assign(t.en,{timeSlotLabel:"Time slot",chooseTimeSlot:"Choose a time slot"});
@@ -1000,8 +1019,11 @@ header .bar{padding-right:0}
   Object.assign(t.en,{whatsapp:"Message us on WhatsApp",call:"Call us",whatsappAria:"Contact us on WhatsApp",callAria:"Call the service"});
   Object.assign(t.wo,{whatsapp:"Bindal nu ci WhatsApp",call:"Woo nu",whatsappAria:"Jokkoo ak nun ci WhatsApp",callAria:"Woo sarwiis bi"});
   Object.assign(t.fr,{utilityTitle:"Paramètres et contact"});
+  Object.assign(t.fr,{installTitle:"Installer l’application",installText:"Ajoutez le site à l’écran d’accueil de votre téléphone pour l’ouvrir comme une application.",installButton:"Installer l’application",installIos:"Sur iPhone : touchez le bouton Partager de Safari, puis « Sur l’écran d’accueil »."});
   Object.assign(t.en,{utilityTitle:"Settings & contact"});
+  Object.assign(t.en,{installTitle:"Install the app",installText:"Add this site to your phone’s home screen to open it like an app.",installButton:"Install the app",installIos:"On iPhone: tap Safari’s Share button, then “Add to Home Screen”."});
   Object.assign(t.wo,{utilityTitle:"Toppatoo ak jokkoo"});
+  Object.assign(t.wo,{installTitle:"Installer l’application",installText:"Ajoutez le site à l’écran d’accueil de votre téléphone pour l’ouvrir comme une application.",installButton:"Installer l’application",installIos:"Sur iPhone : touchez le bouton Partager de Safari, puis « Sur l’écran d’accueil »."});
   t.en.pdfBrandTitle="AIBD DEM DIKK — Lost property and baggage";
   t.wo.pdfBrandTitle="AIBD DEM DIKK — Yëkkatu yi ñu réer";
   Object.assign(t.fr,{heroImageLabel:"Navette Express AIBD"});
@@ -1404,5 +1426,37 @@ header .bar{padding-right:0}
 <footer>
   <p><span data-i18n="footerText">AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.</span> <a href="#contact" data-i18n="footerContact">Contacter le service</a></p>
 </footer>
+<script>
+(function(){
+  if("serviceWorker" in navigator){
+    window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});
+  }
+  var panel=document.getElementById("install-panel");
+  var button=document.getElementById("install-app");
+  var iosHelp=document.getElementById("install-ios");
+  var installText=document.getElementById("install-text");
+  if(!panel||!button)return;
+  var standalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;
+  if(standalone)return;
+  var deferredPrompt=null;
+  window.addEventListener("beforeinstallprompt",function(event){
+    event.preventDefault();
+    deferredPrompt=event;
+    panel.hidden=false;
+    button.hidden=false;
+  });
+  button.addEventListener("click",async function(){
+    if(!deferredPrompt)return;
+    deferredPrompt.prompt();
+    try{await deferredPrompt.userChoice}catch(error){}
+    deferredPrompt=null;
+    panel.hidden=true;
+  });
+  window.addEventListener("appinstalled",function(){panel.hidden=true;});
+  var ua=navigator.userAgent||"";
+  var isIos=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(isIos){panel.hidden=false;iosHelp.hidden=false;}
+})();
+</script>
 </body>
 </html>
