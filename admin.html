@@ -65,6 +65,21 @@
         <button id="logout-button" type="button">Se déconnecter</button>
       </div>
       <p id="dashboard-status" role="status" aria-live="polite"></p>
+      <div class="case-actions">
+        <label>Rechercher (code, nom ou téléphone)
+          <input id="search-input" type="search" autocomplete="off" placeholder="Ex. : nom, 77 123 45 67 ou code de suivi">
+        </label>
+        <label>Statut
+          <select id="status-filter">
+            <option value="">Tous les statuts</option>
+            <option value="received">Reçu</option>
+            <option value="searching">Recherche en cours</option>
+            <option value="found">Bagage retrouvé</option>
+            <option value="closed">Dossier clôturé</option>
+          </select>
+        </label>
+      </div>
+      <p id="results-count" class="muted" role="status" aria-live="polite"></p>
       <div id="cases"></div>
     </section>
     <p id="login-status" role="status" aria-live="polite"></p>
@@ -80,6 +95,10 @@
       var loginStatus=document.getElementById("login-status");
       var dashboardStatus=document.getElementById("dashboard-status");
       var casesElement=document.getElementById("cases");
+      var searchInput=document.getElementById("search-input");
+      var statusFilter=document.getElementById("status-filter");
+      var resultsCount=document.getElementById("results-count");
+      var allRecords=[];
       var loginButton=document.getElementById("login-button");
       var refreshButton=document.getElementById("refresh-button");
 
@@ -223,10 +242,36 @@
         container.appendChild(button);
       }
 
+      function normalize(value){
+        return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
+      }
+
+      function digitsOnly(value){return String(value||"").replace(/\D/g,"")}
+
+      function applyFilters(){
+        var query=normalize(searchInput.value);
+        var queryDigits=digitsOnly(searchInput.value);
+        var status=statusFilter.value;
+        var filtered=allRecords.filter(function(record){
+          if(status&&record.status!==status)return false;
+          if(!query)return true;
+          var text=normalize([record.tracking_code,record.owner_name,record.phone,record.description,record.taken_description,record.lost_location,record.bus_number].join(" "));
+          if(text.indexOf(query)!==-1)return true;
+          return queryDigits.length>=3&&digitsOnly(record.phone).indexOf(queryDigits)!==-1;
+        });
+        renderCases(filtered);
+        resultsCount.textContent=allRecords.length
+          ?(filtered.length===allRecords.length?allRecords.length+" dossier(s)":filtered.length+" dossier(s) sur "+allRecords.length)
+          :"";
+      }
+
+      searchInput.addEventListener("input",applyFilters);
+      statusFilter.addEventListener("change",applyFilters);
+
       function renderCases(records){
         casesElement.replaceChildren();
         if(!records.length){
-          casesElement.textContent="Aucune déclaration enregistrée.";
+          casesElement.textContent=allRecords.length?"Aucun dossier ne correspond à la recherche.":"Aucune déclaration enregistrée.";
           return;
         }
         records.forEach(function(record){
@@ -303,7 +348,8 @@
         dashboardStatus.textContent="Chargement des dossiers…";
         try{
           var records=await api({action:"admin-list",token:token});
-          renderCases(records);
+          allRecords=records;
+          applyFilters();
           dashboardStatus.textContent=records.length===100
             ?"Affichage des 100 dernières déclarations."
             :"Dossiers chargés.";
@@ -342,6 +388,10 @@
       refreshButton.addEventListener("click",loadCases);
       document.getElementById("logout-button").addEventListener("click",function(){
         token=null;
+        allRecords=[];
+        searchInput.value="";
+        statusFilter.value="";
+        resultsCount.textContent="";
         casesElement.replaceChildren();
         showDashboard();
         document.getElementById("email").focus();

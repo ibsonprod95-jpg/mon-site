@@ -1,6 +1,6 @@
 /* Service worker : permet l'installation et un affichage minimal sans connexion.
    Il ne met JAMAIS en cache l'API, Supabase ni les envois de formulaire. */
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = "aibd-dem-dikk-" + VERSION;
 const PRECACHE = [
   "/",
