@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="system">
+<head>
+<!-- Script officiel universel de Sentry -->
+<script 
+  src="https://sentry-cdn.com" 
+  integrity="sha384-y7E49t3p38z7y89t41e8" 
+  crossorigin="anonymous">
+</script>
+
+<script>
+  // Initialisation avec votre clé unique (DSN)
+  Sentry.init({
+    dsn: "https://sentry.io",
+    integrations: [
+      Sentry.browserTracingIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+  });
+</script>
