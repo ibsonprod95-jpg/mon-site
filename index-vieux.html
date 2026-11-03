@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bagages perdus et trouvés</title>
+<style>
+:root{
+  --bg:#10142b; --panel:#181d3a; --line:#2c3260; --text:#eef0fb; --muted:#9aa2cf;
+  --lost:#f2b84b; --found:#7fd1c7; --done:#6c739e; --err:#ff8f8f;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f3f4fb; --panel:#ffffff; --line:#d3d6ee; --text:#161a38; --muted:#586091;
+    --lost:#a86a00; --found:#0b7a6f; --done:#7b82aa; --err:#b42323; color-scheme:light;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+a{color:var(--found)}
+h1{font:700 2rem/1.15 Georgia,"Times New Roman",serif;margin:12px 0 6px}
+.logo{display:block;height:64px;width:auto;max-width:100%;margin:16px 0 0;background:#fff;padding:8px 14px;border-radius:12px}
+.lead{color:var(--muted);margin:0 0 22px;max-width:60ch}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+nav button{flex:1 1 auto;padding:12px 14px;border:1px solid var(--line);background:transparent;color:var(--text);
+  border-radius:10px;font:inherit;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--panel);border-color:var(--found);font-weight:600}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--found);outline-offset:2px}
+section[hidden]{display:none}
+form{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px}
+form h2,.listhead h2{font:700 1.3rem Georgia,serif;margin:0}
+label{display:grid;gap:5px;font-weight:600;font-size:.95rem}
+label small{font-weight:400;color:var(--muted)}
+input,select,textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+textarea{min-height:90px;resize:vertical}
+.primary{background:var(--found);color:#08211e;border:0;border-radius:10px;padding:13px 16px;font:inherit;font-weight:700;cursor:pointer}
+.msg{min-height:1.4em;margin:0;font-weight:600;color:var(--found)}
+.msg.err{color:var(--err)}
+.tools{display:grid;gap:10px;grid-template-columns:1fr;margin:14px 0}
+@media(min-width:560px){.tools{grid-template-columns:2fr 1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-left-width:6px;border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card.perdu{border-left-color:var(--lost)}
+.card.trouve{border-left-color:var(--found)}
+.card.rendu{border-left-color:var(--done);opacity:.7}
+.card h3{margin:0 0 4px;font-size:1.05rem}
+.badge{font-weight:700;font-size:.85rem}
+.perdu .badge{color:var(--lost)} .trouve .badge{color:var(--found)} .rendu .badge{color:var(--muted)}
+.card p{margin:4px 0;overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:.9rem}
+.actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.actions button{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:inherit;font-size:.9rem;cursor:pointer}
+.empty{color:var(--muted);padding:18px 0}
+.note{color:var(--muted);font-size:.85rem;margin-top:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../index.html">Retour au site</a>
+  <img class="logo" src="logo-dem-dikk.jpg" alt="Dakar Dem Dikk" onerror="this.remove()">
+  <h1>Bagages perdus et trouvés</h1>
+  <p class="lead">Déclare un bagage que tu as perdu ou trouvé, puis cherche dans la liste pour retrouver son propriétaire.</p>
+
+  <nav role="tablist" aria-label="Sections">
+    <button role="tab" id="t-perdu" aria-selected="true" data-tab="perdu">J'ai perdu un bagage</button>
+    <button role="tab" id="t-trouve" aria-selected="false" data-tab="trouve">J'ai trouvé un bagage</button>
+    <button role="tab" id="t-liste" aria-selected="false" data-tab="liste">Voir la liste</button>
+  </nav>
+
+  <section id="s-form">
+    <form id="form" novalidate>
+      <h2 id="form-title">Déclarer un bagage perdu</h2>
+      <label>Ton nom
+        <input name="nom" required autocomplete="name">
+      </label>
+      <label>Numéro du bus <small>si tu le connais</small>
+        <input name="bus" placeholder="Exemple : 7 ou Dem Dikk 23">
+      </label>
+      <label>Date <small>le jour où le bagage a été perdu ou trouvé</small>
+        <input name="dateBagage" type="date" required>
+      </label>
+      <label>Lieu <small>arrêt, gare routière, quartier</small>
+        <input name="lieu" required>
+      </label>
+      <label>Description du bagage <small>couleur, marque, taille, signe distinctif</small>
+        <textarea name="description" required></textarea>
+      </label>
+      <label>Contact <small>téléphone ou e-mail</small>
+        <input name="contact" required autocomplete="off">
+      </label>
+      <button class="primary" type="submit" id="submit-btn">Enregistrer la déclaration</button>
+      <p class="msg" id="msg" role="status"></p>
+    </form>
+  </section>
+
+  <section id="s-liste" hidden>
+    <div class="listhead"><h2>Liste des déclarations</h2></div>
+    <div class="tools">
+      <label>Rechercher
+        <input id="q" type="search" placeholder="Couleur, bus, lieu, nom…">
+      </label>
+      <label>Afficher
+        <select id="f">
+          <option value="tous">Tous</option>
+          <option value="perdu">Perdus</option>
+          <option value="trouve">Trouvés</option>
+          <option value="rendu">Rendus</option>
+        </select>
+      </label>
+    </div>
+    <div id="list"></div>
+  </section>
+
+  <p class="note">Pour l'instant, les déclarations sont enregistrées uniquement dans ce navigateur : les autres visiteurs ne les voient pas.</p>
+</div>
+
+<script>
+(function(){
+  var KEY = "bagages-perdus:items";
+  var items = [];
+  var type = "perdu";
+
+  function load(){
+    try { var raw = localStorage.getItem(KEY); items = raw ? JSON.parse(raw) : []; if(!Array.isArray(items)) items = []; }
+    catch(e){ items = []; }
+  }
+  function save(){
+    try { localStorage.setItem(KEY, JSON.stringify(items)); return true; }
+    catch(e){ return false; }
+  }
+
+  var tabs = document.querySelectorAll("[data-tab]");
+  var sForm = document.getElementById("s-form");
+  var sList = document.getElementById("s-liste");
+  var title = document.getElementById("form-title");
+  var msg = document.getElementById("msg");
+
+  function show(tab){
+    tabs.forEach(function(b){ b.setAttribute("aria-selected", b.dataset.tab === tab ? "true" : "false"); });
+    msg.textContent = ""; msg.className = "msg";
+    if(tab === "liste"){ sForm.hidden = true; sList.hidden = false; render(); return; }
+    type = tab; sForm.hidden = false; sList.hidden = true;
+    title.textContent = tab === "perdu" ? "Déclarer un bagage perdu" : "Déclarer un bagage trouvé";
+  }
+  tabs.forEach(function(b){ b.addEventListener("click", function(){ show(b.dataset.tab); }); });
+
+  document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var f = e.target, d = {};
+    ["nom","bus","dateBagage","lieu","description","contact"].forEach(function(k){ d[k] = f.elements[k].value.trim(); });
+    if(!d.nom || !d.dateBagage || !d.lieu || !d.description || !d.contact){
+      msg.textContent = "Remplis le nom, la date, le lieu, la description et le contact."; msg.className = "msg err"; return;
+    }
+    d.id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+    d.type = type; d.date = new Date().toISOString();
+    items.unshift(d);
+    if(save()){ msg.textContent = "Déclaration enregistrée. Tu peux la retrouver dans la liste."; msg.className = "msg"; f.reset(); setToday(); }
+    else { msg.textContent = "Impossible d'enregistrer dans ce navigateur."; msg.className = "msg err"; items.shift(); }
+  });
+
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if(cls) n.className = cls;
+    if(text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  function render(){
+    var q = document.getElementById("q").value.trim().toLowerCase();
+    var f = document.getElementById("f").value;
+    var box = document.getElementById("list");
+    box.textContent = "";
+    var shown = items.filter(function(it){
+      var status = it.done ? "rendu" : it.type;
+      if(f !== "tous" && status !== f) return false;
+      if(!q) return true;
+      return [it.nom,it.bus,it.lieu,it.description].join(" ").toLowerCase().indexOf(q) !== -1;
+    });
+    if(!shown.length){
+      box.appendChild(el("p","empty", items.length ? "Aucun résultat pour cette recherche." : "Aucune déclaration pour le moment. Déclare un bagage perdu ou trouvé pour commencer."));
+      return;
+    }
+    shown.forEach(function(it){
+      var status = it.done ? "rendu" : it.type;
+      var card = el("article","card " + status);
+      card.appendChild(el("span","badge", it.done ? "Rendu" : (it.type === "perdu" ? "Perdu" : "Trouvé")));
+      card.appendChild(el("h3","", it.description));
+      card.appendChild(el("p","meta", it.lieu + (it.bus ? " – bus " + it.bus : "") + " – " + new Date(it.dateBagage || it.date).toLocaleDateString("fr-FR")));
+      card.appendChild(el("p","", "Déclaré par " + it.nom));
+      card.appendChild(el("p","", "Contact : " + it.contact));
+      var act = el("div","actions");
+      if(!it.done){
+        var r = el("button","", "Marquer comme rendu");
+        r.addEventListener("click", function(){ it.done = true; save(); render(); });
+        act.appendChild(r);
+      }
+      var s = el("button","", "Supprimer");
+      s.addEventListener("click", function(){
+        if(confirm("Supprimer cette déclaration ?")){ items = items.filter(function(x){ return x.id !== it.id; }); save(); render(); }
+      });
+      act.appendChild(s);
+      card.appendChild(act);
+      box.appendChild(card);
+    });
+  }
+  document.getElementById("q").addEventListener("input", render);
+  document.getElementById("f").addEventListener("change", render);
+
+  function setToday(){
+    var i = document.querySelector('input[name="dateBagage"]');
+    var t = new Date(); t.setMinutes(t.getMinutes() - t.getTimezoneOffset());
+    var v = t.toISOString().slice(0,10);
+    i.max = v; i.value = v;
+  }
+  setToday();
+  load();
+})();
+</script>
+</body>
+</html>
