@@ -26,13 +26,19 @@ a{color:inherit}
 
 .annonce{background:var(--or);color:#0B3D1A;text-align:center;padding:8px 5vw;font-size:.9rem;font-weight:600}
 header.nav{background:var(--encre);color:#fff;position:sticky;top:0;z-index:5;border-bottom:4px solid;border-image:linear-gradient(90deg,#138A36 33.3%,#FFD21F 33.3% 66.6%,#E31B23 66.6%) 1}
-.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:16px}
 .marque{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(.85rem,2vw,1.15rem);line-height:1.15;letter-spacing:.02em}
 .logo-nav{flex:0 0 auto;object-fit:cover;border:2px solid rgba(255,255,255,.85);border-radius:8px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .monogramme{width:38px;height:38px;border-radius:9px;background:var(--or);color:var(--encre);display:grid;place-items:center;font-size:1.3rem}
 .liens{display:flex;gap:24px}
 .liens a{text-decoration:none;font-weight:600;font-size:.95rem;opacity:.85}
 .liens a:hover{opacity:1;color:var(--or)}
+.menu-btn{display:none;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid rgba(255,255,255,.35);border-radius:8px;background:transparent;color:#fff;font-weight:700}
+.menu-icone{display:grid;gap:4px}
+.menu-icone span{display:block;width:19px;height:2px;border-radius:2px;background:currentColor;transition:transform .2s,opacity .2s}
+.menu-btn[aria-expanded="true"] .menu-icone span:first-child{transform:translateY(6px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] .menu-icone span:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] .menu-icone span:last-child{transform:translateY(-6px) rotate(-45deg)}
 .panier-btn{background:var(--or);color:var(--encre);border:0;border-radius:999px;padding:9px 18px;font-weight:700}
 
 .hero{background:var(--encre);color:#fff;padding:7vh 0 9vh;overflow:hidden}
@@ -126,15 +132,42 @@ aside.ouvert{transform:none}
 .note{font-size:.85rem;color:var(--gris);margin-top:10px;text-align:center}
 
 @media (max-width:820px){
-  .liens{display:none}
-  .nav .wrap{height:64px;gap:8px}
-  .marque{gap:8px;font-size:clamp(.75rem,3vw,.95rem)}
+  .nav .wrap{min-height:64px;gap:8px}
+  .marque{gap:7px;min-width:0;font-size:clamp(.68rem,3vw,.9rem)}
   .logo-nav{width:38px;height:38px}
-  .panier-btn{padding:8px 12px;font-size:.9rem;white-space:nowrap}
+  .menu-btn{display:inline-flex;flex:0 0 auto;padding:7px 9px}
+  .nav-actions{display:flex;align-items:center;gap:7px}
+  .liens{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px 5vw;background:var(--encre);border-top:1px solid rgba(255,255,255,.15);box-shadow:0 12px 20px rgba(0,0,0,.2)}
+  .liens.ouvert{display:flex}
+  .liens a{padding:12px 4px;font-size:1rem}
+  .liens a+a{border-top:1px solid rgba(255,255,255,.12)}
+  .panier-btn{min-height:44px;padding:8px 11px;font-size:.85rem;white-space:nowrap}
   .hero .wrap,.contact .wrap{grid-template-columns:1fr}
-  .logo-hero{max-width:260px}
-  .garanties .wrap{grid-template-columns:1fr 1fr}
+  .hero{padding:48px 0 56px}
+  .hero h1{font-size:clamp(2rem,9vw,3rem)}
+  .logo-hero{max-width:min(260px,75vw)}
+  .garanties .wrap{grid-template-columns:1fr 1fr;gap:14px}
+  section{padding:48px 0}
+  .outils{align-items:stretch}
+  .filtres{flex-wrap:nowrap;overflow-x:auto;padding:3px 2px 8px;scrollbar-width:thin}
+  .filtres button{flex:0 0 auto;min-height:42px}
+  .recherche{width:100%;min-height:44px}
+  .outils>label{width:100%}
+  .grille{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .infos{padding:12px;gap:6px}
+  .infos h3{font-size:1rem}
+  .meta{font-size:.82rem}
+  .prix{font-size:1rem}
+  .ajouter,.direct{min-height:44px;font-size:.86rem}
+  aside{padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
   .points{grid-template-columns:1fr}
+}
+@media (max-width:380px){
+  .marque{font-size:.66rem}
+  .nav-actions{gap:5px}
+  .menu-btn{padding:7px}
+  .panier-btn{padding:8px 9px}
+  .grille{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -146,13 +179,19 @@ aside.ouvert{transform:none}
 <header class="nav">
   <div class="wrap">
     <a class="marque" href="#haut"><img class="logo-nav" src="logo-barham.png" alt="" width="52" height="52">BARHAM SHOP VALISE</a>
-    <nav class="liens" aria-label="Navigation">
+    <nav class="liens" id="liens" aria-label="Navigation" aria-hidden="true">
       <a href="#produits">Nos valises</a>
       <a href="#pourquoi">Pourquoi nous</a>
       <a href="#faq">Questions</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="panier-btn" id="ouvrir-panier">Panier (<span id="compteur">0</span>)</button>
+    <div class="nav-actions">
+      <button class="menu-btn" id="menu-mobile" type="button" aria-controls="liens" aria-expanded="false" aria-label="Ouvrir le menu">
+        <span class="menu-icone" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>Menu</span>
+      </button>
+      <button class="panier-btn" id="ouvrir-panier">Panier (<span id="compteur">0</span>)</button>
+    </div>
   </div>
 </header>
 
@@ -346,7 +385,27 @@ function basculer(o){
 }
 $("ouvrir-panier").onclick = () => basculer(true);
 $("fermer-panier").onclick = $("voile").onclick = () => basculer(false);
-document.addEventListener("keydown", e => { if (e.key === "Escape") basculer(false); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    basculer(false);
+    afficherMenu(false);
+  }
+});
+const menuMobile = $("menu-mobile"), liens = $("liens"), mobileViewport = window.matchMedia("(max-width: 820px)");
+function afficherMenu(ouvert){
+  const afficher = mobileViewport.matches && ouvert;
+  liens.classList.toggle("ouvert", afficher);
+  liens.setAttribute("aria-hidden", String(mobileViewport.matches && !afficher));
+  menuMobile.setAttribute("aria-expanded", String(afficher));
+  menuMobile.setAttribute("aria-label", afficher ? "Fermer le menu" : "Ouvrir le menu");
+}
+afficherMenu(false);
+menuMobile.addEventListener("click", () => afficherMenu(menuMobile.getAttribute("aria-expanded") !== "true"));
+liens.querySelectorAll("a").forEach(lien => lien.addEventListener("click", () => afficherMenu(false)));
+document.addEventListener("click", e => {
+  if (mobileViewport.matches && !e.target.closest(".nav .wrap")) afficherMenu(false);
+});
+mobileViewport.addEventListener("change", () => afficherMenu(false));
 $("recherche").addEventListener("input", e => { recherche = e.target.value; afficherProduits(); });
 document.querySelectorAll('input[name="paiement"]').forEach(input => input.addEventListener("change", () => {
   const mode = document.querySelector('input[name="paiement"]:checked').value;
