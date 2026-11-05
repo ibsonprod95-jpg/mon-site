@@ -6,8 +6,8 @@
 <title>MAGUETTE T-D SHOP VALISE | Valises de qualité à Dakar</title>
 <meta name="description" content="MAGUETTE T-D SHOP VALISE : valises cabine, moyennes, grandes et sets. Livraison à Dakar, commande simple sur WhatsApp.">
 <meta name="theme-color" content="#0B3D1A">
-<link rel="icon" type="image/svg+xml" href="logo-maguette-td-shop.svg">
-<meta property="og:image" content="logo-maguette-td-shop.svg">
+<link rel="icon" type="image/png" href="logo-maguette-td-shop.png">
+<meta property="og:image" content="logo-maguette-td-shop.png">
 <meta property="og:title" content="MAGUETTE T-D SHOP VALISE">
 <meta property="og:description" content="Valises de qualité, livrées à Dakar. Commandez sur WhatsApp.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@ a{color:inherit}
 header.nav{background:var(--encre);color:#fff;position:sticky;top:0;z-index:5;border-bottom:4px solid;border-image:linear-gradient(90deg,#138A36 33.3%,#FFD21F 33.3% 66.6%,#E31B23 66.6%) 1}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:16px}
 .marque{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(.85rem,2vw,1.15rem);line-height:1.15;letter-spacing:.02em}
-.logo-nav{flex:0 0 auto;object-fit:cover;border:2px solid rgba(255,255,255,.85);border-radius:8px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.logo-nav{flex:0 0 auto;object-fit:contain;border:1px solid rgba(255,255,255,.7);border-radius:12px;background:#F1F2EE;box-shadow:0 3px 12px rgba(0,0,0,.18)}
 .monogramme{width:38px;height:38px;border-radius:9px;background:var(--or);color:var(--encre);display:grid;place-items:center;font-size:1.3rem}
 .liens{display:flex;gap:24px}
 .liens a{text-decoration:none;font-weight:600;font-size:.95rem;opacity:.85}
@@ -51,7 +51,7 @@ header.nav{background:var(--encre);color:#fff;position:sticky;top:0;z-index:5;bo
 .btn-or:hover{background:#f3c24f}
 .btn-contour{border-color:#fff;color:#fff}
 .btn-contour:hover{background:#fff;color:var(--encre)}
-.logo-hero{width:100%;height:auto;max-width:400px;justify-self:center;filter:drop-shadow(0 12px 30px rgba(0,0,0,.35))}
+.logo-hero{width:100%;height:auto;max-width:380px;justify-self:center;object-fit:contain;padding:12px;border:1px solid rgba(255,255,255,.35);border-radius:24px;background:#F1F2EE;box-shadow:0 18px 48px rgba(0,0,0,.28)}
 
 .garanties{background:var(--carte);border-bottom:1px solid var(--ligne)}
 .garanties .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:26px;padding-bottom:26px}
@@ -135,7 +135,7 @@ aside.ouvert{transform:none}
 @media (max-width:820px){
   .nav .wrap{min-height:64px;gap:8px}
   .marque{gap:7px;min-width:0;font-size:clamp(.68rem,3vw,.9rem)}
-  .logo-nav{width:38px;height:38px}
+  .logo-nav{width:42px;height:42px}
   .menu-btn{display:inline-flex;flex:0 0 auto;padding:7px 9px}
   .nav-actions{display:flex;align-items:center;gap:7px}
   .liens{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:8px 5vw;background:var(--encre);border-top:1px solid rgba(255,255,255,.15);box-shadow:0 12px 20px rgba(0,0,0,.2)}
@@ -146,7 +146,7 @@ aside.ouvert{transform:none}
   .hero .wrap,.contact .wrap{grid-template-columns:1fr}
   .hero{padding:48px 0 56px}
   .hero h1{font-size:clamp(2rem,9vw,3rem)}
-  .logo-hero{max-width:min(260px,75vw)}
+  .logo-hero{max-width:min(280px,78vw);padding:9px;border-radius:20px}
   .garanties .wrap{grid-template-columns:1fr 1fr;gap:14px}
   section{padding:48px 0}
   .outils{align-items:stretch}
@@ -164,7 +164,7 @@ aside.ouvert{transform:none}
   .points{grid-template-columns:1fr}
 }
 @media (max-width:380px){
-  .marque{font-size:.66rem}
+  .marque{font-size:.64rem}
   .nav-actions{gap:5px}
   .menu-btn{padding:7px}
   .panier-btn{padding:8px 9px}
@@ -179,7 +179,7 @@ aside.ouvert{transform:none}
 
 <header class="nav">
   <div class="wrap">
-    <a class="marque" href="#haut"><img class="logo-nav" src="logo-maguette-td-shop.svg" alt="" width="52" height="52"><span>MAGUETTE T-D<br>SHOP VALISE</span></a>
+    <a class="marque" href="#haut" aria-label="MAGUETTE T-D SHOP VALISE, accueil"><img class="logo-nav" src="logo-maguette-td-shop.png" alt="Logo officiel T-D Shop" width="50" height="50"><span>MAGUETTE T-D<br>SHOP VALISE</span></a>
     <nav class="liens" id="liens" aria-label="Navigation" aria-hidden="true">
       <a href="#produits">Nos valises</a>
       <a href="#pourquoi">Pourquoi nous</a>
@@ -206,7 +206,7 @@ aside.ouvert{transform:none}
         <a class="btn btn-contour" href="#contact">Nous contacter</a>
       </div>
     </div>
-    <img class="logo-hero" src="logo-maguette-td-shop.svg" alt="Logo MAGUETTE T-D SHOP VALISE" width="400" height="400">
+    <img class="logo-hero" src="logo-maguette-td-shop.png" alt="Logo officiel T-D Shop : toujours à votre disposition" width="500" height="500" fetchpriority="high">
   </div>
 </div>
 
