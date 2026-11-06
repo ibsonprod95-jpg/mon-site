@@ -6,12 +6,20 @@ Le suivi reste désactivé tant que Supabase, Upstash Redis et les informations 
 ## 1. Créer la base et le stockage privé
 
 1. Créez un projet Supabase et gardez son URL et ses clés dans un gestionnaire sécurisé.
-2. Dans **SQL Editor**, exécutez le contenu de [`schema.sql`](./schema.sql).
-   Après le schéma, exécutez les migrations manquantes correspondant à votre installation, dont [`20261031_add_confused_baggage_reports.sql`](./migrations/20261031_add_confused_baggage_reports.sql) et [`20261031010000_add_taken_baggage_photo.sql`](./migrations/20261031010000_add_taken_baggage_photo.sql) pour permettre le signalement des bagages confondus et l’enregistrement de leurs deux photos.
+2. Dans **SQL Editor**, exécutez le contenu de [`schema.sql`](./schema.sql) pour une nouvelle base. Pour une base déjà créée, exécutez les migrations manquantes dans l’ordre, puis [`20261106000000_add_admin_allowlist_and_rate_limit.sql`](./migrations/20261106000000_add_admin_allowlist_and_rate_limit.sql). Cette dernière installe la liste d’autorisation des administrateurs et le stockage du limiteur de requêtes utilisé par la fonction Supabase.
 3. Vérifiez que le bucket `declaration-photos` existe et qu’il est privé.
-4. Dans **Authentication**, créez le compte du personnel qui administrera les déclarations. Désactivez les inscriptions publiques et n’autorisez que les comptes du service.
+4. Dans **Authentication → Users**, utilisez **Add user → Send invitation** pour inviter le compte du personnel. Le destinataire ouvre l’invitation pour confirmer son compte. Si le lien ne revient pas sur la page d’administration, il ouvre [`../admin.html`](../admin.html), choisit **Mot de passe oublié ?**, puis suit le lien de réinitialisation pour définir son mot de passe. Désactivez les inscriptions publiques.
+5. Ajoutez l’adresse exacte du compte à la liste d’autorisation depuis **SQL Editor** :
 
-Le navigateur public n’accède jamais directement aux tables ni au bucket. Les fonctions Vercel utilisent la clé privée côté serveur ; les photos sont consultables à l’aide de liens temporaires après vérification des codes ou de la session du personnel. Upstash Redis applique des limites horaires aux envois, aux consultations et aux actions du personnel ; si sa protection n’est pas disponible, l’API refuse les requêtes.
+   ```sql
+   insert into public.admin_allowlist (email)
+   values (lower(trim('adresse@exemple.sn')))
+   on conflict (email) do nothing;
+   ```
+
+   Remplacez l’adresse d’exemple par celle du compte invité. Sans cette autorisation, la connexion à [`../admin.html`](../admin.html) sera refusée, même si le compte existe dans **Authentication**.
+
+Le navigateur public n’accède jamais directement aux tables ni au bucket. Les fonctions serveur utilisent la clé privée uniquement côté serveur ; les photos sont consultables à l’aide de liens temporaires après vérification des codes ou de la session du personnel. La fonction Supabase utilise le limiteur créé par le schéma ; l’API Vercel utilise Upstash Redis. Si le limiteur du service concerné n’est pas disponible, les requêtes sont refusées.
 
 ## 2. Configurer la protection contre les abus
 

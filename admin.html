@@ -117,16 +117,19 @@
 
       function checkRecoveryLink(){
         var params=new URLSearchParams(window.location.hash.slice(1));
-        if(params.get("type")==="recovery"&&params.get("access_token")){
+        var linkType=params.get("type");
+        if((linkType==="recovery"||linkType==="invite")&&params.get("access_token")){
           recoveryToken=params.get("access_token");
           showLoginMode("new-password");
-          loginStatus.textContent="Le lien est valide. Choisis maintenant un nouveau mot de passe.";
+          loginStatus.textContent=linkType==="invite"
+            ?"L’invitation est valide. Choisis maintenant un mot de passe pour ton compte."
+            :"Le lien est valide. Choisis maintenant un nouveau mot de passe.";
           window.history.replaceState(null,"",window.location.pathname+"?recovery=1");
           return true;
         }
         if(window.location.search.indexOf("recovery=1")!==-1){
           showLoginMode("new-password");
-          loginStatus.textContent="Le lien de réinitialisation est invalide ou expiré. Demande-en un nouveau.";
+          loginStatus.textContent="Le lien d’invitation ou de réinitialisation est invalide ou expiré. Demande-en un nouveau.";
           return true;
         }
         return false;

@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Administration TD-SHOP</title>
+  <style>
+    :root{font:16px/1.5 system-ui,sans-serif;color:#173b22;background:#f4f7f3}
+    *{box-sizing:border-box}
+    body{margin:0;padding:24px}
+    main{max-width:980px;margin:auto}
+    section,.product{background:#fff;border:1px solid #d8e2d9;border-radius:12px;padding:20px;margin:16px 0}
+    label{display:block;font-weight:650;margin:12px 0 4px}
+    input,textarea,button{font:inherit}
+    input,textarea{width:100%;padding:10px;border:1px solid #87978b;border-radius:7px}
+    textarea{min-height:84px;resize:vertical}
+    button{padding:10px 16px;margin:12px 8px 0 0;border:0;border-radius:7px;background:#0b6b2b;color:white;font-weight:700;cursor:pointer}
+    button.secondary{background:#e8eee8;color:#173b22}
+    button.danger{background:#9e2525}
+    button:disabled{opacity:.6;cursor:wait}
+    [role=status]{min-height:1.5em}
+    .muted{color:#58645a}
+    .link-button{background:transparent;color:#0b6b2b;text-decoration:underline;padding:4px 0}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    .product{margin:0}
+    .product h3{margin:0 0 6px}
+    .product-actions{display:flex;flex-wrap:wrap;gap:4px}
+    .product-actions button{margin-right:0}
+    .heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    @media(max-width:600px){body{padding:14px}.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="./index.html">← Retour à la boutique</a></p>
+    <h1>Administration TD-SHOP</h1>
+    <p class="muted">Gérez le catalogue et le stock de la boutique.</p>
+    <p id="status" role="status" aria-live="polite"></p>
+
+    <section id="login-panel">
+      <h2>Connexion propriétaire</h2>
+      <form id="login-form">
+        <label for="email">Adresse e-mail</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <button id="login-button" type="submit">Se connecter</button>
+      </form>
+      <button id="forgot-button" class="link-button" type="button">Mot de passe oublié ?</button>
+      <form id="recovery-form" hidden>
+        <h2>Choisir un nouveau mot de passe</h2>
+        <label for="new-password">Nouveau mot de passe (8 caractères minimum)</label>
+        <input id="new-password" type="password" autocomplete="new-password" minlength="8" required>
+        <label for="confirm-password">Confirmer le mot de passe</label>
+        <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required>
+        <button type="submit">Enregistrer le mot de passe</button>
+        <button id="cancel-recovery" class="link-button" type="button">Retour à la connexion</button>
+      </form>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="heading">
+        <h2>Catalogue et stock</h2>
+        <button id="logout-button" class="secondary" type="button">Se déconnecter</button>
+      </div>
+      <form id="product-form">
+        <h3 id="form-title">Ajouter un produit</h3>
+        <div class="grid">
+          <label>Nom du modèle<input name="name" maxlength="120" required></label>
+          <label>Taille<input name="size" maxlength="40" placeholder="Cabine, moyenne, grande, set…" required></label>
+          <label>Prix en FCFA<input name="price_xof" type="number" min="0" step="1" placeholder="Laisser vide pour confirmer le prix"></label>
+          <label>Stock disponible<input name="stock" type="number" min="0" step="1" value="0" required></label>
+          <label>Couleur<input name="color" type="color" value="#1a1a22" required></label>
+          <label>Badge<input name="badge" maxlength="40" placeholder="Nouveau, promotion…"></label>
+          <label>Adresse HTTPS de la photo<input name="image_url" type="url" maxlength="2048" placeholder="https://…"></label>
+          <label><span>Visibilité</span><span><input name="active" type="checkbox" checked style="width:auto"> Publié sur la boutique</span></label>
+        </div>
+        <label>Description<input name="description" maxlength="500"></label>
+        <button id="save-product" type="submit">Ajouter le produit</button>
+        <button id="cancel-edit" class="secondary" type="button" hidden>Annuler la modification</button>
+      </form>
+      <h3>Produits enregistrés</h3>
+      <div id="products" class="products"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      const config = window.TD_SHOP_CONFIG || {};
+      const status = $("status");
+      const loginPanel = $("login-panel");
+      const dashboard = $("dashboard");
+      const form = $("product-form");
+      const productsElement = $("products");
+      let client;
+      let products = [];
+      let editingId = null;
+
+      function message(text, isError = false) {
+        status.textContent = text;
+        status.style.color = isError ? "#9e2525" : "#173b22";
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        })[char]);
+      }
+
+      function setLoggedIn(loggedIn) {
+        loginPanel.hidden = loggedIn;
+        dashboard.hidden = !loggedIn;
+      }
+
+      async function loadProducts() {
+        message("Chargement du catalogue…");
+        const { data, error } = await client.from("products")
+          .select("id,name,size,color,description,price_xof,stock,badge,image_url,active,position")
+          .order("position", { ascending: true })
+          .order("created_at", { ascending: true });
+        if (error) throw error;
+        products = data;
+        renderProducts();
+        message(`${products.length} produit(s) chargé(s).`);
+      }
+
+      function renderProducts() {
+        productsElement.innerHTML = products.length ? products.map(product => `
+          <article class="product">
+            <h3>${escapeHtml(product.name)}</h3>
+            <p>${escapeHtml(product.size)} · ${product.price_xof == null ? "Prix à confirmer" : `${Number(product.price_xof).toLocaleString("fr-FR")} FCFA`}</p>
+            <p>Stock : ${Number(product.stock)} · ${product.active ? "Publié" : "Masqué"}</p>
+            <div class="product-actions">
+              <button type="button" data-action="edit" data-id="${escapeHtml(product.id)}">Modifier</button>
+              <button type="button" class="secondary" data-action="toggle" data-id="${escapeHtml(product.id)}">${product.active ? "Masquer" : "Publier"}</button>
+              <button type="button" class="danger" data-action="delete" data-id="${escapeHtml(product.id)}">Supprimer</button>
+            </div>
+          </article>`).join("") : "<p>Aucun produit enregistré.</p>";
+      }
+
+      async function checkAdmin() {
+        const { data: { user }, error: sessionError } = await client.auth.getUser();
+        if (sessionError) throw sessionError;
+        if (!user) {
+          setLoggedIn(false);
+          return false;
+        }
+        const { data, error } = await client.from("store_admins")
+          .select("user_id")
+          .eq("user_id", user.id)
+          .maybeSingle();
+        if (error) throw error;
+        if (!data) {
+          await client.auth.signOut();
+          setLoggedIn(false);
+          message("Ce compte n’est pas autorisé à administrer TD-SHOP.", true);
+          return false;
+        }
+        setLoggedIn(true);
+        await loadProducts();
+        return true;
+      }
+
+      function resetForm() {
+        editingId = null;
+        form.reset();
+        form.elements.stock.value = "0";
+        form.elements.color.value = "#1a1a22";
+        form.elements.active.checked = true;
+        $("form-title").textContent = "Ajouter un produit";
+        $("save-product").textContent = "Ajouter le produit";
+        $("cancel-edit").hidden = true;
+      }
+
+      function beginEdit(product) {
+        editingId = product.id;
+        for (const field of ["name", "size", "price_xof", "stock", "color", "badge", "image_url", "description"]) {
+          form.elements[field].value = product[field] ?? "";
+        }
+        form.elements.active.checked = product.active;
+        $("form-title").textContent = "Modifier le produit";
+        $("save-product").textContent = "Enregistrer les modifications";
+        $("cancel-edit").hidden = false;
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      async function updateProduct(id, values) {
+        const { error } = await client.from("products").update(values).eq("id", id);
+        if (error) throw error;
+        await loadProducts();
+      }
+
+      if (!window.supabase?.createClient || !config.supabaseUrl || !config.supabaseAnonKey) {
+        message("La connexion à la base boutique n’est pas configurée. Consultez boutique/SETUP.md.", true);
+        $("login-button").disabled = true;
+        $("forgot-button").disabled = true;
+      } else {
+        client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+
+        const authLinkType = new URLSearchParams(location.hash.slice(1)).get("type");
+        const recoveryLink = authLinkType === "recovery" || authLinkType === "invite";
+        if (recoveryLink) {
+          $("login-form").hidden = true;
+          $("forgot-button").hidden = true;
+          $("recovery-form").hidden = false;
+          message("Choisissez un nouveau mot de passe pour votre compte boutique.");
+        }
+
+        client.auth.getSession().then(({ data, error }) => {
+          if (error) throw error;
+          if (data.session && !recoveryLink) return checkAdmin();
+        }).catch(error => message(`Erreur de connexion : ${error.message}`, true));
+
+        $("login-form").addEventListener("submit", async event => {
+          event.preventDefault();
+          const button = $("login-button");
+          button.disabled = true;
+          message("Connexion…");
+          try {
+            const { error } = await client.auth.signInWithPassword({
+              email: $("email").value.trim(),
+              password: $("password").value
+            });
+            if (error) throw error;
+            await checkAdmin();
+          } catch (error) {
+            message(`Connexion impossible : ${error.message}`, true);
+          } finally {
+            button.disabled = false;
+          }
+        });
+
+        $("forgot-button").addEventListener("click", async () => {
+          const email = $("email").value.trim();
+          if (!email) {
+            message("Saisissez d’abord l’adresse e-mail du compte boutique.", true);
+            $("email").focus();
+            return;
+          }
+          try {
+            const { error } = await client.auth.resetPasswordForEmail(email, {
+              redirectTo: new URL("admin.html", location.href).href
+            });
+            if (error) throw error;
+            message("Si ce compte existe, un lien sécurisé va lui être envoyé.");
+          } catch (error) {
+            message(`Envoi du lien impossible : ${error.message}`, true);
+          }
+        });
+
+        $("recovery-form").addEventListener("submit", async event => {
+          event.preventDefault();
+          const password = $("new-password").value;
+          if (password !== $("confirm-password").value) {
+            message("Les deux mots de passe ne correspondent pas.", true);
+            return;
+          }
+          try {
+            const { error } = await client.auth.updateUser({ password });
+            if (error) throw error;
+            history.replaceState(null, "", location.pathname);
+            await checkAdmin();
+            if (!dashboard.hidden) message("Mot de passe mis à jour. Vous êtes connecté à l’administration.");
+          } catch (error) {
+            message(`Mise à jour impossible : ${error.message}`, true);
+          }
+        });
+
+        $("cancel-recovery").addEventListener("click", () => {
+          $("recovery-form").hidden = true;
+          $("login-form").hidden = false;
+          $("forgot-button").hidden = false;
+        });
+
+        $("logout-button").addEventListener("click", async () => {
+          const { error } = await client.auth.signOut();
+          if (error) {
+            message(`Déconnexion impossible : ${error.message}`, true);
+            return;
+          }
+          setLoggedIn(false);
+          message("Vous êtes déconnecté.");
+        });
+
+        form.addEventListener("submit", async event => {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+          const data = new FormData(form);
+          const imageUrl = String(data.get("image_url") || "").trim();
+          if (imageUrl && new URL(imageUrl).protocol !== "https:") {
+            message("La photo doit utiliser une adresse HTTPS.", true);
+            return;
+          }
+          const values = {
+            name: String(data.get("name")).trim(),
+            size: String(data.get("size")).trim(),
+            price_xof: data.get("price_xof") === "" ? null : Number(data.get("price_xof")),
+            stock: Number(data.get("stock")),
+            color: data.get("color"),
+            badge: String(data.get("badge") || "").trim(),
+            image_url: imageUrl,
+            description: String(data.get("description") || "").trim(),
+            active: form.elements.active.checked
+          };
+          $("save-product").disabled = true;
+          try {
+            if (editingId) {
+              const { error } = await client.from("products").update(values).eq("id", editingId);
+              if (error) throw error;
+              message("Produit modifié.");
+            } else {
+              values.position = products.length + 1;
+              const { error } = await client.from("products").insert(values);
+              if (error) throw error;
+              message("Produit ajouté.");
+            }
+            resetForm();
+            await loadProducts();
+          } catch (error) {
+            message(`Enregistrement impossible : ${error.message}`, true);
+          } finally {
+            $("save-product").disabled = false;
+          }
+        });
+
+        $("cancel-edit").addEventListener("click", resetForm);
+        productsElement.addEventListener("click", async event => {
+          const button = event.target.closest("button[data-action]");
+          if (!button) return;
+          const product = products.find(item => item.id === button.dataset.id);
+          if (!product) return;
+          try {
+            if (button.dataset.action === "edit") {
+              beginEdit(product);
+            } else if (button.dataset.action === "toggle") {
+              await updateProduct(product.id, { active: !product.active });
+            } else if (button.dataset.action === "delete" && confirm(`Supprimer définitivement « ${product.name} » ?`)) {
+              const { error } = await client.from("products").delete().eq("id", product.id);
+              if (error) throw error;
+              await loadProducts();
+              message("Produit supprimé.");
+            }
+          } catch (error) {
+            message(`Opération impossible : ${error.message}`, true);
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

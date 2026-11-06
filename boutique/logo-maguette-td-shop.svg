@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Maguette T-D Shop Valise</title>
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffe778"/>
+      <stop offset="1" stop-color="#e6a900"/>
+    </linearGradient>
+    <linearGradient id="case" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#176b35"/>
+      <stop offset="1" stop-color="#082f17"/>
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="240" fill="#fff" stroke="url(#gold)" stroke-width="12"/>
+  <circle cx="256" cy="256" r="221" fill="#f5f8f4" stroke="#0b3d1a" stroke-width="5"/>
+  <path d="M92 235a164 164 0 0 1 270-78" fill="none" stroke="#dce8df" stroke-width="9" stroke-linecap="round"/>
+  <path d="m348 136 25 15-27 10z" fill="#0b3d1a"/>
+  <path d="M146 193v-23a14 14 0 0 1 14-14h68a14 14 0 0 1 14 14v23" fill="none" stroke="#0b3d1a" stroke-width="14" stroke-linecap="round"/>
+  <rect x="112" y="184" width="188" height="192" rx="26" fill="url(#case)" stroke="#0b3d1a" stroke-width="8"/>
+  <path d="M149 199v160m39-160v160m39-160v160m39-160v160" stroke="#fff" stroke-opacity=".2" stroke-width="7"/>
+  <rect x="285" y="244" width="12" height="42" rx="6" fill="url(#gold)"/>
+  <circle cx="151" cy="382" r="13" fill="#0b3d1a"/>
+  <circle cx="260" cy="382" r="13" fill="#0b3d1a"/>
+  <rect x="77" y="400" width="358" height="74" rx="12" fill="#0b3d1a"/>
+  <path d="M77 400h358" stroke="url(#gold)" stroke-width="7"/>
+  <text x="256" y="434" text-anchor="middle" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" letter-spacing="1">MAGUETTE T-D</text>
+  <text x="256" y="462" text-anchor="middle" fill="#ffd21f" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="3">SHOP VALISE</text>
+  <path d="m115 123 7 15 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z" fill="url(#gold)"/>
+  <path d="m392 289 6 13 14 2-10 10 2 14-12-7-12 7 2-14-10-10 14-2z" fill="url(#gold)"/>
+</svg>
