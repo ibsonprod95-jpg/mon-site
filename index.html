@@ -1566,44 +1566,27 @@ header .bar{padding-right:0}
   });
 })();
 </script>
-<footer>
-  <p><span data-i18n="footerText">AIBD DEM DIKK — Informations et préparation d’une fiche pour un objet ou un bagage égaré.</span> <a href="#contact" data-i18n="footerContact">Contacter le service</a></p>
-</footer>
-<script>
-(function(){
-  if("serviceWorker" in navigator){
-    window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});
-  }
-  var panel=document.getElementById("install-panel");
-  var button=document.getElementById("install-app");
-  var iosHelp=document.getElementById("install-ios");
-  var installText=document.getElementById("install-text");
-  if(!panel||!button)return;
-  var standalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;
-  if(standalone)return;
-  var deferredPrompt=null;
-  window.addEventListener("beforeinstallprompt",function(event){
-    event.preventDefault();
-    deferredPrompt=event;
-    panel.hidden=false;
-    button.hidden=false;
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+  createChat({
+    webhookUrl: 'https://ibsonprod95.app.n8n.cloud/webhook/9a4121de-27b6-431d-8ec8-263888a45c9b/chat',
+    mode: 'window',
+    showWelcomeScreen: false,
+    initialMessages: [
+      'Bonjour ! Je suis l\'assistant AIBD Dem Dikk. Comment puis-je vous aider ?'
+    ],
+    i18n: {
+      en: {
+        title: 'Assistant AIBD Dem Dikk',
+        subtitle: '',
+        footer: '',
+        getStarted: 'Nouvelle conversation',
+        inputPlaceholder: 'Écrivez votre message...',
+      },
+    },
   });
-  button.addEventListener("click",async function(){
-    if(!deferredPrompt)return;
-    deferredPrompt.prompt();
-    try{await deferredPrompt.userChoice}catch(error){}
-    deferredPrompt=null;
-    panel.hidden=true;
-  });
-  window.addEventListener("appinstalled",function(){panel.hidden=true;});
-  var ua=navigator.userAgent||"";
-  var isIos=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
-  if(isIos){panel.hidden=false;iosHelp.hidden=false;}
-})();
 </script>
-<iframe
-  src="https://ibsonprod95.app.n8n.cloud/webhook/9a4121de-27b6-431d-8ec8-263888a45c9b/chat"
-  style="position:fixed;bottom:20px;right:20px;width:380px;height:560px;border:0;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:9999"
-  title="Assistant AIBD Dem Dikk"></iframe>
 </body>
 </html>
