@@ -198,8 +198,8 @@ async function submit(config, body) {
   const busNumber = typeof body.busNumber === 'string' ? body.busNumber.trim() : '';
   if (busNumber.length > 80) throw new HttpError(400, 'Le numéro du bus est trop long.');
   const id = crypto.randomUUID();
-  const trackingCode = `AIBD-${crypto.randomBytes(7).toString('hex').toUpperCase()}`;
-  const accessSecret = crypto.randomBytes(24).toString('base64url');
+  const trackingCode = `BG-${crypto.randomInt(1000, 10000)}`;
+  const accessSecret = String(crypto.randomInt(100000, 1000000));
   const accessSecretHash = crypto.createHash('sha256').update(accessSecret).digest('hex');
   const photos = [
     parseImage(body.photo, 'baggage'),
