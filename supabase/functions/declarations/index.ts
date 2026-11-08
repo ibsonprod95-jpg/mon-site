@@ -210,14 +210,13 @@ Deno.serve(async (request: Request) => {
         if (uploaded.length) await supabase.storage.from(bucket).remove(uploaded);
         throw error;
       }
-
-      const accessSecret = randomHex(16).toUpperCase();
+const accessSecret = String(100000 + (crypto.getRandomValues(new Uint32Array(1))[0] % 900000));
       const accessSecretHash = await hashSecret(accessSecret);
       let created: Record<string, unknown> | null = null;
       let finalCode = "";
       let dbError: unknown = null;
       for (let attempt = 0; attempt < 4; attempt++) {
-        finalCode = "DD-" + randomHex(6).toUpperCase();
+        finalCode = "BG-" + String(1000 + (crypto.getRandomValues(new Uint32Array(1))[0] % 9000));
         const { data, error } = await supabase.rpc("create_lost_declaration", {
           p_id: crypto.randomUUID(),
           p_tracking_code: finalCode,
@@ -345,7 +344,30 @@ Deno.serve(async (request: Request) => {
       if (error) throw error;
       return json(200, Array.isArray(data) ? data[0] : data, origin);
     }
-
+if (action === "admin-delete") {
+  const token = typeof body.token === "string" ? body.token : "";
+      const { data: authData, error: authError } = await supabase.auth.getUser(token);
+      if (authError || !authData.user?.email) {
+        return json(401, { error: "Session expirée. Reconnectez-vous." }, origin);
+      }
+      const { data: allowedAdmin, error: allowlistError } = await supabase
+        .from("admin_allowlist").select("email").eq("email", authData.user.email.toLowerCase()).maybeSingle();
+      if (allowlistError) return json(503, { error: "Vérification du compte impossible. Réessayez." }, origin);
+      if (!allowedAdmin) return json(403, { error: "Accès réservé au compte autorisé." }, origin);
+        const id = typeof body.id === "string" ? body.id : "";
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+    return json(400, { error: "Dossier invalide." }, origin);
+  }
+  const { data: record, error: readError } = await supabase.from("declarations")
+    .select("photo_path,taken_photo_path,ticket_path").eq("id", id).maybeSingle();
+  if (readError) throw readError;
+  if (!record) return json(404, { error: "Dossier introuvable." }, origin);
+  const { error: deleteError } = await supabase.from("declarations").delete().eq("id", id);
+  if (deleteError) throw deleteError;
+  const paths = [record.photo_path, record.taken_photo_path, record.ticket_path].filter(Boolean);
+  if (paths.length) await supabase.storage.from(bucket).remove(paths);
+  return json(200, { deleted: true }, origin);
+}
     if (action === "admin-photo") {
       const token = typeof body.token === "string" ? body.token : "";
       const { data: authData, error: authError } = await supabase.auth.getUser(token);

@@ -333,9 +333,27 @@
           });
           controls.appendChild(statusLabel);
           controls.appendChild(noteLabel);
-          controls.appendChild(saveButton);
           card.appendChild(controls);
-
+controls.appendChild(saveButton);
+var deleteButton=document.createElement("button");
+deleteButton.type="button";
+deleteButton.textContent="Supprimer le dossier";
+deleteButton.addEventListener("click",async function(){
+  if(!window.confirm("Voulez-vous vraiment supprimer ce dossier ? Cette action est définitive.")){return;}
+  deleteButton.disabled=true;
+  dashboardStatus.textContent="Suppression du dossier...";
+  try{
+    await api({action:"admin-delete",token:token,id:record.id});
+    dashboardStatus.textContent="Dossier supprimé.";
+    await loadCases();
+  }catch(error){
+    dashboardStatus.textContent=error.message||"Impossible de supprimer le dossier.";
+  }finally{
+    deleteButton.disabled=false;
+  }
+});
+controls.appendChild(deleteButton);
+card.appendChild(controls);
           var photoButtons=document.createElement("div");
           photoButtons.className="case-actions";
           if(record.photo_path)addPhotoButton(photoButtons,record,"baggage","Voir la photo du bagage déclaré");
