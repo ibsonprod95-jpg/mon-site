@@ -458,6 +458,10 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
     <input id="tel" type="tel" autocomplete="tel" maxlength="40">
     <label for="desc" data-i18n="descriptionLabel">Description du bagage</label>
     <textarea id="desc" maxlength="1200" placeholder="Taille, marque et signes distinctifs" data-i18n-placeholder="descriptionPlaceholder"></textarea>
+    <label for="baggage-color" data-i18n="colorLabel">Couleur du bagage</label>
+    <label class="color-unknown"><input id="color-unknown" type="checkbox" checked><span data-i18n="colorNotSpecified">Je ne connais pas la couleur</span></label>
+    <input id="baggage-color" type="color" value="#000000" aria-describedby="baggage-color-help" disabled>
+    <small id="baggage-color-help" data-i18n="colorHelp">Choisissez une couleur dans le sélecteur. Vous pouvez sélectionner toutes les couleurs.</small>
     <label for="baggage-photo" data-track-key="baggagePhotoUploadLabel">Photo de votre bagage (facultatif)</label>
     <input id="baggage-photo" type="file" accept="image/*" capture="environment" aria-describedby="baggage-photo-help">
     <small id="baggage-photo-help" data-track-key="imageUploadHelp">Ajoutez une photo pour aider le service à reconnaître le bagage.</small>
@@ -516,6 +520,7 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
           <dt data-i18n="ownerLabel">Propriétaire</dt><dd id="o-nom">—</dd>
           <dt data-i18n="phoneLabel">Téléphone</dt><dd id="o-tel">—</dd>
           <dt data-i18n="baggageLabel">Bagage</dt><dd id="o-desc">—</dd>
+          <dt data-i18n="colorLabel">Couleur du bagage</dt><dd><span id="o-color-swatch" class="color-swatch" hidden aria-hidden="true"></span><span id="o-color">—</span></dd>
           <dt data-i18n="locationDate">Lieu et date</dt><dd id="o-lieu">—</dd>
           <dt data-i18n="timeSlotLabel">Créneau horaire</dt><dd id="o-time-slot">—</dd>
           <dt data-i18n="busNumber">N° du bus</dt><dd id="o-tkt">—</dd>
@@ -535,6 +540,10 @@ footer{padding-top:20px;border-top:1px solid var(--line);line-height:1.7}
 .tracking-result,.tracking-card{margin-top:16px;padding:16px;border:1px solid var(--line,#d9e2e1);border-radius:12px;background:var(--surface,#fff)}
 .tracking-result code{display:block;overflow-wrap:anywhere;margin:8px 0;padding:10px;background:var(--background,#f2f6f5);border-radius:8px}
 .tracking-status{min-height:1.5em}
+.color-unknown{display:flex;align-items:center;gap:8px;margin:6px 0}
+.color-unknown input{flex:0 0 auto;width:18px;height:18px;margin:0;accent-color:var(--brand)}
+input[type="color"]:disabled{opacity:.55;cursor:not-allowed}
+.color-swatch{display:inline-block;width:1em;height:1em;margin-right:7px;border:1px solid var(--line);border-radius:50%;vertical-align:-.1em}
 .tracking-history{padding-left:22px}
 .tracking-photos{display:flex;flex-wrap:wrap;gap:12px}
 .tracking-photos a{display:block}
@@ -831,6 +840,11 @@ header .bar{padding-right:0}
       taken.textContent=text("takenBag")+": "+(result.takenDescription||"");
       card.appendChild(taken);
     }
+    if(result.color){
+      var color=document.createElement("p");
+      color.textContent=window.siteText("colorLabel")+": "+result.color;
+      card.appendChild(color);
+    }
     var current=document.createElement("p");
     current.textContent=text("status")+": "+statusName(result.status);
     card.appendChild(current);
@@ -894,6 +908,7 @@ header .bar{padding-right:0}
       ownerName:document.getElementById("nom").value.trim(),
       phone:document.getElementById("tel").value.trim(),
       description:document.getElementById("desc").value.trim(),
+      color:document.getElementById("color-unknown").checked?"":document.getElementById("baggage-color").value,
       location:document.getElementById("lieu").value,
       lostDate:document.getElementById("date-perte").value,
       lostTimeSlot:document.getElementById("time-slot").value,
@@ -916,6 +931,7 @@ header .bar{padding-right:0}
         ownerName:fields.ownerName,
         phone:fields.phone,
         description:fields.description,
+        color:fields.color,
         location:fields.location,
         lostDate:fields.lostDate,
         lostTimeSlot:fields.lostTimeSlot,
@@ -1010,6 +1026,9 @@ header .bar{padding-right:0}
   Object.assign(t.fr,{timeSlotLabel:"Créneau horaire",chooseTimeSlot:"Choisir un créneau"});
   Object.assign(t.en,{timeSlotLabel:"Time slot",chooseTimeSlot:"Choose a time slot"});
   Object.assign(t.wo,{timeSlotLabel:"Waxtu bi",chooseTimeSlot:"Tànnal waxtu bi"});
+  Object.assign(t.fr,{colorNotSpecified:"Je ne connais pas la couleur"});
+  Object.assign(t.en,{colorNotSpecified:"I don't know the colour"});
+  Object.assign(t.wo,{colorNotSpecified:"Xawuma melo wi"});
   Object.assign(t.fr,{cardJourneyText:"Choisissez le lieu, la date et le créneau horaire de la perte, puis ajoutez le numéro du bus si vous le connaissez."});
   Object.assign(t.en,{cardJourneyText:"Choose where, when and during which time slot the baggage was lost, then add the bus number if you know it."});
   Object.assign(t.wo,{cardJourneyText:"Tànnal fu mu réer, bés bi ak waxtu bi, te yokk nimero bas bi su fekkee xam nga ko."});
@@ -1223,10 +1242,17 @@ header .bar{padding-right:0}
 <script>
 (function(){
   var ids=["nom","tel","desc","tkt"];
+  var colorInput=document.getElementById("baggage-color");
+  var colorUnknown=document.getElementById("color-unknown");
   function maj(){
     ids.forEach(function(i){
       document.getElementById("o-"+i).textContent=document.getElementById(i).value.trim()||"—";
     });
+    var colorValue=colorUnknown.checked?"":colorInput.value.toUpperCase();
+    document.getElementById("o-color").textContent=colorValue||window.siteText("notSpecified");
+    var colorSwatch=document.getElementById("o-color-swatch");
+    colorSwatch.hidden=!colorValue;
+    if(colorValue)colorSwatch.style.backgroundColor=colorValue;
     var lieu=document.getElementById("lieu").value;
     var datePerte=document.getElementById("date-perte").value;
     var locale=window.siteLanguage==="en"?"en-GB":window.siteLanguage==="wo"?"wo-SN":"fr-FR";
@@ -1238,10 +1264,14 @@ header .bar{padding-right:0}
   }
   window.updateBagPreview=maj;
   ids.forEach(function(i){document.getElementById(i).addEventListener("input",maj)});
+  colorUnknown.addEventListener("change",function(){colorInput.disabled=colorUnknown.checked;maj()});
+  colorInput.addEventListener("input",maj);
+  window.addEventListener("aibd-language-changed",maj);
   document.getElementById("lieu").addEventListener("change",maj);
   document.getElementById("date-perte").addEventListener("input",maj);
   document.getElementById("time-slot").addEventListener("change",maj);
   document.getElementById("tkt").addEventListener("change",maj);
+  colorInput.disabled=colorUnknown.checked;
   document.getElementById("ticket").addEventListener("change",function(e){
     var file=e.target.files&&e.target.files[0];
     var preview=document.getElementById("ph2");

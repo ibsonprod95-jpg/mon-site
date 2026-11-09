@@ -20,6 +20,8 @@
     button:disabled{opacity:.6;cursor:wait}
     .case h2{margin-top:0}
     .case-actions{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
+    .delete-button{background:#a32626}
+    .color-swatch{display:inline-block;width:1em;height:1em;margin-right:7px;border:1px solid #879997;border-radius:50%;vertical-align:-.1em}
     .case-actions label{flex:1;min-width:220px}
     .photo-list{display:flex;gap:12px;flex-wrap:wrap}
     .photo-list img{max-width:260px;max-height:240px;object-fit:contain}
@@ -258,7 +260,7 @@
         var filtered=allRecords.filter(function(record){
           if(status&&record.status!==status)return false;
           if(!query)return true;
-          var text=normalize([record.tracking_code,record.owner_name,record.phone,record.description,record.taken_description,record.lost_location,record.bus_number].join(" "));
+          var text=normalize([record.tracking_code,record.owner_name,record.phone,record.description,record.taken_description,record.color,record.lost_location,record.bus_number].join(" "));
           if(text.indexOf(query)!==-1)return true;
           return queryDigits.length>=3&&digitsOnly(record.phone).indexOf(queryDigits)!==-1;
         });
@@ -288,7 +290,19 @@
           card.appendChild(textValue("Téléphone",record.phone));
           card.appendChild(textValue("Description",record.description));
           if(record.taken_description)card.appendChild(textValue("Bagage pris par erreur",record.taken_description));
-          card.appendChild(textValue("Couleur",record.color));
+          var colorParagraph=document.createElement("p");
+          var colorLabel=document.createElement("strong");
+          colorLabel.textContent="Couleur: ";
+          colorParagraph.appendChild(colorLabel);
+          if(/^#[0-9a-f]{6}$/i.test(record.color||"")){
+            var colorSwatch=document.createElement("span");
+            colorSwatch.className="color-swatch";
+            colorSwatch.style.backgroundColor=record.color;
+            colorSwatch.setAttribute("aria-hidden","true");
+            colorParagraph.appendChild(colorSwatch);
+          }
+          colorParagraph.appendChild(document.createTextNode(record.color||"Non précisée"));
+          card.appendChild(colorParagraph);
           card.appendChild(textValue("Lieu",record.lost_location));
           card.appendChild(textValue("Date de perte",record.lost_date));
           card.appendChild(textValue("Créneau horaire",record.lost_time_slot));
@@ -333,27 +347,27 @@
           });
           controls.appendChild(statusLabel);
           controls.appendChild(noteLabel);
+          controls.appendChild(saveButton);
+          var deleteButton=document.createElement("button");
+          deleteButton.type="button";
+          deleteButton.className="delete-button";
+          deleteButton.textContent="Supprimer le dossier";
+          deleteButton.addEventListener("click",async function(){
+            if(!window.confirm("Voulez-vous vraiment supprimer ce dossier ? Cette action est définitive."))return;
+            deleteButton.disabled=true;
+            dashboardStatus.textContent="Suppression du dossier…";
+            try{
+              await api({action:"admin-delete",token:token,id:record.id});
+              dashboardStatus.textContent="Dossier supprimé.";
+              await loadCases();
+            }catch(error){
+              dashboardStatus.textContent=error.message||"Impossible de supprimer le dossier.";
+            }finally{
+              deleteButton.disabled=false;
+            }
+          });
+          controls.appendChild(deleteButton);
           card.appendChild(controls);
-controls.appendChild(saveButton);
-var deleteButton=document.createElement("button");
-deleteButton.type="button";
-deleteButton.textContent="Supprimer le dossier";
-deleteButton.addEventListener("click",async function(){
-  if(!window.confirm("Voulez-vous vraiment supprimer ce dossier ? Cette action est définitive.")){return;}
-  deleteButton.disabled=true;
-  dashboardStatus.textContent="Suppression du dossier...";
-  try{
-    await api({action:"admin-delete",token:token,id:record.id});
-    dashboardStatus.textContent="Dossier supprimé.";
-    await loadCases();
-  }catch(error){
-    dashboardStatus.textContent=error.message||"Impossible de supprimer le dossier.";
-  }finally{
-    deleteButton.disabled=false;
-  }
-});
-controls.appendChild(deleteButton);
-card.appendChild(controls);
           var photoButtons=document.createElement("div");
           photoButtons.className="case-actions";
           if(record.photo_path)addPhotoButton(photoButtons,record,"baggage","Voir la photo du bagage déclaré");
