@@ -6,10 +6,11 @@ Le suivi reste désactivé tant que Supabase, Upstash Redis et les informations 
 ## 1. Créer la base et le stockage privé
 
 1. Créez un projet Supabase et gardez son URL et ses clés dans un gestionnaire sécurisé.
-2. Dans **SQL Editor**, exécutez le contenu de [`schema.sql`](./schema.sql) pour une nouvelle base. Pour une base déjà créée, exécutez les migrations manquantes dans l’ordre, puis [`20261106000000_add_admin_allowlist_and_rate_limit.sql`](./migrations/20261106000000_add_admin_allowlist_and_rate_limit.sql). Cette dernière installe la liste d’autorisation des administrateurs et le stockage du limiteur de requêtes utilisé par la fonction Supabase.
-3. Vérifiez que le bucket `declaration-photos` existe et qu’il est privé.
-4. Dans **Authentication → Users**, utilisez **Add user → Send invitation** pour inviter le compte du personnel. Le destinataire ouvre l’invitation pour confirmer son compte. Si le lien ne revient pas sur la page d’administration, il ouvre [`../admin.html`](../admin.html), choisit **Mot de passe oublié ?**, puis suit le lien de réinitialisation pour définir son mot de passe. Désactivez les inscriptions publiques.
-5. Ajoutez l’adresse exacte du compte à la liste d’autorisation depuis **SQL Editor** :
+2. Dans **SQL Editor**, exécutez le contenu de [`schema.sql`](./schema.sql) pour une nouvelle base. Pour une base déjà créée, exécutez les migrations manquantes dans l’ordre, puis [`20261106000000_add_admin_allowlist_and_rate_limit.sql`](./migrations/20261106000000_add_admin_allowlist_and_rate_limit.sql) et [`20261109000000_add_admin_delete_rate_limit.sql`](./migrations/20261109000000_add_admin_delete_rate_limit.sql). Cette dernière autorise le limiteur de requêtes à traiter les suppressions demandées depuis l’espace admin.
+3. Après chaque mise à jour du code de la fonction, redéployez-la avec `supabase functions deploy declarations` depuis le projet lié au bon projet Supabase.
+4. Vérifiez que le bucket `declaration-photos` existe et qu’il est privé.
+5. Dans **Authentication → Users**, utilisez **Add user → Send invitation** pour inviter le compte du personnel. Le destinataire ouvre l’invitation pour confirmer son compte. Si le lien ne revient pas sur la page d’administration, il ouvre [`../admin.html`](../admin.html), choisit **Mot de passe oublié ?**, puis suit le lien de réinitialisation pour définir son mot de passe. Désactivez les inscriptions publiques.
+6. Ajoutez l’adresse exacte du compte à la liste d’autorisation depuis **SQL Editor** :
 
    ```sql
    insert into public.admin_allowlist (email)

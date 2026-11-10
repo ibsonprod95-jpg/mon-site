@@ -118,6 +118,7 @@ async function checkRateLimit(request: Request, action: string) {
     "admin-login": [10, 3600],
     "admin-list": [60, 3600],
     "admin-update": [30, 3600],
+    "admin-delete": [30, 3600],
     "admin-photo": [60, 3600],
   };
   const limit = limits[action];
@@ -155,7 +156,7 @@ Deno.serve(async (request: Request) => {
     let body: Record<string, unknown>;
     try { body = JSON.parse(raw); } catch { return json(400, { error: "Requête invalide." }, origin); }
     const action = body.action;
-    if (!["health", "submit", "track", "admin-login", "admin-list", "admin-update", "admin-photo"].includes(String(action))) {
+    if (!["health", "submit", "track", "admin-login", "admin-list", "admin-update", "admin-delete", "admin-photo"].includes(String(action))) {
       return json(400, { error: "Action inconnue." }, origin);
     }
 
@@ -184,6 +185,7 @@ Deno.serve(async (request: Request) => {
       const description = typeof body.description === "string" ? body.description.trim() : "";
       const declarationType = typeof body.declarationType === "string" ? body.declarationType : "lost";
       const takenDescription = typeof body.takenDescription === "string" ? body.takenDescription.trim() : "";
+      const color = typeof body.color === "string" && body.color.trim() ? body.color.trim() : "Non précisée";
       const location = typeof body.location === "string" ? body.location : "";
       const lostDate = body.lostDate;
       const lostTimeSlot = typeof body.lostTimeSlot === "string" ? body.lostTimeSlot : "";
@@ -191,6 +193,7 @@ Deno.serve(async (request: Request) => {
       if (!ownerName || ownerName.length > 120 || !phone || phone.length > 40 ||
           !description || description.length > 1200 || !["lost", "confused"].includes(declarationType) ||
           (declarationType === "confused" && (!takenDescription || takenDescription.length > 1200)) ||
+          (color !== "Non précisée" && !/^#[0-9a-f]{6}$/i.test(color)) ||
           !locations.has(location) || !validDate(lostDate) || !timeSlots.has(lostTimeSlot) ||
           busNumber.length > 80) {
         return json(400, { error: "Vérifiez les renseignements obligatoires." }, origin);
@@ -224,7 +227,7 @@ const accessSecret = String(100000 + (crypto.getRandomValues(new Uint32Array(1))
           p_owner_name: ownerName,
           p_phone: phone,
           p_description: description,
-          p_color: "Non précisée",
+          p_color: color,
           p_lost_location: location,
           p_lost_date: lostDate,
           p_lost_time_slot: lostTimeSlot,
@@ -255,7 +258,7 @@ const accessSecret = String(100000 + (crypto.getRandomValues(new Uint32Array(1))
         return json(404, { error: "Dossier introuvable ou codes incorrects." }, origin);
       }
       const { data: row, error } = await supabase.from("declarations")
-        .select("id,tracking_code,access_secret_hash,declaration_type,description,taken_description,status,lost_time_slot,updated_at,photo_path,taken_photo_path,ticket_path")
+        .select("id,tracking_code,access_secret_hash,declaration_type,description,color,taken_description,status,lost_time_slot,updated_at,photo_path,taken_photo_path,ticket_path")
         .eq("tracking_code", trackingCode).maybeSingle();
       if (error || !row || !(await verifySecret(accessSecret, row.access_secret_hash))) {
         return json(404, { error: "Dossier introuvable ou codes incorrects." }, origin);
@@ -270,6 +273,7 @@ const accessSecret = String(100000 + (crypto.getRandomValues(new Uint32Array(1))
         trackingCode: row.tracking_code,
         declarationType: row.declaration_type || "lost",
         description: row.description,
+        color: row.color,
         takenDescription: row.taken_description,
         status: row.status,
         lostTimeSlot: row.lost_time_slot,
@@ -344,8 +348,8 @@ const accessSecret = String(100000 + (crypto.getRandomValues(new Uint32Array(1))
       if (error) throw error;
       return json(200, Array.isArray(data) ? data[0] : data, origin);
     }
-if (action === "admin-delete") {
-  const token = typeof body.token === "string" ? body.token : "";
+    if (action === "admin-delete") {
+      const token = typeof body.token === "string" ? body.token : "";
       const { data: authData, error: authError } = await supabase.auth.getUser(token);
       if (authError || !authData.user?.email) {
         return json(401, { error: "Session expirée. Reconnectez-vous." }, origin);
@@ -354,20 +358,26 @@ if (action === "admin-delete") {
         .from("admin_allowlist").select("email").eq("email", authData.user.email.toLowerCase()).maybeSingle();
       if (allowlistError) return json(503, { error: "Vérification du compte impossible. Réessayez." }, origin);
       if (!allowedAdmin) return json(403, { error: "Accès réservé au compte autorisé." }, origin);
-        const id = typeof body.id === "string" ? body.id : "";
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
-    return json(400, { error: "Dossier invalide." }, origin);
-  }
-  const { data: record, error: readError } = await supabase.from("declarations")
-    .select("photo_path,taken_photo_path,ticket_path").eq("id", id).maybeSingle();
-  if (readError) throw readError;
-  if (!record) return json(404, { error: "Dossier introuvable." }, origin);
-  const { error: deleteError } = await supabase.from("declarations").delete().eq("id", id);
-  if (deleteError) throw deleteError;
-  const paths = [record.photo_path, record.taken_photo_path, record.ticket_path].filter(Boolean);
-  if (paths.length) await supabase.storage.from(bucket).remove(paths);
-  return json(200, { deleted: true }, origin);
-}
+      const id = typeof body.id === "string" ? body.id : "";
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+        return json(400, { error: "Dossier invalide." }, origin);
+      }
+      const { data: record, error: readError } = await supabase.from("declarations")
+        .select("photo_path,taken_photo_path,ticket_path").eq("id", id).maybeSingle();
+      if (readError) throw readError;
+      if (!record) return json(404, { error: "Dossier introuvable." }, origin);
+      const paths = [record.photo_path, record.taken_photo_path, record.ticket_path]
+        .filter((path): path is string => Boolean(path));
+      if (paths.length) {
+        const { error: storageError } = await supabase.storage.from(bucket).remove(paths);
+        if (storageError) throw storageError;
+      }
+      const { data: deleted, error: deleteError } = await supabase.from("declarations")
+        .delete().eq("id", id).select("id").maybeSingle();
+      if (deleteError) throw deleteError;
+      if (!deleted) return json(404, { error: "Dossier introuvable." }, origin);
+      return json(200, { deleted: true }, origin);
+    }
     if (action === "admin-photo") {
       const token = typeof body.token === "string" ? body.token : "";
       const { data: authData, error: authError } = await supabase.auth.getUser(token);

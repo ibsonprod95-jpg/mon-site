@@ -181,8 +181,12 @@ async function submit(config, body) {
   const takenDescription = declarationType === 'confused'
     ? requiredText(body.takenDescription, 'La description du bagage pris par erreur', 1200)
     : '';
-  const color = body.color === undefined ? '' : requiredText(body.color, 'La couleur', 7);
-  if (color && !/^#[0-9a-f]{6}$/i.test(color)) throw new HttpError(400, 'Couleur invalide.');
+  const color = body.color === undefined || body.color === ''
+    ? 'Non précisée'
+    : requiredText(body.color, 'La couleur', 7);
+  if (color !== 'Non précisée' && !/^#[0-9a-f]{6}$/i.test(color)) {
+    throw new HttpError(400, 'Couleur invalide.');
+  }
   if (!LOCATIONS.has(body.location)) throw new HttpError(400, 'Lieu de perte invalide.');
   const lostTimeSlot = requiredText(body.lostTimeSlot, 'Le créneau horaire', 32);
   if (!LOST_TIME_SLOTS.has(lostTimeSlot)) throw new HttpError(400, 'Créneau horaire invalide.');
@@ -267,6 +271,7 @@ async function track(config, body) {
     trackingCode: declaration.tracking_code,
     declarationType: declaration.declaration_type || 'lost',
     description: declaration.description,
+    color: declaration.color,
     takenDescription: declaration.taken_description,
     lostTimeSlot: declaration.lost_time_slot,
     status: declaration.status,
@@ -300,6 +305,31 @@ async function adminUpdate(config, body) {
     body: JSON.stringify({ p_id: body.id, p_status: body.status, p_note: note })
   });
   return Array.isArray(result) ? result[0] : result;
+}
+
+async function adminDelete(config, body) {
+  await checkAdmin(config, body.token);
+  if (!validUuid(body.id)) throw new HttpError(400, 'Dossier invalide.');
+  const params = new URLSearchParams({
+    select: 'photo_path,taken_photo_path,ticket_path',
+    id: `eq.${body.id}`,
+    limit: '1'
+  });
+  const rows = await supabase(config, `/rest/v1/declarations?${params}`);
+  if (!rows.length) throw new HttpError(404, 'Dossier introuvable.');
+  const paths = [rows[0].photo_path, rows[0].taken_photo_path, rows[0].ticket_path].filter(Boolean);
+  if (paths.length) {
+    await supabase(config, `/storage/v1/object/${BUCKET}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ prefixes: paths })
+    });
+  }
+  const deleted = await supabase(config, `/rest/v1/declarations?id=eq.${encodeURIComponent(body.id)}&select=id`, {
+    method: 'DELETE',
+    headers: { Prefer: 'return=representation' }
+  });
+  if (!deleted.length) throw new HttpError(404, 'Dossier introuvable.');
+  return { deleted: true };
 }
 
 async function adminPhoto(config, body) {
@@ -348,6 +378,7 @@ module.exports = async function handler(req, res) {
       'admin-login': [10, 3600],
       'admin-list': [60, 3600],
       'admin-update': [30, 3600],
+      'admin-delete': [30, 3600],
       'admin-photo': [60, 3600],
       health: [120, 3600]
     };
@@ -376,6 +407,9 @@ module.exports = async function handler(req, res) {
         break;
       case 'admin-update':
         result = await adminUpdate(config, body);
+        break;
+      case 'admin-delete':
+        result = await adminDelete(config, body);
         break;
       case 'admin-photo':
         result = await adminPhoto(config, body);
