@@ -115,6 +115,20 @@
         })[char]);
       }
 
+      function productImageUrl(value) {
+        if (!value) return "";
+        try {
+          const url = new URL(value);
+          if (url.protocol !== "https:") return "";
+          if (url.hostname === "maguette-t-d-shop-valise.vercel.app") {
+            return new URL(`${url.pathname}${url.search}${url.hash}`, "https://www.td-shop.store").href;
+          }
+          return url.href;
+        } catch {
+          return "";
+        }
+      }
+
       function setLoggedIn(loggedIn) {
         loginPanel.hidden = loggedIn;
         dashboard.hidden = !loggedIn;
@@ -188,7 +202,8 @@
         }
         form.elements.active.checked = product.active;
         const preview = $("photo-preview");
-        if (product.image_url) { preview.src = product.image_url; preview.hidden = false; } else { preview.hidden = true; }
+        form.elements.image_url.value = productImageUrl(product.image_url);
+        if (form.elements.image_url.value) { preview.src = form.elements.image_url.value; preview.hidden = false; } else { preview.hidden = true; }
         $("form-title").textContent = "Modifier le produit";
         $("save-product").textContent = "Enregistrer les modifications";
         $("cancel-edit").hidden = false;
@@ -298,7 +313,7 @@
           if (!form.reportValidity()) return;
           const data = new FormData(form);
           const imageUrl = String(data.get("image_url") || "").trim();
-          if (imageUrl && new URL(imageUrl).protocol !== "https:") {
+          if (imageUrl && !productImageUrl(imageUrl)) {
             message("La photo doit utiliser une adresse HTTPS.", true);
             return;
           }
@@ -309,7 +324,7 @@
             stock: Number(data.get("stock")),
             color: data.get("color"),
             badge: String(data.get("badge") || "").trim(),
-            image_url: imageUrl,
+            image_url: productImageUrl(imageUrl),
             description: String(data.get("description") || "").trim(),
             active: form.elements.active.checked
           };

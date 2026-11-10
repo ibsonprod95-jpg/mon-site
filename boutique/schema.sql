@@ -96,6 +96,42 @@ create trigger products_set_updated_at
 before update on public.products
 for each row execute function public.set_product_updated_at();
 
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('product-photos', 'product-photos', true, 5242880, array['image/jpeg'])
+on conflict (id) do update
+set public = excluded.public,
+    file_size_limit = excluded.file_size_limit,
+    allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists "Anyone can view product photos" on storage.objects;
+create policy "Anyone can view product photos"
+  on storage.objects for select to anon, authenticated
+  using (bucket_id = 'product-photos');
+
+drop policy if exists "Store admins can upload product photos" on storage.objects;
+create policy "Store admins can upload product photos"
+  on storage.objects for insert to authenticated
+  with check (bucket_id = 'product-photos' and (select public.is_store_admin()));
+
+drop policy if exists "Store admins can update product photos" on storage.objects;
+create policy "Store admins can update product photos"
+  on storage.objects for update to authenticated
+  using (bucket_id = 'product-photos' and (select public.is_store_admin()))
+  with check (bucket_id = 'product-photos' and (select public.is_store_admin()));
+
+drop policy if exists "Store admins can delete product photos" on storage.objects;
+create policy "Store admins can delete product photos"
+  on storage.objects for delete to authenticated
+  using (bucket_id = 'product-photos' and (select public.is_store_admin()));
+
+update public.products
+set image_url = replace(
+  image_url,
+  'https://maguette-t-d-shop-valise.vercel.app/',
+  'https://www.td-shop.store/'
+)
+where image_url like 'https://maguette-t-d-shop-valise.vercel.app/%';
+
 insert into public.products (name, size, color, description, position)
 values
   ('Valise cabine — modèle 1', 'Cabine', '#1F4FBF', 'Prix et détails à confirmer', 1),

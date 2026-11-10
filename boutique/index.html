@@ -308,12 +308,9 @@ const NUMERO_WHATSAPP_COMMERCIAL = "221763801947";
 const NUMERO_PAIEMENT = "+221 77 059 77 77";
 // Dans chaque fiche, renseigner le prix en FCFA et le chemin relatif de la photo après réception du fournisseur.
 let PRODUITS = [
-  { id:1, nom:"Valise cabine — modèle 1",  taille:"Cabine",  couleur:"#1F4FBF", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"" },
-  { id:2, nom:"Valise cabine — modèle 2",  taille:"Cabine",  couleur:"#FFD21F", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"" },
-  { id:3, nom:"Valise moyenne — modèle 1", taille:"Moyenne", couleur:"#1A1A22", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"" },
-  { id:4, nom:"Valise moyenne — modèle 2", taille:"Moyenne", couleur:"#D7191F", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"" },
-  { id:5, nom:"Grande valise — modèle 1",  taille:"Grande",  couleur:"#6B4F3A", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"" },
-  { id:6, nom:"Set de valises — modèle 1", taille:"Set",     couleur:"#1A1A22", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"" }
+  { id:"local-xy19-fuchsia", nom:"Ensemble de valises XY-19 Fuchsia", taille:"Set", couleur:"#C2185B", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"./ensemble-fuchsia.jpg" },
+  { id:"local-xy19-creme", nom:"Ensemble de valises XY-19 Crème", taille:"Set", couleur:"#D8C6A5", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"./ensemble-creme.jpg" },
+  { id:"local-xy19-rose-bonbon", nom:"Ensemble de valises XY-19 Rose bonbon", taille:"Set", couleur:"#E75480", prix:null, desc:"Prix et détails à confirmer", badge:"", image:"./ensemble-rose-bonbon.jpg" }
 ];
 /* ======================== */
 
@@ -329,21 +326,49 @@ function echapperHTML(valeur){
 
 function urlImageSure(valeur){
   if (!valeur) return "";
-  try { return new URL(valeur, location.href).protocol === "https:" ? valeur : ""; }
+  try {
+    const url = new URL(valeur, location.href);
+    if (url.protocol !== "https:") return "";
+    if (url.hostname === "maguette-t-d-shop-valise.vercel.app") {
+      return new URL(`${url.pathname}${url.search}${url.hash}`, "https://www.td-shop.store").href;
+    }
+    return url.href;
+  }
   catch(e) { return ""; }
+}
+
+function imageLocaleProduit(produit){
+  const nom = `${produit.nom} ${produit.taille}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("fr");
+  const couleurs = [
+    ["gris anthracite", "gris-anthracite"], ["bleu canard", "bleu-canard"],
+    ["bleu ciel", "bleu-ciel"], ["bleu marine", "bleu-marine"],
+    ["gris argent", "gris-argent"], ["gris bleu", "gris-bleu"],
+    ["rose bonbon", "rose-bonbon"], ["rose clair", "rose-clair"],
+    ["rose pastel", "rose-pastel"], ["vieux rose", "vieux-rose"],
+    ["fuchsia", "fuchsia"], ["creme", "creme"], ["kaki", "kaki"],
+    ["prune", "prune"], ["noir", "noir"], ["rouge", "rouge"],
+    ["violet", "violet"], ["rose", "rose"]
+  ];
+  const couleur = couleurs.find(([libelle]) => nom.includes(libelle));
+  if (!couleur) return "";
+
+  if (produit.taille.toLocaleLowerCase("fr") === "set" || nom.includes("ensemble")) {
+    return `./ensemble-${couleur[1]}.jpg`;
+  }
+  const tailles = { cabine: "petite", petite: "petite", moyenne: "moyenne", grande: "grande" };
+  const taille = tailles[produit.taille.toLocaleLowerCase("fr")];
+  return taille ? `./valise-${couleur[1]}-${taille}.jpg` : "";
 }
 
 async function chargerCatalogue(){
   const config = window.TD_SHOP_CONFIG || {};
   if (!config.supabaseUrl || !config.supabaseAnonKey) return;
-  catalogueConnecte = true;
-  PRODUITS = [];
   $("catalogue-status").textContent = "Chargement du catalogue…";
   afficherFiltres();
   afficherProduits();
   afficherPanier();
   if (!window.supabase?.createClient) {
-    $("catalogue-status").textContent = "Le catalogue est momentanément indisponible. Réessayez plus tard ou contactez la boutique.";
+    $("catalogue-status").textContent = "Connexion au catalogue indisponible. Les prix et le stock sont à confirmer auprès de la boutique.";
     return;
   }
   try {
@@ -354,6 +379,7 @@ async function chargerCatalogue(){
       .order("position", { ascending: true })
       .order("created_at", { ascending: true });
     if (error) throw error;
+    catalogueConnecte = true;
     PRODUITS = data.map(p => ({
       id: p.id, nom: p.name, taille: p.size,
       couleur: /^#[0-9A-Fa-f]{6}$/.test(p.color) ? p.color : "#1A1A22",
@@ -380,8 +406,7 @@ async function chargerCatalogue(){
     afficherProduits();
     afficherPanier();
   } catch(error) {
-    PRODUITS = [];
-    $("catalogue-status").textContent = "Le catalogue est momentanément indisponible. Réessayez plus tard ou contactez la boutique.";
+    $("catalogue-status").textContent = "Connexion au catalogue indisponible. Les prix et le stock sont à confirmer auprès de la boutique.";
     afficherFiltres();
     afficherProduits();
     afficherPanier();
@@ -411,7 +436,7 @@ function afficherProduits(){
   );
   $("grille").innerHTML = l.length ? l.map(p => `
   <article class="produit">
-    <div class="visuel">${p.badge ? `<span class="badge">${echapperHTML(p.badge)}</span>` : ""}${urlImageSure(p.image) ? `<img src="${echapperHTML(urlImageSure(p.image))}" alt="${echapperHTML(p.nom)}" loading="lazy">` : dessin(/^#[0-9A-Fa-f]{6}$/.test(p.couleur) ? p.couleur : "#1A1A22")}${urlImageSure(p.image) ? "" : '<span class="photo-note">Photo du modèle à ajouter</span>'}</div>
+    <div class="visuel">${p.badge ? `<span class="badge">${echapperHTML(p.badge)}</span>` : ""}${urlImageSure(p.image) || imageLocaleProduit(p) ? `<img src="${echapperHTML(urlImageSure(p.image) || imageLocaleProduit(p))}" data-fallback="${echapperHTML(urlImageSure(p.image) ? imageLocaleProduit(p) : "")}" data-color="${echapperHTML(/^#[0-9A-Fa-f]{6}$/.test(p.couleur) ? p.couleur : "#1A1A22")}" alt="${echapperHTML(p.nom)}" loading="lazy">` : `${dessin(/^#[0-9A-Fa-f]{6}$/.test(p.couleur) ? p.couleur : "#1A1A22")}<span class="photo-note">Photo du modèle à ajouter</span>`}</div>
     <div class="infos">
       <h3>${echapperHTML(p.nom)}</h3><p class="meta">${echapperHTML(p.taille)} · ${echapperHTML(p.desc)}</p><p class="prix">${p.prix == null ? "Prix à confirmer" : fcfa(p.prix)}</p>
       ${catalogueConnecte ? `<p class="stock-info${p.stock < 1 ? " epuise" : ""}">${p.stock < 1 ? "Épuisé" : `Stock : ${p.stock}`}</p>` : ""}
@@ -421,6 +446,17 @@ function afficherProduits(){
       </div>
     </div>
   </article>`).join("") : `<p class="vide">${catalogueConnecte ? "Aucun produit disponible pour le moment." : "Aucun modèle ne correspond à votre recherche."}</p>`;
+  $("grille").querySelectorAll(".visuel img").forEach(image => image.addEventListener("error", () => {
+    if (image.dataset.fallback) {
+      image.src = image.dataset.fallback;
+      delete image.dataset.fallback;
+      return;
+    }
+    const couleur = /^#[0-9A-Fa-f]{6}$/.test(image.dataset.color) ? image.dataset.color : "#1A1A22";
+    const visuel = image.closest(".visuel");
+    image.remove();
+    visuel.insertAdjacentHTML("beforeend", `${dessin(couleur)}<span class="photo-note">Photo du modèle à ajouter</span>`);
+  }));
   $("grille").querySelectorAll(".ajouter").forEach(b => b.onclick = () => changer(b.dataset.id, 1, true));
 }
 
