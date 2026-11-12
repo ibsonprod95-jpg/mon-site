@@ -177,7 +177,9 @@ dl{margin:0;display:grid;grid-template-columns:130px 1fr;gap:8px 12px}
 dt{color:var(--muted);font-size:.9rem}
 dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 .ref{margin-top:12px;color:var(--muted);font-size:.85rem}
-.color-swatch{display:inline-block;width:1em;height:1em;margin-right:7px;border:1px solid var(--line-strong);border-radius:50%;vertical-align:-.12em}
+.color-swatch{display:inline-block;width:1.7em;height:1.7em;border:1.5px solid var(--line-strong);border-radius:50%;vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.color-swatch+#o-color{margin-left:8px}
+#o-color.is-hex{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .online-submit{margin-top:24px;display:grid;gap:14px}
 .online-submit p{color:var(--muted);font-size:.92rem}
 .privacy-note{padding:14px 16px;border-radius:12px;background:var(--brand-soft);color:var(--text)}
@@ -299,7 +301,7 @@ a.tb-item:hover{text-decoration:underline}
   main.wrap,.wrap,.card,.form-card{display:block;width:auto;max-width:none;margin:0;padding:0;border:0;box-shadow:none;background:none}
   .fiche{border:2px solid #0a6a66;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .fiche-head{background:#0a6a66!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .fiche-body,.fiche-body *{background:#fff!important;color:#111!important}
+  .fiche-body,.fiche-body *:not(.color-swatch){background:#fff!important;color:#111!important}
   .fiche dt{color:#555!important}
 }
 </style>
@@ -1741,6 +1743,13 @@ a.tb-item:hover{text-decoration:underline}
   quick.value=full.value;
   quick.addEventListener("change",function(){full.value=quick.value;full.dispatchEvent(new Event("change",{bubbles:true}))});
   window.addEventListener("aibd-language-changed",function(){quick.value=full.value});
+
+
+  /* Fiche : afficher la couleur seule (pastille), sans le code #RRGGBB */
+  var oc=document.getElementById("o-color");
+  function flagHex(){oc.classList.toggle("is-hex",/^#[0-9a-f]{6}$/i.test(oc.textContent.trim()))}
+  new MutationObserver(flagHex).observe(oc,{childList:true,characterData:true,subtree:true});
+  flagHex();
 
   /* Date : pas de date dans le futur */
   document.getElementById("date-perte").max=new Date().toISOString().slice(0,10);
