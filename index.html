@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Objets et bagages perdus – Dem Dikk</title>
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#075e59">
+<meta name="theme-color" content="#0a6a66">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Bagages AIBD">
+<meta name="apple-mobile-web-app-title" content="Objets perdus">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -189,7 +189,7 @@ dd{margin:0;font-weight:600;overflow-wrap:anywhere}
 .tracking-result[hidden]{display:none}
 .tracking-result h3{margin-bottom:8px}
 .tracking-result code{display:block;margin:8px 0;padding:12px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font:700 1.3rem/1.2 ui-monospace,Consolas,monospace;letter-spacing:.04em;overflow-wrap:anywhere}
-.tracking-section{width:min(760px,100% - 40px);margin:32px auto 0}
+.tracking-section{width:auto;max-width:760px;margin:32px auto 0}
 .tracking-section>p{margin-top:8px;color:var(--muted)}
 .tracking-card{margin-top:18px;padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
 .tracking-card h3{margin-bottom:10px}
@@ -1595,6 +1595,13 @@ a.tb-item:hover{text-decoration:underline}
   };
   var t=window.siteTranslations;
   if(t){Object.keys(add.fr).forEach(function(k){t.fr[k]=add.fr[k];t.en[k]=add.en[k];t.wo[k]=add.fr[k]})}
+
+  /* Textes d'explication mis à jour (le wolof garde sa version actuelle) */
+  var over={
+    fr:{actLost:"J’ai perdu un bagage ou un objet",stepBag:"Votre bagage ou objet",descriptionLabel:"Description du bagage ou de l’objet",heroText:"Un bagage ou un objet égaré dans un bus, un terminus ou une gare ? Déclarez-le en quelques minutes, puis suivez votre dossier avec un code de suivi.",serviceTitle:"Comment ça marche ?",serviceText:"Trois étapes simples pour déclarer votre bagage ou objet perdu et suivre l’avancement de votre dossier.",cardDescribeTitle:"Décrivez votre bagage ou objet",cardDescribeText:"Indiquez ses signes distinctifs : couleur, taille, marque. Une photo aide beaucoup à le reconnaître.",cardJourneyTitle:"Dites où et quand",cardJourneyText:"Choisissez la gare ou le terminus (ou écrivez le lieu), la date et l’heure approximative de la perte.",cardFormTitle:"Envoyez et suivez",cardFormText:"Vous recevez un code de suivi pour consulter l’avancement de votre dossier à tout moment."},
+    en:{actLost:"I lost a bag or an item",stepBag:"Your bag or item",descriptionLabel:"Description of the bag or item",heroText:"Lost a bag or an item on a bus, at a terminus or a station? Report it in a few minutes, then follow your case with a tracking code.",serviceTitle:"How it works",serviceText:"Three simple steps to report your lost bag or item and follow the progress of your case.",cardDescribeTitle:"Describe your bag or item",cardDescribeText:"Give its distinctive features: colour, size, brand. A photo really helps to recognise it.",cardJourneyTitle:"Tell us where and when",cardJourneyText:"Choose the station or terminus (or write the place), the date and the approximate time of the loss.",cardFormTitle:"Send and follow",cardFormText:"You receive a tracking code to check the progress of your case at any time."}
+  };
+  if(t){Object.keys(over.fr).forEach(function(k){t.fr[k]=over.fr[k];t.en[k]=over.en[k]})}
 
   var card=document.getElementById("declare-card");
   var steps=[].slice.call(card.querySelectorAll(".step"));
