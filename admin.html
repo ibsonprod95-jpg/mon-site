@@ -5,434 +5,598 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="referrer" content="no-referrer">
-  <title>Administration des déclarations – AIBD DEM DIKK</title>
+  <meta name="theme-color" content="#0a6a66">
+  <title>Administration – Dem Dikk Objets et bagages perdus</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png">
   <style>
-    :root{font:16px/1.5 system-ui,sans-serif;color:#172321;background:#f2f6f5}
-    body{margin:0;padding:24px}
-    main{max-width:980px;margin:auto}
-    section,.case{background:#fff;border:1px solid #d5e0df;border-radius:12px;padding:20px;margin:16px 0}
-    label{display:block;font-weight:650;margin:12px 0 4px}
-    input,textarea,select,button{font:inherit}
-    input,textarea,select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #879997;border-radius:7px}
-    .link-button{background:transparent;color:#006e68;text-decoration:underline;padding:4px 0}
-    textarea{min-height:76px}
-    button{padding:10px 16px;margin-top:12px;border:0;border-radius:7px;background:#006e68;color:white;font-weight:700;cursor:pointer}
-    button:disabled{opacity:.6;cursor:wait}
-    .case h2{margin-top:0}
-    .case-actions{display:flex;gap:12px;align-items:end;flex-wrap:wrap}
-    .delete-button{background:#a32626}
-    .color-swatch{display:inline-block;width:1em;height:1em;margin-right:7px;border:1px solid #879997;border-radius:50%;vertical-align:-.1em}
-    .case-actions label{flex:1;min-width:220px}
-    .photo-list{display:flex;gap:12px;flex-wrap:wrap}
-    .photo-list img{max-width:260px;max-height:240px;object-fit:contain}
-    [role=status]{min-height:1.5em}
-    .muted{color:#4d5c59}
-    @media(max-width:600px){body{padding:14px}.case-actions{display:block}}
+    :root{
+      --logo:url(data:image/png;base64,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);
+      --brand:#0a6a66;--brand-strong:#064e4b;--brand-soft:#e5f1f0;--accent:#ffdd00;
+      --bg:#f3f6f5;--surface:#fff;--text:#16302d;--muted:#566b67;--line:#dbe4e2;--line-strong:#b8c7c4;
+      --danger:#b3261e;--danger-soft:#fdeceb;
+      --s-received:#1d4f8c;--s-received-bg:#e6eefa;
+      --s-searching:#8a5a00;--s-searching-bg:#fff3d6;
+      --s-found:#176b3a;--s-found-bg:#e3f5ea;
+      --s-closed:#4d5c59;--s-closed-bg:#eceff0;
+      --shadow:0 1px 2px rgba(16,40,37,.05),0 8px 24px rgba(16,40,37,.07);
+      color-scheme:light;
+    }
+    *{box-sizing:border-box}
+    html{scroll-padding-top:90px}
+    body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    h1,h2,h3,p{margin:0}
+    button,input,select,textarea{font:inherit;color:inherit}
+    button{cursor:pointer}
+    :focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:6px}
+    [hidden]{display:none!important}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .muted{color:var(--muted)}
+    .logo{display:inline-block;flex:none;width:40px;height:40px;border-radius:9px;background:var(--logo) center/contain no-repeat}
+
+    /* Boutons et champs */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 16px;border:1.5px solid var(--line-strong);border-radius:9px;background:var(--surface);color:var(--text);font-weight:650;text-decoration:none;white-space:nowrap}
+    .btn:hover{border-color:var(--brand);color:var(--brand)}
+    .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+    .btn.primary:hover{background:var(--brand-strong);border-color:var(--brand-strong);color:#fff}
+    .btn.danger{border-color:var(--danger);color:var(--danger)}
+    .btn.danger:hover{background:var(--danger);color:#fff}
+    .btn.solid-danger{background:var(--danger);border-color:var(--danger);color:#fff}
+    .btn.small{min-height:36px;padding:0 12px;font-size:.9rem}
+    .btn:disabled{opacity:.55;cursor:wait}
+    .link{background:none;border:0;padding:6px 0;color:var(--brand);text-decoration:underline;font-weight:600}
+    .field{display:grid;gap:6px;margin-top:16px}
+    .field>label,.field>span.l{font-weight:650;font-size:.92rem}
+    input[type=email],input[type=password],input[type=search],input[type=text],select,textarea{width:100%;min-height:44px;padding:10px 12px;border:1.5px solid var(--line-strong);border-radius:9px;background:var(--surface)}
+    textarea{min-height:92px;resize:vertical}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px rgba(10,106,102,.18)}
+    .status-line{min-height:1.4em;margin-top:12px;color:var(--muted);font-size:.92rem}
+    .status-line.err{color:var(--danger)}
+
+    /* Connexion */
+    .login-wrap{min-height:100dvh;display:grid;place-items:center;padding:24px}
+    .login-card{width:min(440px,100%);padding:32px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+    .login-brand{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+    .login-brand strong{display:block;font-size:1.15rem;line-height:1.2}
+    .login-brand span{color:var(--muted);font-size:.9rem}
+    .login-card h2{margin-top:22px;font-size:1.2rem}
+    .login-card .btn.primary{width:100%;margin-top:20px}
+    .login-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+
+    /* En-tête */
+    .topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-top:3px solid var(--accent);border-bottom:1px solid var(--line)}
+    .topbar-in{width:min(1240px,100% - 32px);margin-inline:auto;min-height:64px;display:flex;align-items:center;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px;margin-right:auto;min-width:0}
+    .brand strong{display:block;line-height:1.2}
+    .brand span{display:block;color:var(--muted);font-size:.82rem;line-height:1.2}
+    .who{color:var(--muted);font-size:.85rem;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    main{width:min(1240px,100% - 32px);margin:24px auto 64px}
+
+    /* Compteurs */
+    .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+    .kpi{display:grid;gap:2px;padding:16px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface);text-align:left;box-shadow:var(--shadow)}
+    .kpi:hover{border-color:var(--line-strong)}
+    .kpi[aria-pressed="true"]{border-color:var(--brand);box-shadow:0 0 0 3px rgba(10,106,102,.15)}
+    .kpi .n{font-size:1.9rem;font-weight:750;line-height:1.1;letter-spacing:-.02em}
+    .kpi .t{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:650;font-size:.9rem}
+    .kpi .s{color:var(--muted);font-size:.8rem}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}
+    .dot.received{background:var(--s-received)}.dot.searching{background:#d99100}.dot.found{background:var(--s-found)}.dot.closed{background:#8b9996}
+
+    /* Barre d'outils */
+    .toolbar{display:grid;grid-template-columns:minmax(220px,2fr) 1fr 1fr 1fr auto auto;gap:10px;margin-top:18px;align-items:end}
+    .toolbar .field{margin:0}
+    .toolbar .field>label{font-size:.8rem;color:var(--muted)}
+    .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin:14px 2px 8px;color:var(--muted);font-size:.88rem}
+
+    /* Liste */
+    .list-head,.row{display:grid;grid-template-columns:1.1fr 1.3fr 1.6fr 1.4fr 1fr 24px;gap:14px;align-items:center}
+    .list-head{padding:0 18px 8px;color:var(--muted);font-size:.78rem;font-weight:700}
+    .rows{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+    .row{width:100%;padding:14px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:left}
+    .row:hover{border-color:var(--brand);box-shadow:var(--shadow)}
+    .row .code{font-weight:750;letter-spacing:.01em}
+    .row small{display:block;color:var(--muted);font-size:.82rem}
+    .row .cell{min-width:0;overflow-wrap:anywhere}
+    .row .chev{color:var(--muted);width:20px;height:20px}
+    .tag{display:inline-block;margin-top:3px;padding:1px 8px;border-radius:999px;background:var(--brand-soft);color:var(--brand-strong);font-size:.75rem;font-weight:700}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:.82rem;font-weight:700;white-space:nowrap}
+    .badge.received{background:var(--s-received-bg);color:var(--s-received)}
+    .badge.searching{background:var(--s-searching-bg);color:var(--s-searching)}
+    .badge.found{background:var(--s-found-bg);color:var(--s-found)}
+    .badge.closed{background:var(--s-closed-bg);color:var(--s-closed)}
+    .swatch{display:inline-block;width:.95em;height:.95em;margin-right:6px;border:1.5px solid var(--line-strong);border-radius:50%;vertical-align:-.12em}
+    .empty{padding:40px 16px;border:1.5px dashed var(--line-strong);border-radius:14px;text-align:center;color:var(--muted)}
+    .more{display:flex;justify-content:center;margin-top:16px}
+
+    /* Fiche détaillée */
+    .overlay{position:fixed;inset:0;z-index:40;background:rgba(8,28,26,.45)}
+    .drawer{position:fixed;top:0;right:0;bottom:0;z-index:41;width:min(560px,100%);overflow-y:auto;background:var(--surface);box-shadow:-16px 0 48px rgba(0,0,0,.22)}
+    .drawer-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:16px 22px;background:var(--surface);border-bottom:1px solid var(--line)}
+    .drawer-head h2{font-size:1.25rem;letter-spacing:.01em}
+    .drawer-head .badge{margin-left:auto}
+    .drawer-body{padding:6px 22px 28px}
+    .sec{padding:18px 0;border-bottom:1px solid var(--line)}
+    .sec:last-child{border-bottom:0}
+    .sec h3{margin-bottom:10px;color:var(--muted);font-size:.78rem;letter-spacing:.02em}
+    .kv{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;margin:0}
+    .kv dt{color:var(--muted)}
+    .kv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+    .contact{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .photos{display:flex;flex-wrap:wrap;gap:10px}
+    .photo-box{display:grid;gap:6px}
+    .photo-box img{display:block;max-width:100%;max-height:260px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+    .danger-zone{margin-top:6px}
+    dialog{width:min(420px,calc(100% - 32px));padding:24px;border:0;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.3)}
+    dialog::backdrop{background:rgba(8,28,26,.55)}
+    dialog h3{font-size:1.15rem}
+    dialog p{margin-top:8px;color:var(--muted)}
+    .dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+
+    @media(max-width:1000px){
+      .kpis{grid-template-columns:repeat(3,1fr)}
+      .toolbar{grid-template-columns:1fr 1fr}
+      .toolbar .field:first-child{grid-column:1/-1}
+      .list-head{display:none}
+      .row{grid-template-columns:1fr auto;grid-template-areas:"code status" "owner owner" "bag bag" "where where";gap:6px 12px}
+      .row .chev{display:none}
+      .c-code{grid-area:code}.c-owner{grid-area:owner}.c-bag{grid-area:bag}.c-where{grid-area:where}.c-status{grid-area:status;justify-self:end}
+      .who{display:none}
+    }
+    @media(max-width:560px){
+      .kpis{grid-template-columns:1fr 1fr}
+      .kpi:first-child{grid-column:1/-1}
+      .brand div span{display:none}
+      .kv{grid-template-columns:1fr;gap:0}.kv dt{margin-top:10px}
+      .drawer-body,.drawer-head{padding-inline:16px}
+    }
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
   </style>
 </head>
 <body>
-  <main>
-    <h1>Gestion des déclarations</h1>
-    <p class="muted">Espace réservé au compte de service autorisé. Les données consultées ici sont confidentielles.</p>
-    <section id="login-panel">
-      <h2>Connexion du service</h2>
+  <div class="login-wrap" id="login-panel">
+    <div class="login-card">
+      <div class="login-brand"><span class="logo" role="img" aria-label="Logo Dem Dikk"></span><div><strong>Dem Dikk</strong><span>Objets et bagages perdus</span></div></div>
       <form id="login-form">
-        <label for="email">Adresse e-mail</label>
-        <input id="email" type="email" autocomplete="username" required>
-        <label for="password">Mot de passe</label>
-        <input id="password" type="password" autocomplete="current-password" required>
-        <button id="login-button" type="submit">Se connecter</button>
+        <h2>Connexion du service</h2>
+        <div class="field"><label for="email">Adresse e-mail</label>
+          <input id="email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="password">Mot de passe</label>
+          <input id="password" type="password" autocomplete="current-password" required></div>
+        <button id="login-button" class="btn primary" type="submit">Se connecter</button>
       </form>
-      <button id="forgot-password-button" type="button" class="link-button">Mot de passe oublié ?</button>
+      <button id="forgot-password-button" type="button" class="link">Mot de passe oublié ?</button>
       <form id="recovery-form" hidden>
         <h2>Réinitialiser le mot de passe</h2>
-        <p class="muted">Nous enverrons un lien à l’adresse indiquée. Ouvre-le pour choisir un nouveau mot de passe.</p>
-        <label for="recovery-email">Adresse e-mail du compte</label>
-        <input id="recovery-email" type="email" autocomplete="email" required>
-        <button id="recovery-button" type="submit">Envoyer le lien</button>
-        <button id="back-to-login-button" type="button" class="link-button">Retour à la connexion</button>
+        <p class="muted" style="margin-top:6px">Nous enverrons un lien à l’adresse indiquée. Ouvre-le pour choisir un nouveau mot de passe.</p>
+        <div class="field"><label for="recovery-email">Adresse e-mail du compte</label>
+          <input id="recovery-email" type="email" autocomplete="email" required></div>
+        <button id="recovery-button" class="btn primary" type="submit">Envoyer le lien</button>
+        <button id="back-to-login-button" type="button" class="link">Retour à la connexion</button>
       </form>
       <form id="new-password-form" hidden>
         <h2>Choisir un nouveau mot de passe</h2>
-        <label for="new-password">Nouveau mot de passe</label>
-        <input id="new-password" type="password" autocomplete="new-password" minlength="8" required>
-        <label for="confirm-password">Confirmer le mot de passe</label>
-        <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required>
-        <button id="save-password-button" type="submit">Enregistrer le nouveau mot de passe</button>
+        <div class="field"><label for="new-password">Nouveau mot de passe</label>
+          <input id="new-password" type="password" autocomplete="new-password" minlength="8" required></div>
+        <div class="field"><label for="confirm-password">Confirmer le mot de passe</label>
+          <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required></div>
+        <button id="save-password-button" class="btn primary" type="submit">Enregistrer le nouveau mot de passe</button>
       </form>
-    </section>
-    <section id="dashboard" hidden>
-      <div class="case-actions">
-        <button id="refresh-button" type="button">Actualiser les dossiers</button>
-        <button id="logout-button" type="button">Se déconnecter</button>
-      </div>
-      <p id="dashboard-status" role="status" aria-live="polite"></p>
-      <div class="case-actions">
-        <label>Rechercher (code, nom ou téléphone)
-          <input id="search-input" type="search" autocomplete="off" placeholder="Ex. : nom, 77 123 45 67 ou code de suivi">
-        </label>
-        <label>Statut
-          <select id="status-filter">
-            <option value="">Tous les statuts</option>
-            <option value="received">Reçu</option>
-            <option value="searching">Recherche en cours</option>
-            <option value="found">Bagage retrouvé</option>
-            <option value="closed">Dossier clôturé</option>
-          </select>
-        </label>
-      </div>
-      <p id="results-count" class="muted" role="status" aria-live="polite"></p>
-      <div id="cases"></div>
-    </section>
-    <p id="login-status" role="status" aria-live="polite"></p>
-  </main>
+      <p id="login-status" class="status-line" role="status" aria-live="polite"></p>
+      <p class="login-note">Espace réservé au compte de service autorisé. Les données consultées ici sont confidentielles.</p>
+    </div>
+  </div>
+
+  <div id="dashboard" hidden>
+    <header class="topbar"><div class="topbar-in">
+      <div class="brand"><span class="logo" role="img" aria-label="Logo Dem Dikk"></span><div><strong>Dem Dikk</strong><span>Administration · Objets et bagages perdus</span></div></div>
+      <span class="who" id="who"></span>
+      <button id="logout-button" class="btn small" type="button">Se déconnecter</button>
+    </div></header>
+    <main>
+      <section class="kpis" id="kpis" aria-label="Filtrer par statut"></section>
+      <section class="toolbar" aria-label="Recherche et filtres">
+        <div class="field"><label for="search-input">Rechercher</label>
+          <input id="search-input" type="search" autocomplete="off" placeholder="Code, nom, téléphone, lieu…"></div>
+        <div class="field"><label for="type-filter">Type</label>
+          <select id="type-filter"><option value="">Tous les types</option><option value="lost">Bagage ou objet perdu</option><option value="confused">Bagage confondu</option></select></div>
+        <div class="field"><label for="place-filter">Lieu</label>
+          <select id="place-filter"><option value="">Tous les lieux</option></select></div>
+        <div class="field"><label for="sort-select">Tri</label>
+          <select id="sort-select"><option value="new">Plus récents d’abord</option><option value="old">Plus anciens d’abord</option></select></div>
+        <button id="export-button" class="btn" type="button">Exporter (Excel)</button>
+        <button id="refresh-button" class="btn primary" type="button">Actualiser</button>
+      </section>
+      <div class="meta"><span id="results-count" role="status" aria-live="polite"></span><span id="dashboard-status" role="status" aria-live="polite"></span></div>
+      <div class="list-head" aria-hidden="true"><span>Dossier</span><span>Propriétaire</span><span>Bagage</span><span>Perte</span><span>Statut</span><span></span></div>
+      <ul class="rows" id="cases"></ul>
+      <div class="more"><button id="more-button" class="btn" type="button" hidden>Afficher plus</button></div>
+    </main>
+  </div>
+
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+    <div class="drawer-head"><h2 id="drawer-title"></h2><span id="drawer-badge" class="badge"></span><button id="drawer-close" class="btn small" type="button" aria-label="Fermer la fiche">Fermer</button></div>
+    <div class="drawer-body" id="drawer-body"></div>
+  </aside>
+
+  <dialog id="delete-dialog" aria-labelledby="delete-title">
+    <h3 id="delete-title">Supprimer ce dossier ?</h3>
+    <p id="delete-text">Cette action est définitive : le dossier et ses photos seront effacés.</p>
+    <div class="dialog-actions"><button id="delete-cancel" class="btn" type="button">Annuler</button><button id="delete-confirm" class="btn solid-danger" type="button">Supprimer</button></div>
+  </dialog>
+
   <script>
-    (function(){
-      var token=null;
-      var loginPanel=document.getElementById("login-panel");
-      var dashboard=document.getElementById("dashboard");
-      var loginForm=document.getElementById("login-form");
-      var recoveryForm=document.getElementById("recovery-form");
-      var newPasswordForm=document.getElementById("new-password-form");
-      var loginStatus=document.getElementById("login-status");
-      var dashboardStatus=document.getElementById("dashboard-status");
-      var casesElement=document.getElementById("cases");
-      var searchInput=document.getElementById("search-input");
-      var statusFilter=document.getElementById("status-filter");
-      var resultsCount=document.getElementById("results-count");
-      var allRecords=[];
-      var loginButton=document.getElementById("login-button");
-      var refreshButton=document.getElementById("refresh-button");
+  (function(){
+    "use strict";
+    var token=null,adminEmail="",allRecords=[],activeId=null,lastFocus=null,shown=25,statusKey="";
+    var photoCache={};
+    var declarationFunctionUrl="https://yivapnpnitcrwcyuqqze.supabase.co/functions/v1/declarations";
+    var declarationPublishableKey="sb_publishable_L6V88nAo_rLmAqs3mIIK0A__-i7YuKD";
+    var authUrl="https://yivapnpnitcrwcyuqqze.supabase.co/auth/v1";
+    var recoveryToken="";
+    var STATUS=[["received","Reçu"],["searching","Recherche en cours"],["found","Bagage retrouvé"],["closed","Dossier clôturé"]];
+    var $=function(id){return document.getElementById(id)};
+    var loginPanel=$("login-panel"),dashboard=$("dashboard"),loginForm=$("login-form"),recoveryForm=$("recovery-form"),newPasswordForm=$("new-password-form");
+    var loginStatus=$("login-status"),dashStatus=$("dashboard-status"),casesEl=$("cases"),drawer=$("drawer"),overlay=$("overlay"),drawerBody=$("drawer-body");
 
-      var declarationFunctionUrl="https://yivapnpnitcrwcyuqqze.supabase.co/functions/v1/declarations";
-      var declarationPublishableKey="sb_publishable_L6V88nAo_rLmAqs3mIIK0A__-i7YuKD";
-      var authUrl="https://yivapnpnitcrwcyuqqze.supabase.co/auth/v1";
-      var recoveryToken="";
-
-      function showLoginMode(mode){
-        loginForm.hidden=mode!=="login";
-        recoveryForm.hidden=mode!=="recovery";
-        newPasswordForm.hidden=mode!=="new-password";
-        document.getElementById("forgot-password-button").hidden=mode!=="login";
-        loginStatus.textContent="";
-      }
-
-      function checkRecoveryLink(){
-        var params=new URLSearchParams(window.location.hash.slice(1));
-        var linkType=params.get("type");
-        if((linkType==="recovery"||linkType==="invite")&&params.get("access_token")){
-          recoveryToken=params.get("access_token");
-          showLoginMode("new-password");
-          loginStatus.textContent=linkType==="invite"
-            ?"L’invitation est valide. Choisis maintenant un mot de passe pour ton compte."
-            :"Le lien est valide. Choisis maintenant un nouveau mot de passe.";
-          window.history.replaceState(null,"",window.location.pathname+"?recovery=1");
-          return true;
-        }
-        if(window.location.search.indexOf("recovery=1")!==-1){
-          showLoginMode("new-password");
-          loginStatus.textContent="Le lien d’invitation ou de réinitialisation est invalide ou expiré. Demande-en un nouveau.";
-          return true;
-        }
-        return false;
-      }
-
-      document.getElementById("forgot-password-button").addEventListener("click",function(){
-        document.getElementById("recovery-email").value=document.getElementById("email").value.trim();
-        showLoginMode("recovery");
+    function el(tag,attrs,kids){
+      var e=document.createElement(tag);
+      if(attrs)Object.keys(attrs).forEach(function(k){
+        if(k==="class")e.className=attrs[k];
+        else if(k==="text")e.textContent=attrs[k];
+        else e.setAttribute(k,attrs[k]);
       });
-      document.getElementById("back-to-login-button").addEventListener("click",function(){showLoginMode("login")});
-      recoveryForm.addEventListener("submit",async function(event){
-        event.preventDefault();
-        var button=document.getElementById("recovery-button");
-        button.disabled=true;
-        loginStatus.textContent="Envoi du lien en cours…";
-        try{
-          var redirectTo=window.location.origin+window.location.pathname;
-          var response=await fetch(authUrl+"/recover?redirect_to="+encodeURIComponent(redirectTo),{
-            method:"POST",
-            headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
-            body:JSON.stringify({email:document.getElementById("recovery-email").value.trim()})
-          });
-          if(!response.ok){
-            var result=await response.json().catch(function(){return {}});
-            throw new Error(result.msg||result.message||"Impossible d’envoyer le lien. Vérifie les réglages de redirection Supabase.");
-          }
-          loginStatus.textContent="Si l’adresse correspond au compte, un lien vient d’être envoyé. Vérifie aussi les courriers indésirables.";
-        }catch(error){loginStatus.textContent=error.message||"Impossible d’envoyer le lien."}
-        finally{button.disabled=false}
-      });
-      newPasswordForm.addEventListener("submit",async function(event){
-        event.preventDefault();
-        var password=document.getElementById("new-password").value;
-        if(password!==document.getElementById("confirm-password").value){
-          loginStatus.textContent="Les deux mots de passe ne correspondent pas.";
-          return;
-        }
-        var button=document.getElementById("save-password-button");
-        button.disabled=true;
-        loginStatus.textContent="Enregistrement du mot de passe…";
-        try{
-          var response=await fetch(authUrl+"/user",{
-            method:"PUT",
-            headers:{"Content-Type":"application/json","apikey":declarationPublishableKey,"Authorization":"Bearer "+recoveryToken},
-            body:JSON.stringify({password:password})
-          });
+      (kids||[]).forEach(function(c){if(c!=null)e.appendChild(typeof c==="string"?document.createTextNode(c):c)});
+      return e;
+    }
+    function statusLabel(s){for(var i=0;i<STATUS.length;i++)if(STATUS[i][0]===s)return STATUS[i][1];return s||"—"}
+    function badge(s){return el("span",{class:"badge "+(s||""),text:statusLabel(s)})}
+    function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim()}
+    function digits(v){return String(v||"").replace(/\D/g,"")}
+    function fmtDate(d){return /^\d{4}-\d{2}-\d{2}$/.test(d||"")?d.split("-").reverse().join("/"):(d||"—")}
+    function fmtTime(t){var m=/^(\d{2}):(\d{2})$/.exec(t||"");return m?m[1]+"h"+m[2]:(t||"—")}
+    function fmtStamp(d){var x=new Date(d);return isNaN(x)?"—":x.toLocaleString("fr-FR")}
+    function colorNode(c){
+      var s=el("span");
+      if(/^#[0-9a-f]{6}$/i.test(c||"")){var d=el("span",{class:"swatch","aria-hidden":"true"});d.style.backgroundColor=c;s.appendChild(d);s.appendChild(el("span",{class:"sr",text:"Couleur "+c}));}
+      else s.textContent=c||"Non précisée";
+      return s;
+    }
+
+    /* ---------- Connexion (inchangé) ---------- */
+    function showLoginMode(mode){
+      loginForm.hidden=mode!=="login";recoveryForm.hidden=mode!=="recovery";newPasswordForm.hidden=mode!=="new-password";
+      $("forgot-password-button").hidden=mode!=="login";
+      setLogin("");
+    }
+    function setLogin(text,err){loginStatus.textContent=text;loginStatus.className="status-line"+(err?" err":"")}
+    function checkRecoveryLink(){
+      var params=new URLSearchParams(window.location.hash.slice(1));
+      var linkType=params.get("type");
+      if((linkType==="recovery"||linkType==="invite")&&params.get("access_token")){
+        recoveryToken=params.get("access_token");
+        showLoginMode("new-password");
+        setLogin(linkType==="invite"?"L’invitation est valide. Choisis maintenant un mot de passe pour ton compte.":"Le lien est valide. Choisis maintenant un nouveau mot de passe.");
+        window.history.replaceState(null,"",window.location.pathname+"?recovery=1");
+        return true;
+      }
+      if(window.location.search.indexOf("recovery=1")!==-1){
+        showLoginMode("new-password");
+        setLogin("Le lien d’invitation ou de réinitialisation est invalide ou expiré. Demande-en un nouveau.",true);
+        return true;
+      }
+      return false;
+    }
+    $("forgot-password-button").addEventListener("click",function(){
+      $("recovery-email").value=$("email").value.trim();
+      showLoginMode("recovery");
+    });
+    $("back-to-login-button").addEventListener("click",function(){showLoginMode("login")});
+    recoveryForm.addEventListener("submit",async function(event){
+      event.preventDefault();
+      var button=$("recovery-button");button.disabled=true;
+      setLogin("Envoi du lien en cours…");
+      try{
+        var redirectTo=window.location.origin+window.location.pathname;
+        var response=await fetch(authUrl+"/recover?redirect_to="+encodeURIComponent(redirectTo),{
+          method:"POST",headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
+          body:JSON.stringify({email:$("recovery-email").value.trim()})
+        });
+        if(!response.ok){
           var result=await response.json().catch(function(){return {}});
-          if(!response.ok)throw new Error(result.msg||result.message||"Le mot de passe n’a pas pu être modifié.");
-          recoveryToken="";
-          newPasswordForm.reset();
-          window.history.replaceState(null,"",window.location.pathname);
-          showLoginMode("login");
-          loginStatus.textContent="Mot de passe mis à jour. Tu peux maintenant te connecter.";
-        }catch(error){loginStatus.textContent=error.message||"Le mot de passe n’a pas pu être modifié."}
-        finally{button.disabled=false}
-      });
-
-      async function api(body){
-        var response=await fetch(declarationFunctionUrl,{
-          method:"POST",
-          headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
-          body:JSON.stringify(body)
-        });
-        var result;
-        try{result=await response.json()}catch(error){throw new Error("Réponse invalide du serveur.")}
-        if(!response.ok)throw new Error(result&&result.error||"La requête a échoué.");
-        return result;
-      }
-
-      function showDashboard(){
-        loginPanel.hidden=Boolean(token);
-        dashboard.hidden=!token;
-        document.getElementById("login-status").textContent="";
-      }
-
-      function textValue(label,value){
-        var paragraph=document.createElement("p");
-        var strong=document.createElement("strong");
-        strong.textContent=label+": ";
-        paragraph.appendChild(strong);
-        paragraph.appendChild(document.createTextNode(value||"—"));
-        return paragraph;
-      }
-
-      function addPhotoButton(container,record,kind,label){
-        var button=document.createElement("button");
-        button.type="button";
-        button.textContent=label;
-        button.addEventListener("click",async function(){
-          button.disabled=true;
-          dashboardStatus.textContent="Chargement de la photo…";
-          try{
-            var result=await api({action:"admin-photo",token:token,id:record.id,kind:kind});
-            var photoUrl=new URL(result.url);
-            if(photoUrl.protocol!=="https:")throw new Error("Adresse de photo invalide.");
-            var image=document.createElement("img");
-            image.src=photoUrl.href;
-            image.alt=label;
-            image.loading="lazy";
-            var link=document.createElement("a");
-            link.href=photoUrl.href;
-            link.target="_blank";
-            link.rel="noopener noreferrer";
-            link.appendChild(image);
-            container.appendChild(link);
-            dashboardStatus.textContent="";
-          }catch(error){
-            dashboardStatus.textContent=error.message||"Impossible de charger la photo.";
-          }finally{
-            button.disabled=false;
-          }
-        });
-        container.appendChild(button);
-      }
-
-      function normalize(value){
-        return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
-      }
-
-      function digitsOnly(value){return String(value||"").replace(/\D/g,"")}
-
-      function applyFilters(){
-        var query=normalize(searchInput.value);
-        var queryDigits=digitsOnly(searchInput.value);
-        var status=statusFilter.value;
-        var filtered=allRecords.filter(function(record){
-          if(status&&record.status!==status)return false;
-          if(!query)return true;
-          var text=normalize([record.tracking_code,record.owner_name,record.phone,record.description,record.taken_description,record.color,record.lost_location,record.bus_number].join(" "));
-          if(text.indexOf(query)!==-1)return true;
-          return queryDigits.length>=3&&digitsOnly(record.phone).indexOf(queryDigits)!==-1;
-        });
-        renderCases(filtered);
-        resultsCount.textContent=allRecords.length
-          ?(filtered.length===allRecords.length?allRecords.length+" dossier(s)":filtered.length+" dossier(s) sur "+allRecords.length)
-          :"";
-      }
-
-      searchInput.addEventListener("input",applyFilters);
-      statusFilter.addEventListener("change",applyFilters);
-
-      function renderCases(records){
-        casesElement.replaceChildren();
-        if(!records.length){
-          casesElement.textContent=allRecords.length?"Aucun dossier ne correspond à la recherche.":"Aucune déclaration enregistrée.";
-          return;
+          throw new Error(result.msg||result.message||"Impossible d’envoyer le lien. Vérifie les réglages de redirection Supabase.");
         }
-        records.forEach(function(record){
-          var card=document.createElement("article");
-          card.className="case";
-          var title=document.createElement("h2");
-          title.textContent=record.tracking_code;
-          card.appendChild(title);
-          if(record.declaration_type==="confused")card.appendChild(textValue("Type de signalement","Bagage confondu"));
-          card.appendChild(textValue("Propriétaire",record.owner_name));
-          card.appendChild(textValue("Téléphone",record.phone));
-          card.appendChild(textValue("Description",record.description));
-          if(record.taken_description)card.appendChild(textValue("Bagage pris par erreur",record.taken_description));
-          var colorParagraph=document.createElement("p");
-          var colorLabel=document.createElement("strong");
-          colorLabel.textContent="Couleur: ";
-          colorParagraph.appendChild(colorLabel);
-          if(/^#[0-9a-f]{6}$/i.test(record.color||"")){
-            var colorSwatch=document.createElement("span");
-            colorSwatch.className="color-swatch";
-            colorSwatch.style.backgroundColor=record.color;
-            colorSwatch.setAttribute("aria-hidden","true");
-            colorParagraph.appendChild(colorSwatch);
-          }
-          colorParagraph.appendChild(document.createTextNode(record.color||"Non précisée"));
-          card.appendChild(colorParagraph);
-          card.appendChild(textValue("Lieu",record.lost_location));
-          card.appendChild(textValue("Date de perte",record.lost_date));
-          card.appendChild(textValue("Créneau horaire",record.lost_time_slot));
-          card.appendChild(textValue("Bus",record.bus_number));
-          card.appendChild(textValue("Reçu le",new Date(record.created_at).toLocaleString("fr-FR")));
-
-          var controls=document.createElement("div");
-          controls.className="case-actions";
-          var statusLabel=document.createElement("label");
-          statusLabel.textContent="Statut";
-          var statusSelect=document.createElement("select");
-          [["received","Reçu"],["searching","Recherche en cours"],["found","Bagage retrouvé"],["closed","Dossier clôturé"]].forEach(function(optionData){
-            var option=document.createElement("option");
-            option.value=optionData[0];
-            option.textContent=optionData[1];
-            statusSelect.appendChild(option);
-          });
-          statusSelect.value=record.status;
-          statusLabel.appendChild(statusSelect);
-          var noteLabel=document.createElement("label");
-          noteLabel.textContent="Message visible par le client (facultatif)";
-          var note=document.createElement("textarea");
-          note.maxLength=500;
-          note.placeholder="N’inscrivez aucune donnée personnelle dans ce message.";
-          noteLabel.appendChild(note);
-          var saveButton=document.createElement("button");
-          saveButton.type="button";
-          saveButton.textContent="Enregistrer le statut";
-          saveButton.addEventListener("click",async function(){
-            saveButton.disabled=true;
-            dashboardStatus.textContent="Enregistrement du statut…";
-            try{
-              await api({action:"admin-update",token:token,id:record.id,status:statusSelect.value,note:note.value});
-              dashboardStatus.textContent="Statut mis à jour.";
-              note.value="";
-              await loadCases();
-            }catch(error){
-              dashboardStatus.textContent=error.message||"Impossible de mettre à jour le statut.";
-            }finally{
-              saveButton.disabled=false;
-            }
-          });
-          controls.appendChild(statusLabel);
-          controls.appendChild(noteLabel);
-          controls.appendChild(saveButton);
-          var deleteButton=document.createElement("button");
-          deleteButton.type="button";
-          deleteButton.className="delete-button";
-          deleteButton.textContent="Supprimer le dossier";
-          deleteButton.addEventListener("click",async function(){
-            if(!window.confirm("Voulez-vous vraiment supprimer ce dossier ? Cette action est définitive."))return;
-            deleteButton.disabled=true;
-            dashboardStatus.textContent="Suppression du dossier…";
-            try{
-              await api({action:"admin-delete",token:token,id:record.id});
-              dashboardStatus.textContent="Dossier supprimé.";
-              await loadCases();
-            }catch(error){
-              dashboardStatus.textContent=error.message||"Impossible de supprimer le dossier.";
-            }finally{
-              deleteButton.disabled=false;
-            }
-          });
-          controls.appendChild(deleteButton);
-          card.appendChild(controls);
-          var photoButtons=document.createElement("div");
-          photoButtons.className="case-actions";
-          if(record.photo_path)addPhotoButton(photoButtons,record,"baggage","Voir la photo du bagage déclaré");
-          if(record.taken_photo_path)addPhotoButton(photoButtons,record,"taken-baggage","Voir la photo du bagage pris par erreur");
-          if(record.ticket_path)addPhotoButton(photoButtons,record,"ticket","Voir la photo du ticket");
-          card.appendChild(photoButtons);
-          casesElement.appendChild(card);
+        setLogin("Si l’adresse correspond au compte, un lien vient d’être envoyé. Vérifie aussi les courriers indésirables.");
+      }catch(error){setLogin(error.message||"Impossible d’envoyer le lien.",true)}
+      finally{button.disabled=false}
+    });
+    newPasswordForm.addEventListener("submit",async function(event){
+      event.preventDefault();
+      var password=$("new-password").value;
+      if(password!==$("confirm-password").value){setLogin("Les deux mots de passe ne correspondent pas.",true);return}
+      var button=$("save-password-button");button.disabled=true;
+      setLogin("Enregistrement du mot de passe…");
+      try{
+        var response=await fetch(authUrl+"/user",{
+          method:"PUT",
+          headers:{"Content-Type":"application/json","apikey":declarationPublishableKey,"Authorization":"Bearer "+recoveryToken},
+          body:JSON.stringify({password:password})
         });
-      }
+        var result=await response.json().catch(function(){return {}});
+        if(!response.ok)throw new Error(result.msg||result.message||"Le mot de passe n’a pas pu être modifié.");
+        recoveryToken="";newPasswordForm.reset();
+        window.history.replaceState(null,"",window.location.pathname);
+        showLoginMode("login");
+        setLogin("Mot de passe mis à jour. Tu peux maintenant te connecter.");
+      }catch(error){setLogin(error.message||"Le mot de passe n’a pas pu être modifié.",true)}
+      finally{button.disabled=false}
+    });
 
-      async function loadCases(){
-        refreshButton.disabled=true;
-        dashboardStatus.textContent="Chargement des dossiers…";
+    async function api(body){
+      var response=await fetch(declarationFunctionUrl,{
+        method:"POST",headers:{"Content-Type":"application/json","apikey":declarationPublishableKey},
+        body:JSON.stringify(body)
+      });
+      var result;
+      try{result=await response.json()}catch(error){throw new Error("Réponse invalide du serveur.")}
+      if(!response.ok)throw new Error(result&&result.error||"La requête a échoué.");
+      return result;
+    }
+    function showDashboard(){
+      loginPanel.hidden=Boolean(token);dashboard.hidden=!token;
+      $("who").textContent=token&&adminEmail?"Connecté : "+adminEmail:"";
+    }
+    function setDash(text,err){dashStatus.textContent=text;dashStatus.style.color=err?"var(--danger)":""}
+
+    /* ---------- Compteurs et filtres ---------- */
+    function counts(){
+      var c={all:allRecords.length,received:0,searching:0,found:0,closed:0,today:0};
+      var today=new Date().toDateString();
+      allRecords.forEach(function(r){
+        if(c[r.status]!=null)c[r.status]++;
+        if(new Date(r.created_at).toDateString()===today)c.today++;
+      });
+      return c;
+    }
+    function renderKpis(){
+      var c=counts(),box=$("kpis");box.replaceChildren();
+      var items=[["","Tous les dossiers",c.all,c.today+" aujourd’hui"]].concat(STATUS.map(function(s){return [s[0],s[1],c[s[0]],""]}));
+      items.forEach(function(it){
+        var b=el("button",{type:"button",class:"kpi","aria-pressed":String(statusKey===it[0])},[
+          el("span",{class:"t"},[it[0]?el("span",{class:"dot "+it[0]}):null,it[1]]),
+          el("span",{class:"n",text:String(it[2])}),
+          it[3]?el("span",{class:"s",text:it[3]}):null
+        ]);
+        b.addEventListener("click",function(){statusKey=it[0];shown=25;applyFilters()});
+        box.appendChild(b);
+      });
+    }
+    function fillPlaces(){
+      var sel=$("place-filter"),keep=sel.value,set={};
+      allRecords.forEach(function(r){if(r.lost_location)set[r.lost_location]=true});
+      sel.replaceChildren(el("option",{value:"",text:"Tous les lieux"}));
+      Object.keys(set).sort(function(a,b){return a.localeCompare(b,"fr")}).forEach(function(p){sel.appendChild(el("option",{value:p,text:p}))});
+      sel.value=set[keep]?keep:"";
+    }
+    function filtered(){
+      var q=norm($("search-input").value),qd=digits($("search-input").value);
+      var type=$("type-filter").value,place=$("place-filter").value,asc=$("sort-select").value==="old";
+      var list=allRecords.filter(function(r){
+        if(statusKey&&r.status!==statusKey)return false;
+        if(type&&(r.declaration_type||"lost")!==type)return false;
+        if(place&&r.lost_location!==place)return false;
+        if(!q)return true;
+        var text=norm([r.tracking_code,r.owner_name,r.phone,r.description,r.taken_description,r.color,r.lost_location,r.bus_number].join(" "));
+        return text.indexOf(q)!==-1||(qd.length>=3&&digits(r.phone).indexOf(qd)!==-1);
+      });
+      list.sort(function(a,b){var d=new Date(a.created_at)-new Date(b.created_at);return asc?d:-d});
+      return list;
+    }
+    function applyFilters(){
+      renderKpis();
+      var list=filtered();
+      $("results-count").textContent=allRecords.length?(list.length===allRecords.length?allRecords.length+" dossier(s)":list.length+" dossier(s) sur "+allRecords.length):"";
+      renderRows(list);
+    }
+    ["search-input","type-filter","place-filter","sort-select"].forEach(function(id){
+      $(id).addEventListener(id==="search-input"?"input":"change",function(){shown=25;applyFilters()});
+    });
+
+    /* ---------- Liste ---------- */
+    function renderRows(list){
+      casesEl.replaceChildren();
+      $("more-button").hidden=list.length<=shown;
+      if(!list.length){
+        casesEl.appendChild(el("li",{class:"empty",text:allRecords.length?"Aucun dossier ne correspond à la recherche.":"Aucune déclaration enregistrée pour le moment."}));
+        return;
+      }
+      list.slice(0,shown).forEach(function(r){
+        var confused=r.declaration_type==="confused";
+        var chev=document.createElementNS("http://www.w3.org/2000/svg","svg");
+        chev.setAttribute("viewBox","0 0 24 24");chev.setAttribute("class","chev");chev.setAttribute("fill","none");chev.setAttribute("stroke","currentColor");chev.setAttribute("stroke-width","2");chev.setAttribute("aria-hidden","true");
+        var path=document.createElementNS("http://www.w3.org/2000/svg","path");path.setAttribute("d","m9 6 6 6-6 6");chev.appendChild(path);
+        var b=el("button",{type:"button",class:"row","data-id":r.id,"aria-label":"Ouvrir le dossier "+r.tracking_code},[
+          el("span",{class:"cell c-code"},[el("span",{class:"code",text:r.tracking_code}),el("small",{text:fmtStamp(r.created_at)}),confused?el("span",{class:"tag",text:"Bagage confondu"}):null]),
+          el("span",{class:"cell c-owner"},[el("span",{text:r.owner_name||"—"}),el("small",{text:r.phone||"—"})]),
+          el("span",{class:"cell c-bag"},[/^#[0-9a-f]{6}$/i.test(r.color||"")?colorNode(r.color):null,document.createTextNode(r.description||"—")]),
+          el("span",{class:"cell c-where"},[el("span",{text:r.lost_location||"—"}),el("small",{text:fmtDate(r.lost_date)+" · "+fmtTime(r.lost_time_slot)})]),
+          el("span",{class:"cell c-status"},[badge(r.status)]),
+          chev
+        ]);
+        b.addEventListener("click",function(){openRecord(r.id,b)});
+        casesEl.appendChild(el("li",null,[b]));
+      });
+    }
+    $("more-button").addEventListener("click",function(){shown+=25;applyFilters()});
+
+    /* ---------- Fiche détaillée ---------- */
+    function kv(rows){
+      var dl=el("dl",{class:"kv"});
+      rows.forEach(function(r){if(r[1]==null)return;dl.appendChild(el("dt",{text:r[0]}));var dd=el("dd");if(typeof r[1]==="string")dd.textContent=r[1]||"—";else dd.appendChild(r[1]);dl.appendChild(dd)});
+      return dl;
+    }
+    function section(title,node){return el("div",{class:"sec"},[el("h3",{text:title.toUpperCase()}),node])}
+    function waNumber(phone){var d=digits(phone);if(d.length<8)return "";if(d.length===9)return "221"+d;if(d.indexOf("00")===0)return d.slice(2);return d}
+    function photoBox(record,kind,label,holder){
+      var key=record.id+"|"+kind,box=el("div",{class:"photo-box"});
+      var btn=el("button",{type:"button",class:"btn small",text:label});
+      async function load(){
+        btn.disabled=true;setDraw("Chargement de la photo…");
         try{
-          var records=await api({action:"admin-list",token:token});
-          allRecords=records;
-          applyFilters();
-          dashboardStatus.textContent=records.length===100
-            ?"Affichage des 100 dernières déclarations."
-            :"Dossiers chargés.";
-        }catch(error){
-          dashboardStatus.textContent=error.message||"Impossible de charger les dossiers.";
-          if(error.message&&error.message.indexOf("Session expirée")===0){
-            token=null;
-            showDashboard();
-          }
-        }finally{
-          refreshButton.disabled=false;
-        }
+          var c=photoCache[key],url;
+          if(c&&Date.now()-c.t<600000)url=c.url;
+          else{var res=await api({action:"admin-photo",token:token,id:record.id,kind:kind});url=new URL(res.url);if(url.protocol!=="https:")throw new Error("Adresse de photo invalide.");url=url.href;photoCache[key]={url:url,t:Date.now()}}
+          var img=el("img",{src:url,alt:label,loading:"lazy"});
+          var link=el("a",{href:url,target:"_blank",rel:"noopener noreferrer"},[img]);
+          box.replaceChildren(link);setDraw("");
+        }catch(error){setDraw(error.message||"Impossible de charger la photo.",true);btn.disabled=false}
+      }
+      btn.addEventListener("click",load);
+      box.appendChild(btn);holder.appendChild(box);
+    }
+    var drawStatus;
+    function setDraw(text,err){if(drawStatus){drawStatus.textContent=text;drawStatus.className="status-line"+(err?" err":"")}}
+    function openRecord(id,trigger){
+      var r=null;for(var i=0;i<allRecords.length;i++)if(allRecords[i].id===id)r=allRecords[i];
+      if(!r)return;
+      activeId=id;if(trigger)lastFocus=trigger;
+      $("drawer-title").textContent=r.tracking_code;
+      var db=$("drawer-badge");db.className="badge "+(r.status||"");db.textContent=statusLabel(r.status);
+      drawerBody.replaceChildren();
+      var confused=r.declaration_type==="confused";
+
+      var contact=el("div",{class:"contact"});
+      var tel=digits(r.phone);
+      if(tel.length>=6)contact.appendChild(el("a",{class:"btn small",href:"tel:"+(String(r.phone).trim().charAt(0)==="+"?"+":"")+tel,text:"Appeler"}));
+      var wa=waNumber(r.phone);
+      if(wa)contact.appendChild(el("a",{class:"btn small",href:"https://wa.me/"+wa,target:"_blank",rel:"noopener noreferrer",text:"WhatsApp"}));
+      drawerBody.appendChild(section("Propriétaire",el("div",null,[kv([["Nom",r.owner_name],["Téléphone",r.phone]]),contact])));
+
+      drawerBody.appendChild(section("Bagage",kv([
+        ["Type",confused?"Bagage confondu":"Bagage ou objet perdu"],
+        ["Description",r.description],
+        ["Couleur",colorNode(r.color)],
+        ["Bagage pris par erreur",confused?(r.taken_description||"—"):null]
+      ])));
+      drawerBody.appendChild(section("Perte",kv([
+        ["Lieu",r.lost_location],["Date",fmtDate(r.lost_date)],["Heure de la perte",fmtTime(r.lost_time_slot)],["Bus",r.bus_number||"—"],["Dossier reçu le",fmtStamp(r.created_at)],["Dernière mise à jour",fmtStamp(r.updated_at)]
+      ])));
+
+      if(r.photo_path||r.taken_photo_path||r.ticket_path){
+        var holder=el("div",{class:"photos"});
+        if(r.photo_path)photoBox(r,"baggage","Afficher la photo du bagage",holder);
+        if(r.taken_photo_path)photoBox(r,"taken-baggage","Afficher la photo du bagage pris par erreur",holder);
+        if(r.ticket_path)photoBox(r,"ticket","Afficher la photo du ticket",holder);
+        drawerBody.appendChild(section("Photos",holder));
       }
 
-      loginForm.addEventListener("submit",async function(event){
-        event.preventDefault();
-        loginButton.disabled=true;
-        loginStatus.textContent="Connexion en cours…";
+      var select=el("select",{id:"d-status"});
+      STATUS.forEach(function(s){select.appendChild(el("option",{value:s[0],text:s[1]}))});
+      select.value=r.status;
+      var note=el("textarea",{id:"d-note",maxlength:"500",placeholder:"N’inscrivez aucune donnée personnelle dans ce message."});
+      var save=el("button",{type:"button",class:"btn primary",text:"Enregistrer le statut"});
+      drawStatus=el("p",{class:"status-line",role:"status","aria-live":"polite"});
+      save.addEventListener("click",async function(){
+        save.disabled=true;setDraw("Enregistrement du statut…");
         try{
-          var result=await api({
-            action:"admin-login",
-            email:document.getElementById("email").value.trim(),
-            password:document.getElementById("password").value
-          });
-          token=result.token;
-          document.getElementById("password").value="";
-          showDashboard();
-          await loadCases();
-        }catch(error){
-          loginStatus.textContent=error.message||"Connexion impossible.";
-        }finally{
-          loginButton.disabled=false;
-        }
+          await api({action:"admin-update",token:token,id:r.id,status:select.value,note:note.value});
+          await loadCases(true);
+          openRecord(r.id);setDraw("Statut mis à jour.");
+        }catch(error){setDraw(error.message||"Impossible de mettre à jour le statut.",true);save.disabled=false}
       });
+      drawerBody.appendChild(section("Traitement du dossier",el("div",null,[
+        el("div",{class:"field",style:"margin-top:0"},[el("label",{for:"d-status",text:"Statut"}),select]),
+        el("div",{class:"field"},[el("label",{for:"d-note",text:"Message visible par le client (facultatif)"}),note]),
+        el("div",{style:"margin-top:14px"},[save]),drawStatus
+      ])));
 
-      refreshButton.addEventListener("click",loadCases);
-      document.getElementById("logout-button").addEventListener("click",function(){
-        token=null;
-        allRecords=[];
-        searchInput.value="";
-        statusFilter.value="";
-        resultsCount.textContent="";
-        casesElement.replaceChildren();
-        showDashboard();
-        document.getElementById("email").focus();
+      var del=el("button",{type:"button",class:"btn danger",text:"Supprimer le dossier"});
+      del.addEventListener("click",function(){
+        $("delete-text").textContent="Le dossier "+r.tracking_code+" et ses photos seront effacés définitivement.";
+        $("delete-dialog").dataset.id=r.id;$("delete-dialog").showModal();
       });
-      checkRecoveryLink();
-    })();
+      drawerBody.appendChild(section("Zone sensible",el("div",{class:"danger-zone"},[del])));
+
+      overlay.hidden=false;drawer.hidden=false;
+      $("drawer-close").focus();
+    }
+    function closeDrawer(){
+      drawer.hidden=true;overlay.hidden=true;activeId=null;
+      if(lastFocus&&document.body.contains(lastFocus))lastFocus.focus();
+    }
+    $("drawer-close").addEventListener("click",closeDrawer);
+    overlay.addEventListener("click",closeDrawer);
+    document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!drawer.hidden&&!$("delete-dialog").open)closeDrawer()});
+    $("delete-cancel").addEventListener("click",function(){$("delete-dialog").close()});
+    $("delete-confirm").addEventListener("click",async function(){
+      var dlg=$("delete-dialog"),id=dlg.dataset.id,btn=$("delete-confirm");
+      btn.disabled=true;
+      try{
+        await api({action:"admin-delete",token:token,id:id});
+        dlg.close();closeDrawer();setDash("Dossier supprimé.");
+        await loadCases(true);
+      }catch(error){dlg.close();setDraw(error.message||"Impossible de supprimer le dossier.",true)}
+      finally{btn.disabled=false}
+    });
+
+    /* ---------- Chargement ---------- */
+    async function loadCases(quiet){
+      $("refresh-button").disabled=true;
+      if(!quiet)setDash("Chargement des dossiers…");
+      try{
+        var records=await api({action:"admin-list",token:token});
+        allRecords=records;fillPlaces();applyFilters();
+        var t=new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+        if(!quiet||dashStatus.textContent)setDash((records.length===100?"Les 100 dernières déclarations sont affichées. ":"")+"Mis à jour à "+t+".");
+      }catch(error){
+        setDash(error.message||"Impossible de charger les dossiers.",true);
+        if(error.message&&error.message.indexOf("Session expirée")===0){token=null;closeDrawer();showDashboard();setLogin("Session expirée. Reconnecte-toi.",true)}
+      }finally{$("refresh-button").disabled=false}
+    }
+
+    /* ---------- Export Excel (CSV) ---------- */
+    function csvCell(v){
+      var s=String(v==null?"":v);
+      if(/^[=+\-@\t\r]/.test(s)&&!/^\+?[\d\s().-]+$/.test(s))s="'"+s;
+      return '"'+s.replace(/"/g,'""')+'"';
+    }
+    $("export-button").addEventListener("click",function(){
+      var list=filtered();
+      if(!list.length){setDash("Aucun dossier à exporter.",true);return}
+      var head=["Code","Reçu le","Type","Propriétaire","Téléphone","Description","Bagage pris par erreur","Couleur","Lieu","Date de perte","Heure de la perte","Bus","Statut"];
+      var lines=[head.map(csvCell).join(";")];
+      list.forEach(function(r){
+        lines.push([r.tracking_code,fmtStamp(r.created_at),r.declaration_type==="confused"?"Bagage confondu":"Perdu",r.owner_name,r.phone,r.description,r.taken_description,r.color,r.lost_location,fmtDate(r.lost_date),fmtTime(r.lost_time_slot),r.bus_number,statusLabel(r.status)].map(csvCell).join(";"));
+      });
+      var blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});
+      var a=el("a",{href:URL.createObjectURL(blob),download:"declarations-dem-dikk-"+new Date().toISOString().slice(0,10)+".csv"});
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
+      setDash(list.length+" dossier(s) exporté(s).");
+    });
+
+    loginForm.addEventListener("submit",async function(event){
+      event.preventDefault();
+      var button=$("login-button");button.disabled=true;
+      setLogin("Connexion en cours…");
+      try{
+        var result=await api({action:"admin-login",email:$("email").value.trim(),password:$("password").value});
+        token=result.token;adminEmail=$("email").value.trim();
+        $("password").value="";
+        showDashboard();setLogin("");
+        await loadCases();
+      }catch(error){setLogin(error.message||"Connexion impossible.",true)}
+      finally{button.disabled=false}
+    });
+    $("refresh-button").addEventListener("click",function(){loadCases()});
+    $("logout-button").addEventListener("click",function(){
+      token=null;adminEmail="";allRecords=[];photoCache={};statusKey="";shown=25;
+      $("search-input").value="";$("type-filter").value="";$("place-filter").value="";
+      casesEl.replaceChildren();closeDrawer();setDash("");showDashboard();
+      $("email").focus();
+    });
+    checkRecoveryLink();
+  })();
   </script>
 </body>
 </html>
